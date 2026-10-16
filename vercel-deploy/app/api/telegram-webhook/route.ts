@@ -4,11 +4,36 @@ import { supabase } from "@/lib/supabase";
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8936095048:AAHGBEacdNgFe-xCLPc42JPH6oymu9z9cmo";
 const MISTRAL_KEY = process.env.MISTRAL_API_KEY || "mstrl_mrbTsK7iy2Z8TUs9G0tpAoNLhNu8Z2Lk_1Ht6bI";
 
+// Persistent Quick Action Reply Keyboard (Appears directly on user's keyboard)
+const MAIN_REPLY_KEYBOARD = {
+  keyboard: [
+    [{ text: "⚡ Check-in" }, { text: "📋 View Tasks" }],
+    [{ text: "📊 Project Status" }, { text: "🚨 Blocker Demo" }],
+    [{ text: "✨ Resolve Blocker" }]
+  ],
+  resize_keyboard: true,
+  is_persistent: true
+};
+
+// Inline Action Buttons (Clickable buttons under messages)
+const ACTION_INLINE_BUTTONS = {
+  inline_keyboard: [
+    [
+      { text: "⚡ Check-in Now", callback_data: "btn_checkin" },
+      { text: "📋 View Tasks", callback_data: "btn_tasks" }
+    ],
+    [
+      { text: "📊 Project Status", callback_data: "btn_status" },
+      { text: "🚨 Blocker Demo", callback_data: "btn_blocker_demo" }
+    ]
+  ]
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // 1. Handle Inline Callback Queries (Identity Linking)
+    // 1. Handle Inline Button Clicks (Callback Queries)
     const callbackQuery = body.callback_query;
     if (callbackQuery) {
       await handleCallbackQuery(callbackQuery);
@@ -30,19 +55,19 @@ export async function POST(req: NextRequest) {
     // Command: /start
     if (text.startsWith("/start")) {
       const welcomeText = 
-        `👋 *Welcome to SyncPulse AI, ${senderName}!*\n\n` +
+        `👋 *Welcome to SyncPulse AI, ${senderName}!* \n\n` +
         "I am your autonomous *Group Project Coordinator* for Hackathon Kurukshetra.\n" +
         "I proactively follow up on pending tasks, identify blockers using AI, and auto-escalate dependencies!\n\n" +
-        "👇 *Please select your identity to link your notifications:*";
+        "👇 *Tap your identity below to link your account:*";
 
       const inlineKeyboard = {
         inline_keyboard: [
           [
-            { text: "I am Kabir", callback_data: "iam_Kabir" },
-            { text: "I am Meera", callback_data: "iam_Meera" },
-            { text: "I am Aanya", callback_data: "iam_Aanya" },
+            { text: "👤 I am Kabir", callback_data: "iam_Kabir" },
+            { text: "👤 I am Meera", callback_data: "iam_Meera" },
+            { text: "👤 I am Aanya", callback_data: "iam_Aanya" },
           ],
-          [{ text: "Judge / Guest", callback_data: "iam_Guest" }]
+          [{ text: "⚖️ Judge / Guest", callback_data: "iam_Guest" }]
         ]
       };
 
@@ -50,129 +75,38 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    // Command: /tasks
-    if (text.startsWith("/tasks")) {
-      const { data: tasks } = await supabase.from("tasks").select("*").order("created_at", { ascending: true });
-      let reply = "📋 *Live Project Task Board:*\n\n";
-      
-      const taskList = tasks && tasks.length > 0 ? tasks : [
-        { task_code: "TASK-101", title: "Finalize Presentation Slides", status: "completed", assigned_to_name: "Aanya", is_blocked: false },
-        { task_code: "TASK-102", title: "Connect Payment API & Webhooks", status: "in_progress", assigned_to_name: "Kabir", is_blocked: false },
-        { task_code: "TASK-103", title: "Frontend UI Integration", status: "in_progress", assigned_to_name: "Meera", is_blocked: false }
-      ];
-
-      for (const t of taskList) {
-        const icon = t.is_blocked ? "🛑" : (t.status === "completed" ? "✅" : "⏳");
-        const badge = t.is_blocked ? `BLOCKED (${t.blocker_reason || 'Dependency'})` : t.status.toUpperCase();
-        reply += `${icon} \`[${t.task_code}]\` *${t.title}*\n   • Owner: *${t.assigned_to_name}* | Status: ${badge}\n\n`;
-      }
-
-      await sendTelegramMessage(chatId, reply);
+    // Command: /tasks or button "📋 View Tasks"
+    if (text.startsWith("/tasks") || text === "📋 View Tasks" || text === "📋 Tasks") {
+      await sendTasksList(chatId);
       return NextResponse.json({ ok: true });
     }
 
-    // Command: /checkin
-    if (text.startsWith("/checkin")) {
-      const prompt = 
-        `👋 Hey ${senderName}! Autonomous check-in from SyncPulse AI.\n\n` +
-        "How is *[TASK-102] Connect Payment API & Webhooks* progressing?\n" +
-        "Are you on track, completed, or is anything blocking you?";
-
-      await sendTelegramMessage(chatId, prompt);
+    // Command: /checkin or button "⚡ Check-in"
+    if (text.startsWith("/checkin") || text === "⚡ Check-in" || text === "⚡ Check-in Now") {
+      await sendCheckinPrompt(chatId, senderName);
       return NextResponse.json({ ok: true });
     }
 
-    // Command: /status
-    if (text.startsWith("/status")) {
-      const { data: tasks } = await supabase.from("tasks").select("*");
-      const total = tasks?.length || 5;
-      const blocked = tasks?.filter(t => t.is_blocked).length || 0;
-      const completed = tasks?.filter(t => t.status === "completed").length || 1;
-      
-      const statusMsg = 
-        `📊 *SyncPulse Project Health:*\n\n` +
-        `• Total Milestones: *${total}*\n` +
-        `• Shipped: *${completed}*\n` +
-        `• Active Blockers: *${blocked}*\n` +
-        `• Autonomous Loop: *24/7 Serverless on Vercel* 🟢`;
-      
-      await sendTelegramMessage(chatId, statusMsg);
+    // Command: /status or button "📊 Project Status"
+    if (text.startsWith("/status") || text === "📊 Project Status" || text === "📊 Status") {
+      await sendProjectStatus(chatId);
       return NextResponse.json({ ok: true });
     }
 
-    // 3. Process Natural Language Reply with AI Reasoning
-    const analysis = await analyzeReplyWithAI(text, senderName);
-    const isBlocked = analysis.is_blocked;
-    const newStatus = analysis.status;
-
-    // Update Supabase Tasks
-    await supabase
-      .from("tasks")
-      .update({
-        status: newStatus,
-        is_blocked: isBlocked,
-        blocker_reason: analysis.blocker_reason,
-        blocked_by_member_name: analysis.blocked_by_member,
-        updated_at: new Date().toISOString()
-      })
-      .eq("task_code", "TASK-102");
-
-    // Insert Activity Log in Supabase
-    await supabase.from("activity_logs").insert({
-      actor: senderName,
-      event_type: isBlocked ? "blocker_detected" : (newStatus === "completed" ? "status_changed" : "member_reply"),
-      message: text,
-      ai_interpretation: analysis.summary
-    });
-
-    // 4. Autonomous Escalation: Nudge the blocking teammate if identified
-    let nudgeSentTo = null;
-    if (isBlocked && analysis.blocked_by_member) {
-      try {
-        const { data: member } = await supabase
-          .from("team_members")
-          .select("telegram_chat_id, name")
-          .ilike("name", analysis.blocked_by_member)
-          .single();
-
-        if (member && member.telegram_chat_id && String(member.telegram_chat_id) !== String(chatId)) {
-          const nudgeText = 
-            `🚨 *Autonomous Blocker Alert for ${member.name}:*\n\n` +
-            `*${senderName}* is currently blocked on *[TASK-102] Connect Payment API* waiting for:\n` +
-            `👉 "${analysis.blocker_reason}"\n\n` +
-            `Could you please share the required update/credentials to unblock ${senderName}?`;
-          
-          await sendTelegramMessage(member.telegram_chat_id, nudgeText);
-          nudgeSentTo = member.name;
-        }
-      } catch (nudgeErr) {
-        console.error("Autonomous nudge delivery notice:", nudgeErr);
-      }
+    // Command: Blocker Demo trigger
+    if (text === "🚨 Blocker Demo" || text.toLowerCase().includes("waiting for test credentials")) {
+      await processMemberReply(chatId, "The API is connected, but I am waiting for test credentials from Meera.", senderName);
+      return NextResponse.json({ ok: true });
     }
 
-    // 5. Reply back to the participant
-    let replyMsg = "";
-    if (isBlocked) {
-      replyMsg = 
-        `🛑 *Blocker Detected & Logged in Supabase!*\n\n` +
-        `I have updated *[TASK-102] Connect Payment API* to *BLOCKED*.\n` +
-        `• *Reason:* ${analysis.blocker_reason}\n`;
-      if (analysis.blocked_by_member) {
-        replyMsg += `• *Dependency:* ${analysis.blocked_by_member}\n\n`;
-        if (nudgeSentTo) {
-          replyMsg += `🚀 *Autonomous Escalation Dispatched:* Sent a direct nudge to *${nudgeSentTo}* on Telegram!`;
-        } else {
-          replyMsg += `🚀 *Escalation Logged:* Escalated to *${analysis.blocked_by_member}* on the live dashboard.`;
-        }
-      }
-    } else if (newStatus === "completed") {
-      replyMsg = 
-        `🎉 *Awesome progress, ${senderName}!* Milestone *[TASK-102]* marked as *COMPLETED* in the project dashboard!`;
-    } else {
-      replyMsg = `👍 *Understood, ${senderName}!* Status updated to *In Progress*. Keep pushing forward!`;
+    // Command: Resolve Demo trigger
+    if (text === "✨ Resolve Blocker" || text.toLowerCase().includes("credentials received")) {
+      await processMemberReply(chatId, "Meera shared the credentials! Integration tested and verified.", senderName);
+      return NextResponse.json({ ok: true });
     }
 
-    await sendTelegramMessage(chatId, replyMsg);
+    // Natural Language Reply Processing
+    await processMemberReply(chatId, text, senderName);
     return NextResponse.json({ ok: true });
 
   } catch (err) {
@@ -181,28 +115,178 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Handler for inline buttons (Identity selection)
+// Handler for Inline Button Clicks
 async function handleCallbackQuery(cq: any) {
-  const memberName = cq.data.replace("iam_", "");
+  const data = cq.data;
   const chatId = cq.message.chat.id;
-  const username = cq.from.username ? `@${cq.from.username}` : memberName;
+  const senderName = cq.from.first_name || "Teammate";
 
-  if (memberName !== "Guest") {
-    await supabase
-      .from("team_members")
-      .update({ telegram_chat_id: String(chatId), telegram_username: username })
-      .ilike("name", memberName);
+  // Identity selection buttons
+  if (data.startsWith("iam_")) {
+    const memberName = data.replace("iam_", "");
+    const username = cq.from.username ? `@${cq.from.username}` : memberName;
+
+    if (memberName !== "Guest") {
+      await supabase
+        .from("team_members")
+        .update({ telegram_chat_id: String(chatId), telegram_username: username })
+        .ilike("name", memberName);
+    }
+
+    const responseText = 
+      `✅ *Identity Linked:* You are now registered as *${memberName}*.\n\n` +
+      "👇 *Tap any button below to interact immediately (no typing needed):*";
+
+    await sendTelegramMessage(chatId, responseText, MAIN_REPLY_KEYBOARD);
+    return;
   }
 
-  const responseText = 
-    `✅ *Identity Linked:* You are registered as *${memberName}*.\n\n` +
-    "💡 *Try these commands:*\n" +
-    "• `/tasks` - View live project task board\n" +
-    "• `/checkin` - Simulate an autonomous follow-up\n" +
-    "• `/status` - View overall project velocity\n" +
-    "• Or simply reply naturally with your progress!";
+  // Action button clicks
+  if (data === "btn_checkin") {
+    await sendCheckinPrompt(chatId, senderName);
+  } else if (data === "btn_tasks") {
+    await sendTasksList(chatId);
+  } else if (data === "btn_status") {
+    await sendProjectStatus(chatId);
+  } else if (data === "btn_blocker_demo") {
+    await processMemberReply(chatId, "The API is connected, but I am waiting for test credentials from Meera.", senderName);
+  } else if (data === "btn_resolve_demo") {
+    await processMemberReply(chatId, "Meera shared the credentials! Integration tested and verified.", senderName);
+  }
+}
 
-  await sendTelegramMessage(chatId, responseText);
+// Sends live tasks from Supabase
+async function sendTasksList(chatId: string | number) {
+  const { data: tasks } = await supabase.from("tasks").select("*").order("created_at", { ascending: true });
+  let reply = "📋 *Live Project Task Board:*\n\n";
+  
+  const taskList = tasks && tasks.length > 0 ? tasks : [
+    { task_code: "TASK-101", title: "Finalize Presentation Slides", status: "completed", assigned_to_name: "Aanya", is_blocked: false },
+    { task_code: "TASK-102", title: "Connect Payment API & Webhooks", status: "in_progress", assigned_to_name: "Kabir", is_blocked: false },
+    { task_code: "TASK-103", title: "Frontend UI Integration", status: "in_progress", assigned_to_name: "Meera", is_blocked: false }
+  ];
+
+  for (const t of taskList) {
+    const icon = t.is_blocked ? "🛑" : (t.status === "completed" ? "✅" : "⏳");
+    const badge = t.is_blocked ? `BLOCKED (${t.blocker_reason || 'Dependency'})` : t.status.toUpperCase();
+    reply += `${icon} \`[${t.task_code}]\` *${t.title}*\n   • Owner: *${t.assigned_to_name}* | Status: ${badge}\n\n`;
+  }
+
+  await sendTelegramMessage(chatId, reply, ACTION_INLINE_BUTTONS);
+}
+
+// Sends check-in inquiry
+async function sendCheckinPrompt(chatId: string | number, senderName: string) {
+  const prompt = 
+    `👋 Hey ${senderName}! Autonomous check-in from SyncPulse AI.\n\n` +
+    "How is *[TASK-102] Connect Payment API & Webhooks* progressing?\n\n" +
+    "👇 *Tap a response below or reply with your own words:*";
+
+  const checkinQuickButtons = {
+    inline_keyboard: [
+      [
+        { text: "🚨 Blocked on Meera (Credentials)", callback_data: "btn_blocker_demo" }
+      ],
+      [
+        { text: "✅ Milestone Finished / Done", callback_data: "btn_resolve_demo" }
+      ]
+    ]
+  };
+
+  await sendTelegramMessage(chatId, prompt, checkinQuickButtons);
+}
+
+// Sends overall project status
+async function sendProjectStatus(chatId: string | number) {
+  const { data: tasks } = await supabase.from("tasks").select("*");
+  const total = tasks?.length || 5;
+  const blocked = tasks?.filter(t => t.is_blocked).length || 0;
+  const completed = tasks?.filter(t => t.status === "completed").length || 1;
+  
+  const statusMsg = 
+    `📊 *SyncPulse Project Health:*\n\n` +
+    `• Total Milestones: *${total}*\n` +
+    `• Shipped: *${completed}*\n` +
+    `• Active Blockers: *${blocked}*\n` +
+    `• Autonomous Loop: *24/7 Cloud on Vercel* 🟢`;
+  
+  await sendTelegramMessage(chatId, statusMsg, ACTION_INLINE_BUTTONS);
+}
+
+// Processes participant replies with AI reasoning and handles autonomous escalation
+async function processMemberReply(chatId: string | number, text: string, senderName: string) {
+  const analysis = await analyzeReplyWithAI(text, senderName);
+  const isBlocked = analysis.is_blocked;
+  const newStatus = analysis.status;
+
+  // Update Supabase
+  await supabase
+    .from("tasks")
+    .update({
+      status: newStatus,
+      is_blocked: isBlocked,
+      blocker_reason: analysis.blocker_reason,
+      blocked_by_member_name: analysis.blocked_by_member,
+      updated_at: new Date().toISOString()
+    })
+    .eq("task_code", "TASK-102");
+
+  // Insert Activity Log
+  await supabase.from("activity_logs").insert({
+    actor: senderName,
+    event_type: isBlocked ? "blocker_detected" : (newStatus === "completed" ? "status_changed" : "member_reply"),
+    message: text,
+    ai_interpretation: analysis.summary
+  });
+
+  // Autonomous Escalation to Meera
+  let nudgeSentTo = null;
+  if (isBlocked && analysis.blocked_by_member) {
+    try {
+      const { data: member } = await supabase
+        .from("team_members")
+        .select("telegram_chat_id, name")
+        .ilike("name", analysis.blocked_by_member)
+        .single();
+
+      if (member && member.telegram_chat_id && String(member.telegram_chat_id) !== String(chatId)) {
+        const nudgeText = 
+          `🚨 *Autonomous Blocker Alert for ${member.name}:*\n\n` +
+          `*${senderName}* is currently blocked on *[TASK-102] Connect Payment API* waiting for:\n` +
+          `👉 "${analysis.blocker_reason}"\n\n` +
+          `Could you please share the required update/credentials to unblock ${senderName}?`;
+        
+        await sendTelegramMessage(member.telegram_chat_id, nudgeText);
+        nudgeSentTo = member.name;
+      }
+    } catch (nudgeErr) {
+      console.error("Autonomous nudge notice:", nudgeErr);
+    }
+  }
+
+  // Reply back to the user
+  let replyMsg = "";
+  if (isBlocked) {
+    replyMsg = 
+      `🛑 *Blocker Detected & Logged in Supabase!*\n\n` +
+      `I have updated *[TASK-102] Connect Payment API* to *BLOCKED*.\n` +
+      `• *Reason:* ${analysis.blocker_reason}\n`;
+    if (analysis.blocked_by_member) {
+      replyMsg += `• *Dependency:* ${analysis.blocked_by_member}\n\n`;
+      if (nudgeSentTo) {
+        replyMsg += `🚀 *Autonomous Escalation Dispatched:* Sent a direct nudge to *${nudgeSentTo}* on Telegram!`;
+      } else {
+        replyMsg += `🚀 *Escalation Logged:* Escalated to *${analysis.blocked_by_member}* on the live dashboard.`;
+      }
+    }
+  } else if (newStatus === "completed") {
+    replyMsg = 
+      `🎉 *Awesome progress, ${senderName}!* Milestone *[TASK-102]* marked as *COMPLETED* in the project dashboard!`;
+  } else {
+    replyMsg = `👍 *Understood, ${senderName}!* Status updated to *In Progress*. Keep pushing forward!`;
+  }
+
+  await sendTelegramMessage(chatId, replyMsg, ACTION_INLINE_BUTTONS);
 }
 
 // Sends Markdown-formatted messages via Telegram Bot API
@@ -223,9 +307,8 @@ async function sendTelegramMessage(chatId: string | number, text: string, replyM
   });
 }
 
-// AI Reasoning Pipeline (Mistral AI API with robust heuristic fallback)
+// AI Reasoning Pipeline (Mistral AI API with high-precision fallback)
 async function analyzeReplyWithAI(replyText: string, owner: string) {
-  // 1. Try Mistral AI API if key is available
   if (MISTRAL_KEY && !MISTRAL_KEY.startsWith("your_")) {
     try {
       const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -279,7 +362,7 @@ async function analyzeReplyWithAI(replyText: string, owner: string) {
     }
   }
 
-  // 2. High-precision Heuristic Fallback
+  // Fallback Heuristics
   const lower = replyText.toLowerCase();
 
   if (
@@ -295,7 +378,7 @@ async function analyzeReplyWithAI(replyText: string, owner: string) {
     if (lower.includes("kabir")) blockedBy = "Kabir";
     else if (lower.includes("aanya")) blockedBy = "Aanya";
 
-    let reason = "Waiting for test credentials";
+    let reason = "Waiting for test credentials from Meera";
     if (lower.includes("api")) reason = "Waiting for API endpoint specifications";
     else if (lower.includes("design") || lower.includes("ui")) reason = "Waiting for UI design assets";
 
@@ -314,7 +397,8 @@ async function analyzeReplyWithAI(replyText: string, owner: string) {
     lower.includes("finish") || 
     lower.includes("ready") || 
     lower.includes("ho gya") ||
-    lower.includes("shipped")
+    lower.includes("shipped") ||
+    lower.includes("verified")
   ) {
     return {
       status: "completed",
