@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { 
   Bot, AlertTriangle, CheckCircle2, Clock, ListTodo, Send, 
-  ExternalLink, Sparkles, ShieldCheck, RefreshCw, Plus, Users, ArrowRight 
+  ExternalLink, Sparkles, RefreshCw, Plus, Users, Globe, ShieldCheck, 
+  ArrowRight, ArrowLeft, MessageSquare, Zap, Check, Bell, Cpu, 
+  Layers, Play, RotateCcw, Activity, HelpCircle, Flame
 } from "lucide-react";
 
 interface Task {
@@ -18,204 +20,85 @@ interface Task {
   is_blocked: boolean;
   blocker_reason?: string;
   blocked_by_member_name?: string;
-  due_date?: string;
+  model_type?: string;
 }
 
-interface ActivityLog {
-  id: string;
-  actor: string;
-  event_type: string;
-  message: string;
-  ai_interpretation?: string;
-  created_at: string;
-}
+export default function SyncPulseApp() {
+  // Navigation: 5 Pages/Sections
+  const [currentPage, setCurrentPage] = useState<1 | 2 | 3 | 4 | 5>(1);
 
-const INITIAL_TASKS: Task[] = [
-  {
-    id: "1",
-    task_code: "TASK-101",
-    title: "Finalize Presentation Slides & Pitch Deck",
-    description: "Create pitch deck covering architecture, value proposition, and demo script.",
-    assigned_to_name: "Aanya",
-    status: "completed",
-    priority: "high",
-    is_blocked: false,
-    due_date: "Tomorrow",
-  },
-  {
-    id: "2",
-    task_code: "TASK-102",
-    title: "Connect the Payment API & Webhook Handlers",
-    description: "Integrate sandbox payment gateway API, verify checkout flow, and listen to webhooks.",
-    assigned_to_name: "Kabir",
-    status: "in_progress",
-    priority: "urgent",
-    is_blocked: false,
-    due_date: "Today",
-  },
-  {
-    id: "3",
-    task_code: "TASK-103",
-    title: "Frontend Dashboard & UI Integration",
-    description: "Build user transaction history, connect with backend endpoints, and handle loading states.",
-    assigned_to_name: "Meera",
-    status: "in_progress",
-    priority: "high",
-    is_blocked: false,
-    due_date: "In 2 days",
-  },
-  {
-    id: "4",
-    task_code: "TASK-104",
-    title: "Security & End-to-End Test Suite",
-    description: "Run automated integration tests and verify JWT authentication header enforcement.",
-    assigned_to_name: "Kabir",
-    status: "todo",
-    priority: "medium",
-    is_blocked: false,
-    due_date: "In 3 days",
-  },
-];
+  // 4 AI Engineers Training Models (As requested by Rohit)
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      id: "1",
+      task_code: "AI-101",
+      title: "BERT Text Classifier Training",
+      description: "Dataset tokenization, fine-tuning BERT base model, and validating accuracy metrics.",
+      assigned_to_name: "Meera",
+      status: "completed",
+      priority: "high",
+      is_blocked: false,
+      model_type: "NLP Classifier",
+    },
+    {
+      id: "2",
+      task_code: "AI-102",
+      title: "ResNet-50 Computer Vision Model",
+      description: "Image augmentation, transfer learning on ResNet-50, and exporting ONNX weights.",
+      assigned_to_name: "Sumit",
+      status: "completed",
+      priority: "high",
+      is_blocked: false,
+      model_type: "Vision Model",
+    },
+    {
+      id: "3",
+      task_code: "AI-103",
+      title: "Llama-3 8B Instruction Fine-Tuning",
+      description: "LoRA adapter training for domain instruction tasks. Waiting for GPU cluster credentials.",
+      assigned_to_name: "Kabir",
+      status: "blocked",
+      priority: "urgent",
+      is_blocked: true,
+      blocker_reason: "Waiting for GPU Cluster API Key & Model Weights from Meera",
+      blocked_by_member_name: "Meera",
+      model_type: "LLM Fine-Tuning",
+    },
+    {
+      id: "4",
+      task_code: "AI-104",
+      title: "Whisper Audio Speech-to-Text Model",
+      description: "Audio pipeline preprocessing and inference speed benchmark.",
+      assigned_to_name: "Jaswant",
+      status: "in_progress",
+      priority: "medium",
+      is_blocked: false,
+      model_type: "Audio AI",
+    },
+  ]);
 
-const INITIAL_LOGS: ActivityLog[] = [
-  {
-    id: "l1",
-    actor: "Agent Brain",
-    event_type: "bot_followup",
-    message: "SyncPulse AI initialized project tracking. Monitored 4 tasks across 3 team members.",
-    ai_interpretation: "Autonomous coordinator loop is active.",
-    created_at: "Just now",
-  },
-];
+  // Animated Flow Simulation State (Page 4)
+  const [animStep, setAnimStep] = useState<1 | 2 | 3 | 4>(1);
+  const [isSimulating, setIsSimulating] = useState(false);
 
-export default function DashboardPage() {
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
-  const [logs, setLogs] = useState<ActivityLog[]>(INITIAL_LOGS);
-  const [isDemoTriggering, setIsDemoTriggering] = useState(false);
-  const [customReply, setCustomReply] = useState("");
-  const [isRealtimeActive, setIsRealtimeActive] = useState(false);
-
-  // Load from Supabase on mount & enable Realtime listener
+  // Auto-advance animation stepper if simulating
   useEffect(() => {
-    async function loadInitialData() {
-      try {
-        const { data: dbTasks, error } = await supabase
-          .from("tasks")
-          .select("*")
-          .order("created_at", { ascending: true });
-
-        if (!error && dbTasks && dbTasks.length > 0) {
-          setTasks(dbTasks);
-          setIsRealtimeActive(true);
-        }
-
-        const { data: dbLogs } = await supabase
-          .from("activity_logs")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(10);
-
-        if (dbLogs && dbLogs.length > 0) {
-          setLogs(dbLogs);
-        }
-      } catch (err) {
-        console.log("Supabase awaiting connection or tables:", err);
+    if (!isSimulating) return;
+    const timer = setTimeout(() => {
+      if (animStep < 4) {
+        setAnimStep((prev) => (prev + 1) as any);
+      } else {
+        setIsSimulating(false);
       }
-    }
+    }, 2800);
+    return () => clearTimeout(timer);
+  }, [isSimulating, animStep]);
 
-    loadInitialData();
-
-    // Setup Supabase Realtime channel
-    const channel = supabase
-      .channel("realtime_dashboard")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "tasks" },
-        (payload) => {
-          setIsRealtimeActive(true);
-          loadInitialData();
-        }
-      )
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "activity_logs" },
-        (payload) => {
-          setLogs((prev) => [payload.new as ActivityLog, ...prev]);
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  // Compute metrics
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((t) => t.status === "completed").length;
-  const blockedTasks = tasks.filter((t) => t.is_blocked || t.status === "blocked").length;
-  const inProgressTasks = tasks.filter((t) => t.status === "in_progress" && !t.is_blocked).length;
-  const healthScore = Math.max(20, 100 - blockedTasks * 25);
-
-  // Demo Action 1: Trigger Agent Check-in to Kabir
-  const triggerCheckIn = () => {
-    setIsDemoTriggering(true);
-    const newLog: ActivityLog = {
-      id: Date.now().toString(),
-      actor: "SyncPulse Bot",
-      event_type: "bot_followup",
-      message: "👋 Hey Kabir! How is [TASK-102] Connect Payment API progressing? Are you on track or is anything blocking you?",
-      ai_interpretation: "Scheduled autonomous check-in dispatched to Telegram.",
-      created_at: new Date().toLocaleTimeString(),
-    };
-    setLogs((prev) => [newLog, ...prev]);
-    setIsDemoTriggering(false);
-  };
-
-  // Demo Action 2: Simulate Kabir's reply with blocker on Meera
-  const simulateBlockerReply = () => {
-    // 1. Update task state
+  // Unblock Action (Resolves the blocker)
+  const resolveBlocker = () => {
     setTasks((prev) =>
       prev.map((t) =>
-        t.task_code === "TASK-102"
-          ? {
-              ...t,
-              status: "blocked",
-              is_blocked: true,
-              blocker_reason: "Waiting for test credentials from Meera",
-              blocked_by_member_name: "Meera",
-            }
-          : t
-      )
-    );
-
-    // 2. Add logs
-    const memberLog: ActivityLog = {
-      id: (Date.now() + 1).toString(),
-      actor: "Kabir (Telegram)",
-      event_type: "member_reply",
-      message: "The API is connected, but I am waiting for test credentials from Meera.",
-      ai_interpretation: "Intent: BLOCKED. Blocker: 'test credentials'. Dependency: Meera.",
-      created_at: new Date().toLocaleTimeString(),
-    };
-
-    const escalationLog: ActivityLog = {
-      id: (Date.now() + 2).toString(),
-      actor: "Agent Brain (Auto-Escalation)",
-      event_type: "escalation_sent",
-      message: "🚨 Sent Telegram DM to Meera: 'Hey Meera! Kabir is waiting on test credentials for the Payment API. Could you please share them?'",
-      ai_interpretation: "Autonomous dependency escalation executed to unblock Kabir.",
-      created_at: new Date().toLocaleTimeString(),
-    };
-
-    setLogs((prev) => [escalationLog, memberLog, ...prev]);
-  };
-
-  // Demo Action 3: Unblock Kabir (Meera shares credentials, Kabir completes task)
-  const simulateUnblockAndComplete = () => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.task_code === "TASK-102"
+        t.task_code === "AI-103"
           ? {
               ...t,
               status: "completed",
@@ -226,344 +109,785 @@ export default function DashboardPage() {
           : t
       )
     );
-
-    const log: ActivityLog = {
-      id: Date.now().toString(),
-      actor: "Kabir (Telegram)",
-      event_type: "status_changed",
-      message: "Got credentials from Meera! Test suite passed, webhook verified. Task completed!",
-      ai_interpretation: "Intent: COMPLETED. Blocker resolved. Health score restored to 100%.",
-      created_at: new Date().toLocaleTimeString(),
-    };
-    setLogs((prev) => [log, ...prev]);
   };
 
+  const resetBlocker = () => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.task_code === "AI-103"
+          ? {
+              ...t,
+              status: "blocked",
+              is_blocked: true,
+              blocker_reason: "Waiting for GPU Cluster API Key & Model Weights from Meera",
+              blocked_by_member_name: "Meera",
+            }
+          : t
+      )
+    );
+  };
+
+  const kabirTask = tasks.find((t) => t.task_code === "AI-103");
+  const isKabirBlocked = kabirTask?.is_blocked;
+
   return (
-    <div className="min-h-screen text-slate-100 p-4 md:p-8">
-      {/* Header */}
-      <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-slate-800">
-        <div>
+    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+      
+      {/* ======================================================== */}
+      {/* TOP BRAND HEADER (Always visible on all pages) */}
+      {/* ======================================================== */}
+      <header className="sticky top-0 z-50 bg-[#0a0d16]/90 backdrop-blur-xl border-b border-slate-800/80 px-4 md:px-8 py-3.5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          {/* Logo & Identity */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Bot className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+              <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold tracking-tight text-white">SyncPulse AI</h1>
-                <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  W-PS-1 Agentic AI
+                <span className="text-xl font-extrabold tracking-tight text-white space-heading">SyncPulse AI</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  AUTONOMOUS COORDINATOR
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  {isRealtimeActive ? "Supabase Realtime Live" : "Local Standalone Active"}
+                  LIVE
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Autonomous Group Project Coordinator · Hackathon Kurukshetra (DY Patil Pune) · Powered by Worcflow.ai
+              <p className="text-[11px] text-slate-400">
+                Track W-PS-1 · Hackathon Kurukshetra · Powered by Worcflow.ai
               </p>
             </div>
           </div>
-        </div>
 
-        {/* Live Telegram Bot Link & Demo Controller Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
+          {/* 5 Page Navigation Switcher */}
+          <nav className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
+            <button
+              onClick={() => setCurrentPage(1)}
+              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
+                currentPage === 1 ? "bg-indigo-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>1. Who & Tasks</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(2)}
+              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
+                currentPage === 2 ? "bg-red-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <AlertTriangle className="w-3.5 h-3.5" />
+              <span>2. Blocker Radar</span>
+              {isKabirBlocked && (
+                <span className="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(3)}
+              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
+                currentPage === 3 ? "bg-indigo-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              <span>3. AI Team Story</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(4)}
+              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
+                currentPage === 4 ? "bg-cyan-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>4. Animated Flow</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(5)}
+              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
+                currentPage === 5 ? "bg-emerald-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>5. Solution Impact</span>
+            </button>
+          </nav>
+
+          {/* Quick Telegram Bridge Pill */}
           <a
             href="https://t.me/syncpulse_solver_bot"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium transition shadow-sm"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-semibold transition"
           >
             <Send className="w-3.5 h-3.5" />
-            Open Telegram Bot
-            <ExternalLink className="w-3 h-3 opacity-70" />
+            <span>@syncpulse_solver_bot</span>
           </a>
 
-          <button
-            onClick={triggerCheckIn}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-blue-400" />
-            1. Trigger Check-in
-          </button>
-
-          <button
-            onClick={simulateBlockerReply}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-300 text-xs font-medium border border-red-800/40 transition"
-          >
-            <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
-            2. Simulate Blocker
-          </button>
-
-          <button
-            onClick={simulateUnblockAndComplete}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 text-xs font-medium border border-emerald-800/40 transition"
-          >
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            3. Resolve & Complete
-          </button>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto mt-6 space-y-6">
+      {/* ======================================================== */}
+      {/* MAIN DYNAMIC CONTENT CONTAINER */}
+      {/* ======================================================== */}
+      <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-8 flex flex-col justify-between">
         
-        {/* Blocker Alert Banner (Shows when any task is blocked) */}
-        {blockedTasks > 0 && (
-          <div className="rounded-xl bg-gradient-to-r from-red-950/60 via-red-900/30 to-slate-900 border border-red-500/40 p-4 shadow-xl shadow-red-950/30 animate-pulse">
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-red-500/20 text-red-400 mt-0.5">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-red-200">
-                    Active Blocker Escalation · Immediate Action Required
-                  </h3>
-                  <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 font-mono">
-                    AUTONOMOUS NUDGE SENT
-                  </span>
+        {/* ======================================================== */}
+        {/* PAGE 1: WHO IS DOING WHAT (Clean Tasks & Team Grid) */}
+        {/* ======================================================== */}
+        {currentPage === 1 && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Page Header */}
+            <div className="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Page 1 · Live Overview</span>
                 </div>
-                <p className="text-xs text-red-300/80 mt-1">
-                  <strong>Kabir</strong> is blocked on <span className="underline decoration-red-400">[TASK-102] Connect Payment API</span>: 
-                  <em> &quot;Waiting for test credentials from Meera&quot;</em>.
-                  SyncPulse AI has automatically dispatched an urgent Telegram nudge to <strong>Meera (@meera_frontend)</strong>.
+                <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                  Who Is Doing What Task?
+                </h2>
+                <p className="text-sm text-slate-400 mt-1">
+                  Clean assignment board showing each team member, their assigned AI milestone, and current progress.
                 </p>
               </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                  Total Milestones: <strong className="text-white">4</strong>
+                </span>
+                <span className="text-xs px-3 py-1.5 rounded-lg bg-emerald-950/50 border border-emerald-800/40 text-emerald-400">
+                  Completed: <strong>{tasks.filter((t) => t.status === "completed").length}</strong>
+                </span>
+              </div>
+            </div>
+
+            {/* 4 Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {tasks.map((task) => {
+                const isBlocked = task.is_blocked;
+                const isDone = task.status === "completed";
+
+                return (
+                  <div
+                    key={task.id}
+                    className={`p-5 rounded-2xl border transition-all duration-300 ${
+                      isBlocked
+                        ? "bg-red-950/25 border-red-500/50 shadow-xl shadow-red-950/30"
+                        : isDone
+                        ? "bg-slate-900/60 border-emerald-500/30 shadow-md"
+                        : "bg-slate-900/60 border-slate-800"
+                    }`}
+                  >
+                    {/* Top Row: Code & Status */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">
+                          {task.task_code}
+                        </span>
+                        <span className="text-xs text-indigo-400 font-semibold">{task.model_type}</span>
+                      </div>
+
+                      <span
+                        className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                          isBlocked
+                            ? "bg-red-500/20 text-red-300 border border-red-500/40 animate-pulse"
+                            : isDone
+                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                            : "bg-blue-500/20 text-blue-300 border border-blue-500/40"
+                        }`}
+                      >
+                        {isBlocked ? "🚨 BLOCKED" : isDone ? "✓ COMPLETED" : "⚡ IN PROGRESS"}
+                      </span>
+                    </div>
+
+                    {/* Task Title & Desc */}
+                    <h3 className="text-base font-bold text-white mb-1.5">{task.title}</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed mb-4">{task.description}</p>
+
+                    {/* Blocker Alert Line if blocked */}
+                    {isBlocked && (
+                      <div className="mb-4 p-2.5 rounded-xl bg-red-950/60 border border-red-800/40 text-xs text-red-300 flex items-start gap-2">
+                        <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Stuck on:</strong> {task.blocker_reason}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Member Assigned */}
+                    <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white text-[11px]">
+                          {task.assigned_to_name.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                          <span className="text-slate-400">Owner:</span>{" "}
+                          <strong className="text-white">{task.assigned_to_name}</strong>
+                        </div>
+                      </div>
+
+                      <span className="text-slate-500 text-[11px]">Priority: {task.priority.toUpperCase()}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom Callout */}
+            <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+              <span>Notice how <strong>AI-103 (Kabir)</strong> is flagged as BLOCKED. Want to see why?</span>
+              <button
+                onClick={() => setCurrentPage(2)}
+                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition flex items-center gap-2"
+              >
+                <span>View Blocker Radar</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         )}
 
-        {/* Project Health & Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4">
-            <div className="text-xs uppercase font-medium text-slate-400">Project Health</div>
-            <div className="text-2xl font-bold mt-1 text-white flex items-center gap-2">
-              {healthScore}%
-              <span className={`text-xs px-2 py-0.5 rounded-full ${healthScore > 80 ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>
-                {healthScore > 80 ? "Healthy" : "At Risk"}
-              </span>
-            </div>
-            <div className="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div 
-                className={`h-full transition-all duration-500 ${healthScore > 80 ? "bg-emerald-500" : "bg-amber-500"}`}
-                style={{ width: `${healthScore}%` }}
-              ></div>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4">
-            <div className="text-xs uppercase font-medium text-slate-400">Completed</div>
-            <div className="text-2xl font-bold mt-1 text-emerald-400">
-              {completedTasks} <span className="text-sm text-slate-500">/ {totalTasks}</span>
-            </div>
-            <p className="text-xs text-slate-500 mt-2">{Math.round((completedTasks / totalTasks) * 100)}% overall completion</p>
-          </div>
-
-          <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4">
-            <div className="text-xs uppercase font-medium text-slate-400">In Progress</div>
-            <div className="text-2xl font-bold mt-1 text-blue-400">{inProgressTasks}</div>
-            <p className="text-xs text-slate-500 mt-2">Active momentum</p>
-          </div>
-
-          <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4">
-            <div className="text-xs uppercase font-medium text-slate-400">Critical Blockers</div>
-            <div className={`text-2xl font-bold mt-1 ${blockedTasks > 0 ? "text-red-400" : "text-slate-400"}`}>
-              {blockedTasks}
-            </div>
-            <p className="text-xs text-slate-500 mt-2">{blockedTasks > 0 ? "Autonomous escalation active" : "Zero bottlenecks"}</p>
-          </div>
-        </div>
-
-        {/* 2-Column Layout: Kanban Board on Left, Live Telegram Activity Stream on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Kanban Board (2 Columns wide) */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                <ListTodo className="w-4 h-4 text-blue-400" />
-                Live Project Kanban Board
+        {/* ======================================================== */}
+        {/* PAGE 2: WHO IS STUCK, WHERE, AND WHY (Blocker Radar) */}
+        {/* ======================================================== */}
+        {currentPage === 2 && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Page Header */}
+            <div className="border-b border-slate-800 pb-4">
+              <span className="text-xs font-bold text-red-400 uppercase tracking-wider">Page 2 · Critical Bottlenecks</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                Blocker Radar: Who Is Stuck & Why?
               </h2>
-              <span className="text-xs text-slate-400">Auto-synced with Telegram updates</span>
+              <p className="text-sm text-slate-400 mt-1">
+                Instant diagnostic showing the exact team member who is blocked, their bottleneck reason, and the blocking dependency.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              
-              {/* Todo Column */}
-              <div className="rounded-xl bg-slate-900/50 border border-slate-800/80 p-3 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-400 px-1">
-                  <span>TO-DO</span>
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-[10px]">
-                    {tasks.filter((t) => t.status === "todo").length}
-                  </span>
-                </div>
-                <div className="space-y-2.5">
-                  {tasks
-                    .filter((t) => t.status === "todo")
-                    .map((t) => (
-                      <TaskCard key={t.id} task={t} />
-                    ))}
-                </div>
-              </div>
-
-              {/* In Progress Column */}
-              <div className="rounded-xl bg-slate-900/50 border border-slate-800/80 p-3 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-blue-400 px-1">
-                  <span>IN PROGRESS</span>
-                  <span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[10px]">
-                    {tasks.filter((t) => t.status === "in_progress" && !t.is_blocked).length}
-                  </span>
-                </div>
-                <div className="space-y-2.5">
-                  {tasks
-                    .filter((t) => t.status === "in_progress" && !t.is_blocked)
-                    .map((t) => (
-                      <TaskCard key={t.id} task={t} />
-                    ))}
-                </div>
-              </div>
-
-              {/* Blocked or Completed Column */}
-              <div className="rounded-xl bg-slate-900/50 border border-slate-800/80 p-3 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-400 px-1">
-                  <span>BLOCKED / DONE</span>
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-[10px]">
-                    {tasks.filter((t) => t.status === "blocked" || t.status === "completed").length}
-                  </span>
-                </div>
-                <div className="space-y-2.5">
-                  {tasks
-                    .filter((t) => t.status === "blocked" || t.status === "completed")
-                    .map((t) => (
-                      <TaskCard key={t.id} task={t} />
-                    ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Right Column: Live Telegram Activity Feed & Agent Reasoning */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                <Bot className="w-4 h-4 text-emerald-400" />
-                Live Agent & Telegram Feed
-              </h2>
-              <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                POLLING ACTIVE
-              </span>
-            </div>
-
-            <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4 h-[560px] flex flex-col justify-between">
-              
-              {/* Feed Items */}
-              <div className="overflow-y-auto space-y-3 pr-1">
-                {logs.map((log) => (
-                  <div
-                    key={log.id}
-                    className="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs space-y-1.5 transition-all"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-blue-400 flex items-center gap-1">
-                        {log.actor.includes("Bot") || log.actor.includes("Agent") ? (
-                          <Bot className="w-3 h-3 text-emerald-400" />
-                        ) : (
-                          <Users className="w-3 h-3 text-sky-400" />
-                        )}
-                        {log.actor}
-                      </span>
-                      <span className="text-[10px] text-slate-500">{log.created_at}</span>
+            {isKabirBlocked ? (
+              /* ACTIVE BLOCKER SPOTLIGHT */
+              <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-red-950/40 via-red-900/20 to-slate-950 border border-red-500/60 shadow-2xl shadow-red-950/50 space-y-6">
+                
+                {/* Header Badge */}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                      <AlertTriangle className="w-6 h-6 animate-bounce" />
                     </div>
-
-                    <p className="text-slate-300 leading-relaxed font-sans">{log.message}</p>
-
-                    {log.ai_interpretation && (
-                      <div className="mt-1.5 pt-1.5 border-t border-slate-800/60 text-[11px] text-emerald-400/90 flex items-start gap-1 font-mono">
-                        <Sparkles className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>AI Reasoning: {log.ai_interpretation}</span>
-                      </div>
-                    )}
+                    <div>
+                      <span className="text-xs font-mono font-bold text-red-400">TASK-103 IN JEOPARDY</span>
+                      <h3 className="text-xl font-extrabold text-white">Kabir Is Currently Blocked</h3>
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Bot Interaction Info Footer */}
-              <div className="pt-3 border-t border-slate-800 text-center">
-                <p className="text-[11px] text-slate-400">
-                  Judges can interact live on Telegram: <strong className="text-blue-400">@syncpulse_solver_bot</strong>
+                  <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold">
+                    🚨 CRITICAL BOTTLENECK
+                  </span>
+                </div>
+
+                {/* 3 Questions Answered Cleanly */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Who */}
+                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="text-xs text-slate-400 font-medium">1. WHO IS STUCK?</div>
+                    <div className="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center">KB</span>
+                      Kabir (AI Engineer)
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1">Assigned to Llama-3 Fine-Tuning</p>
+                  </div>
+
+                  {/* Where */}
+                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="text-xs text-slate-400 font-medium">2. WHERE IS HE STUCK?</div>
+                    <div className="text-lg font-bold text-red-300 mt-1">GPU Compute Cluster</div>
+                    <p className="text-xs text-slate-400 mt-1">Cannot launch training job without access</p>
+                  </div>
+
+                  {/* Why & On Whom */}
+                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+                    <div className="text-xs text-slate-400 font-medium">3. WAITING ON WHOM?</div>
+                    <div className="text-lg font-bold text-amber-400 mt-1 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-amber-500 text-black text-xs font-bold flex items-center justify-center">MR</span>
+                      Meera (Frontend & API Lead)
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1">Holds the test credentials & API keys</p>
+                  </div>
+                </div>
+
+                {/* Autonomous Action Banner */}
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <Bot className="w-5 h-5 text-cyan-400 shrink-0" />
+                    <p className="text-xs text-slate-300">
+                      <strong>Autonomous Action Taken:</strong> SyncPulse AI detected this dependency from Kabir&apos;s natural chat and automatically dispatched a targeted nudge to <strong>Meera</strong>.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={resolveBlocker}
+                    className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-900/40 shrink-0"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Meera Shares Keys (Unblock)</span>
+                  </button>
+                </div>
+
+              </div>
+            ) : (
+              /* RESOLVED SUCCESS STATE */
+              <div className="p-8 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 text-center space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">All Blockers Have Been Resolved!</h3>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  Meera shared the required credentials. Kabir was unblocked and Llama-3 fine-tuning completed successfully!
+                </p>
+                <button
+                  onClick={resetBlocker}
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                >
+                  Reset Blocker (For Testing)
+                </button>
+              </div>
+            )}
+
+            {/* Navigation Row */}
+            <div className="flex justify-between items-center pt-4">
+              <button
+                onClick={() => setCurrentPage(1)}
+                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Tasks</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentPage(3)}
+                className="px-5 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 flex items-center gap-1.5"
+              >
+                <span>3. See 4-Person AI Story</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* PAGE 3: 4 ENGINEERS TRAINING AI MODELS STORY */}
+        {/* ======================================================== */}
+        {currentPage === 3 && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Page Header */}
+            <div className="border-b border-slate-800 pb-4">
+              <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Page 3 · Presentation Story</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                The Scenario: 4 Engineers Training AI Models
+              </h2>
+              <p className="text-sm text-slate-400 mt-1">
+                In this project, Meera, Sumit, Kabir, and Jaswant must train 4 AI models sequentially (बारी-बारी).
+              </p>
+            </div>
+
+            {/* 4 People Stage Timeline */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Person 1: Meera */}
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-emerald-500/30 space-y-3 relative">
+                <div className="flex items-center justify-between">
+                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
+                    1
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">DONE</span>
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white">Meera</h4>
+                  <p className="text-xs text-indigo-400 font-medium">BERT Text Model</p>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Trained the NLP dataset and pushed weights. Finished on schedule.
                 </p>
               </div>
 
+              {/* Person 2: Sumit */}
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-emerald-500/30 space-y-3 relative">
+                <div className="flex items-center justify-between">
+                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
+                    2
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">DONE</span>
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white">Sumit</h4>
+                  <p className="text-xs text-indigo-400 font-medium">ResNet Vision Model</p>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Exported vision feature embeddings and completed testing.
+                </p>
+              </div>
+
+              {/* Person 3: Kabir */}
+              <div className={`p-4 rounded-2xl border space-y-3 relative ${
+                isKabirBlocked 
+                  ? "bg-red-950/30 border-red-500/60 shadow-lg shadow-red-950/40" 
+                  : "bg-slate-900/60 border-emerald-500/30"
+              }`}>
+                <div className="flex items-center justify-between">
+                  <span className={`w-8 h-8 rounded-full text-white font-bold flex items-center justify-center text-xs ${
+                    isKabirBlocked ? "bg-red-600" : "bg-emerald-600"
+                  }`}>
+                    3
+                  </span>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                    isKabirBlocked ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"
+                  }`}>
+                    {isKabirBlocked ? "BLOCKED" : "DONE"}
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white">Kabir</h4>
+                  <p className="text-xs text-indigo-400 font-medium">Llama-3 Fine-Tuning</p>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {isKabirBlocked 
+                    ? "ATKA HUA HAI: Needs GPU cluster credentials from Meera to start!"
+                    : "Received credentials and finished LoRA fine-tuning!"}
+                </p>
+              </div>
+
+              {/* Person 4: Jaswant */}
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 relative">
+                <div className="flex items-center justify-between">
+                  <span className="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-xs">
+                    4
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">WORKING</span>
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white">Jaswant</h4>
+                  <p className="text-xs text-indigo-400 font-medium">Whisper Audio AI</p>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Preprocessing audio samples. Next in line after Kabir finishes.
+                </p>
+              </div>
+            </div>
+
+            {/* Simple English Explanation Box */}
+            <div className="p-5 rounded-2xl bg-indigo-950/25 border border-indigo-500/30 space-y-2">
+              <h4 className="text-sm font-bold text-indigo-300 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-indigo-400" />
+                The Core Problem In Easy English:
+              </h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                3 members (Meera, Sumit, Jaswant) are ready or working. But the entire project pipeline is 
+                <strong> frozen</strong> because Kabir cannot train Model #3 without credentials from Meera. 
+                Instead of waiting 8 hours for a standup meeting, <strong>SyncPulse AI unblocks him automatically in 45 seconds!</strong>
+              </p>
+            </div>
+
+            {/* Navigation Row */}
+            <div className="flex justify-between items-center pt-4">
+              <button
+                onClick={() => setCurrentPage(2)}
+                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Blocker Radar</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setCurrentPage(4);
+                  setAnimStep(1);
+                  setIsSimulating(true);
+                }}
+                className="px-5 py-2 rounded-lg bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-500 flex items-center gap-1.5 shadow-lg shadow-cyan-900/30"
+              >
+                <span>4. Watch Animated AI Flow</span>
+                <Play className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
+        )}
 
-        </div>
+        {/* ======================================================== */}
+        {/* PAGE 4: ANIMATED AUTONOMOUS AI FLOW (Step-by-step Visual) */}
+        {/* ======================================================== */}
+        {currentPage === 4 && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Page Header */}
+            <div className="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Page 4 · Visual Simulation</span>
+                <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                  How SyncPulse AI Works (Animated Flow)
+                </h2>
+                <p className="text-sm text-slate-400 mt-1">
+                  Step-by-step visual animation demonstrating proactive inquiry, natural NLP, and autonomous nudge.
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setAnimStep(1);
+                  setIsSimulating(true);
+                }}
+                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1.5 self-start"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Replay Animation</span>
+              </button>
+            </div>
+
+            {/* Stepper Tabs */}
+            <div className="grid grid-cols-4 gap-2 text-center text-xs">
+              {[
+                { s: 1, title: "1. Autonomous Follow-up" },
+                { s: 2, title: "2. Participant Reply" },
+                { s: 3, title: "3. Agent Reasoning" },
+                { s: 4, title: "4. Autonomous Escalation" },
+              ].map((step) => (
+                <div
+                  key={step.s}
+                  onClick={() => setAnimStep(step.s as any)}
+                  className={`p-2.5 rounded-xl border cursor-pointer transition ${
+                    animStep === step.s
+                      ? "bg-cyan-950/50 border-cyan-500 text-cyan-300 font-bold"
+                      : "bg-slate-900/50 border-slate-800 text-slate-500"
+                  }`}
+                >
+                  {step.title}
+                </div>
+              ))}
+            </div>
+
+            {/* Animated Canvas Box */}
+            <div className="min-h-[320px] rounded-3xl bg-slate-950/80 border border-slate-800 p-6 flex flex-col justify-center items-center text-center relative overflow-hidden">
+              
+              {/* STEP 1: AI Messages Kabir */}
+              {animStep === 1 && (
+                <div className="space-y-4 max-w-lg animate-fadeIn">
+                  <div className="w-16 h-16 rounded-2xl bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center border border-blue-500/40 shadow-lg shadow-blue-900/30">
+                    <Bot className="w-8 h-8 animate-pulse" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-mono text-blue-400 font-bold">STEP 1: PROACTIVE IN-APP CHECK-IN</span>
+                    <h3 className="text-xl font-bold text-white mt-1">AI Coordinator Contacts Kabir</h3>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-blue-950/40 border border-blue-900/50 text-xs text-blue-200 text-left">
+                    💬 <strong>SyncPulse AI:</strong> &quot;Hey Kabir! Quick check-in on <strong>[AI-103] Llama-3 Fine-Tuning</strong>. How is progress coming along? Any blockers?&quot;
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2: Kabir Replies */}
+              {animStep === 2 && (
+                <div className="space-y-4 max-w-lg animate-fadeIn">
+                  <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center border border-amber-500/40 shadow-lg shadow-amber-900/30">
+                    <Users className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-mono text-amber-400 font-bold">STEP 2: NATURAL HUMAN RESPONSE</span>
+                    <h3 className="text-xl font-bold text-white mt-1">Kabir Reports Status in Plain Words</h3>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-900/50 text-xs text-amber-200 text-left">
+                    👤 <strong>Kabir:</strong> &quot;I have configured the LoRA scripts, but I am waiting for test credentials from Meera to access the cluster.&quot;
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 3: Mistral Reasoning */}
+              {animStep === 3 && (
+                <div className="space-y-4 max-w-lg animate-fadeIn">
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 mx-auto flex items-center justify-center border border-indigo-500/40 shadow-lg shadow-indigo-900/30">
+                    <Sparkles className="w-8 h-8 animate-spin" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-mono text-indigo-400 font-bold">STEP 3: MISTRAL AI AGENT BRAIN</span>
+                    <h3 className="text-xl font-bold text-white mt-1">Semantic NLP Blocker Extraction</h3>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-900/50 text-xs text-indigo-200 text-left font-mono space-y-1">
+                    <div>• <strong>Status Inferred:</strong> <span className="text-red-400 font-bold">BLOCKED</span></div>
+                    <div>• <strong>Blocker Reason:</strong> &quot;Waiting for test credentials&quot;</div>
+                    <div>• <strong>Blocking Dependency:</strong> <span className="text-amber-300 font-bold">Meera</span></div>
+                    <div>• <strong>Dashboard Action:</strong> Mark AI-103 as RED in Supabase</div>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4: Auto Nudge to Meera */}
+              {animStep === 4 && (
+                <div className="space-y-4 max-w-lg animate-fadeIn">
+                  <div className="w-16 h-16 rounded-2xl bg-red-500/20 text-red-400 mx-auto flex items-center justify-center border border-red-500/40 shadow-lg shadow-red-950/40">
+                    <Zap className="w-8 h-8 animate-bounce" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-mono text-red-400 font-bold">STEP 4: AUTONOMOUS ESCALATION</span>
+                    <h3 className="text-xl font-bold text-white mt-1">AI Directly Nudges Meera to Unblock!</h3>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-red-950/40 border border-red-900/50 text-xs text-red-200 text-left">
+                    ⚡ <strong>Autonomous Alert to Meera:</strong> &quot;🚨 Hey Meera! Kabir is waiting on cluster credentials to finish Llama-3 fine-tuning. Could you please share them to keep the project moving?&quot;
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* Navigation Row */}
+            <div className="flex justify-between items-center pt-4">
+              <button
+                onClick={() => setCurrentPage(3)}
+                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Story</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentPage(5)}
+                className="px-5 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 flex items-center gap-1.5 shadow-lg shadow-emerald-900/30"
+              >
+                <span>5. See Solution & Impact</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* PAGE 5: FINAL SOLUTION & BUSINESS IMPACT */}
+        {/* ======================================================== */}
+        {currentPage === 5 && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Page Header */}
+            <div className="border-b border-slate-800 pb-4">
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Page 5 · Final Impact</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                How Was The Problem Solved?
+              </h2>
+              <p className="text-sm text-slate-400 mt-1">
+                Comparing standard traditional project delays versus SyncPulse AI&apos;s autonomous resolution.
+              </p>
+            </div>
+
+            {/* Comparison Cards: Before vs After */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* Traditional Way */}
+              <div className="p-6 rounded-3xl bg-slate-900/40 border border-red-900/40 space-y-4">
+                <div className="flex items-center gap-2 text-red-400 font-bold text-sm">
+                  <span className="w-6 h-6 rounded-full bg-red-950 flex items-center justify-center text-xs">✕</span>
+                  <span>Without SyncPulse (Traditional Way)</span>
+                </div>
+
+                <ul className="space-y-3 text-xs text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400">•</span>
+                    <span>Kabir stays blocked for <strong>8+ hours</strong> without anyone noticing.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400">•</span>
+                    <span>Meera assumes Kabir is already building and doesn&apos;t check.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400">•</span>
+                    <span>The blocker is only discovered at the next day&apos;s standup meeting.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400">•</span>
+                    <span><strong>Project misses deadline</strong> and fails submission.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* SyncPulse Autonomous Way */}
+              <div className="p-6 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 space-y-4 shadow-xl shadow-emerald-950/20">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                  <span className="w-6 h-6 rounded-full bg-emerald-900 flex items-center justify-center text-xs">✓</span>
+                  <span>With SyncPulse AI (Our Solution)</span>
+                </div>
+
+                <ul className="space-y-3 text-xs text-slate-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-400">•</span>
+                    <span>AI proactively checks in on Kabir within scheduled sprint cycle.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-400">•</span>
+                    <span>Blocker and Meera dependency extracted in <strong>under 1 second</strong>.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-400">•</span>
+                    <span>Meera is autonomously nudged via Web App and Telegram immediately.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-400">•</span>
+                    <span>Blocker resolved in <strong>45 seconds</strong>. Project ships on time!</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            {/* Impact Metric Strip */}
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="text-2xl font-black text-indigo-400">95%</div>
+                <div className="text-xs text-slate-400 mt-1">Faster Blocker Resolution</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="text-2xl font-black text-cyan-400">0</div>
+                <div className="text-xs text-slate-400 mt-1">Wasted Standup Hours</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="text-2xl font-black text-emerald-400">100%</div>
+                <div className="text-xs text-slate-400 mt-1">On-Time Project Delivery</div>
+              </div>
+            </div>
+
+            {/* Return to Start */}
+            <div className="flex justify-between items-center pt-4">
+              <button
+                onClick={() => setCurrentPage(4)}
+                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Animation</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentPage(1)}
+                className="px-5 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 flex items-center gap-1.5"
+              >
+                <span>Restart Presentation (Page 1)</span>
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
 
       </main>
-    </div>
-  );
-}
 
-function TaskCard({ task }: { task: Task }) {
-  const isBlocked = task.is_blocked || task.status === "blocked";
-  const isCompleted = task.status === "completed";
-
-  return (
-    <div
-      className={`p-3.5 rounded-xl border transition-all duration-200 ${
-        isBlocked
-          ? "bg-red-950/30 border-red-500/50 shadow-md shadow-red-950/40"
-          : isCompleted
-          ? "bg-emerald-950/20 border-emerald-500/30"
-          : "bg-slate-950/60 border-slate-800 hover:border-slate-700"
-      }`}
-    >
-      <div className="flex items-center justify-between text-xs mb-1.5">
-        <span className="font-mono text-slate-400 font-medium">{task.task_code}</span>
-        <span
-          className={`px-1.5 py-0.5 rounded text-[10px] uppercase font-semibold ${
-            isBlocked
-              ? "bg-red-500/20 text-red-300 border border-red-500/30"
-              : isCompleted
-              ? "bg-emerald-500/20 text-emerald-300"
-              : "bg-blue-500/20 text-blue-300"
-          }`}
-        >
-          {isBlocked ? "BLOCKED" : task.status.replace("_", " ")}
-        </span>
-      </div>
-
-      <h4 className="text-xs font-semibold text-slate-200 line-clamp-2">{task.title}</h4>
-      <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">{task.description}</p>
-
-      {/* Blocker Reason Box */}
-      {isBlocked && task.blocker_reason && (
-        <div className="mt-2.5 p-2 rounded bg-red-950/60 border border-red-800/40 text-[11px] text-red-300">
-          <div className="font-semibold flex items-center gap-1 text-red-400">
-            <AlertTriangle className="w-3 h-3" /> Blocker:
-          </div>
-          <div>{task.blocker_reason}</div>
-          {task.blocked_by_member_name && (
-            <div className="mt-1 text-[10px] text-red-400/80 font-mono">
-              Auto-escalated to: @{task.blocked_by_member_name}
-            </div>
-          )}
+      {/* ======================================================== */}
+      {/* PERSISTENT FOOTER */}
+      {/* ======================================================== */}
+      <footer className="border-t border-slate-800/80 bg-[#080b12] px-6 py-3 text-center text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2">
+        <div>
+          SyncPulse AI · Autonomous Group Project Coordinator · Track W-PS-1
         </div>
-      )}
+        <div className="flex items-center gap-3">
+          <span>Dr. D.Y. Patil Institute, Pune</span>
+          <span>•</span>
+          <span className="text-indigo-400">Sponsored by Worcflow.ai</span>
+        </div>
+      </footer>
 
-      {/* Footer Info */}
-      <div className="mt-3 pt-2 border-t border-slate-800/50 flex items-center justify-between text-[11px] text-slate-400">
-        <div className="flex items-center gap-1">
-          <Users className="w-3 h-3 text-slate-500" />
-          <span>{task.assigned_to_name}</span>
-        </div>
-        <div className="flex items-center gap-1 text-[10px] text-slate-500">
-          <Clock className="w-3 h-3" />
-          <span>{task.due_date || "Today"}</span>
-        </div>
-      </div>
     </div>
   );
 }
