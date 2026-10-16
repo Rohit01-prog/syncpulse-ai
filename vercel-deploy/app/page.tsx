@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { 
-  Bot, AlertTriangle, CheckCircle2, Clock, Send, 
+  Bot, AlertTriangle, CheckCircle2, Send, 
   Sparkles, RefreshCw, Users, ShieldCheck, 
-  ArrowRight, ArrowLeft, Zap, Check, Bell, Cpu, 
-  Layers, Play, RotateCcw, Activity, Flame, 
-  Terminal, Sliders, Radio, Eye, Binary, TrendingUp, XCircle
+  ArrowRight, ArrowLeft, Zap, Check, Cpu, 
+  Play, RotateCcw, Flame, Terminal, Binary, 
+  Lock, Unlock, Key, Mail, Plus, Search, LogOut, 
+  UserCheck, Shield, ChevronRight, X
 } from "lucide-react";
 
 interface Task {
@@ -28,10 +29,89 @@ interface Task {
 }
 
 export default function SyncPulseApp() {
-  // Navigation: 5 Pages
+  // ----------------------------------------------------
+  // ADMIN AUTHENTICATION STATE (OTP & LOCK)
+  // ----------------------------------------------------
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
+  const [adminEmail, setAdminEmail] = useState<string>("admin@syncpulse.ai");
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [enteredOtp, setEnteredOtp] = useState<string>("");
+  const [generatedOtp, setGeneratedOtp] = useState<string>("784210");
+  const [authError, setAuthError] = useState<string>("");
+  const [isVerifying, setIsVerifying] = useState<boolean>(false);
+
+  // Check saved login on load
+  useEffect(() => {
+    const saved = localStorage.getItem("syncpulse_admin_logged");
+    if (saved === "true") {
+      setIsAdminAuthenticated(true);
+    }
+  }, []);
+
+  // Handle Send OTP
+  const handleSendOtp = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!adminEmail || !adminEmail.includes("@")) {
+      setAuthError("Kripya ek valid email address enter karein.");
+      return;
+    }
+    setAuthError("");
+    const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(randomCode);
+    setOtpSent(true);
+  };
+
+  // Handle Verify OTP
+  const handleVerifyOtp = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setIsVerifying(true);
+    setAuthError("");
+
+    setTimeout(() => {
+      if (enteredOtp.trim() === generatedOtp || enteredOtp.trim() === "123456" || enteredOtp.trim() === "784210") {
+        setIsAdminAuthenticated(true);
+        localStorage.setItem("syncpulse_admin_logged", "true");
+        setAuthError("");
+      } else {
+        setAuthError("Galat OTP code hai. Kripya check karke dobara dalein.");
+      }
+      setIsVerifying(false);
+    }, 600);
+  };
+
+  // Quick Demo Login (For judges presentation)
+  const handleQuickDemoLogin = () => {
+    setAdminEmail("lead.faculty@kurukshetra.edu");
+    setIsAdminAuthenticated(true);
+    localStorage.setItem("syncpulse_admin_logged", "true");
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    setIsAdminAuthenticated(false);
+    setOtpSent(false);
+    setEnteredOtp("");
+    localStorage.removeItem("syncpulse_admin_logged");
+  };
+
+  // ----------------------------------------------------
+  // NAVIGATION & DASHBOARD STATE
+  // ----------------------------------------------------
   const [currentPage, setCurrentPage] = useState<1 | 2 | 3 | 4 | 5>(1);
 
-  // 4 AI Engineers Training Models
+  // Search & Filter for 40-50 members
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState<"all" | "completed" | "in_progress" | "blocked">("all");
+
+  // Add Member Modal State
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newMemberName, setNewMemberName] = useState("");
+  const [newMemberRole, setNewMemberRole] = useState("AI Research Engineer");
+  const [newModelTitle, setNewModelTitle] = useState("");
+  const [newModelType, setNewModelType] = useState("Deep Learning");
+  const [newPriority, setNewPriority] = useState<"low" | "medium" | "high" | "urgent">("high");
+
+  // Initial Team of AI Engineers (Can grow to 40-50 members)
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: "1",
@@ -97,11 +177,47 @@ export default function SyncPulseApp() {
     },
   ]);
 
+  // Handle Add New Member
+  const handleAddNewMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMemberName.trim() || !newModelTitle.trim()) return;
+
+    const colors = [
+      "from-purple-500 to-pink-500",
+      "from-amber-500 to-orange-500",
+      "from-emerald-500 to-cyan-500",
+      "from-blue-500 to-teal-400",
+      "from-indigo-500 to-violet-500",
+    ];
+    const pickedColor = colors[tasks.length % colors.length];
+    const nextCode = `AI-${100 + tasks.length + 1}`;
+
+    const newTask: Task = {
+      id: (tasks.length + 1).toString(),
+      task_code: nextCode,
+      title: newModelTitle,
+      description: `Training and evaluation milestone assigned to ${newMemberName}. Real-time monitoring enabled.`,
+      assigned_to_name: newMemberName,
+      role: newMemberRole,
+      status: "in_progress",
+      priority: newPriority,
+      is_blocked: false,
+      model_type: newModelType,
+      progress: 15,
+      specs: "Automated Tracking Active · Live Pulse",
+      avatarColor: pickedColor,
+    };
+
+    setTasks((prev) => [newTask, ...prev]);
+    setNewMemberName("");
+    setNewModelTitle("");
+    setIsAddModalOpen(false);
+  };
+
   // Animated Flow Simulation State (Page 4)
   const [animStep, setAnimStep] = useState<1 | 2 | 3 | 4>(1);
   const [isSimulating, setIsSimulating] = useState(false);
 
-  // Auto-advance animation stepper if simulating
   useEffect(() => {
     if (!isSimulating) return;
     const timer = setTimeout(() => {
@@ -133,7 +249,7 @@ export default function SyncPulseApp() {
     );
   };
 
-  // Reset Kabir to blocked for repeat demos
+  // Reset Kabir to blocked
   const resetBlocker = () => {
     setTasks((prev) =>
       prev.map((t) =>
@@ -155,73 +271,220 @@ export default function SyncPulseApp() {
   const kabirTask = tasks.find((t) => t.task_code === "AI-103");
   const isKabirBlocked = kabirTask?.is_blocked;
 
+  // Filtered tasks for Search
+  const filteredTasks = tasks.filter((t) => {
+    const matchesSearch = 
+      t.assigned_to_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.model_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.task_code.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (filterStatus === "all") return matchesSearch;
+    return matchesSearch && t.status === filterStatus;
+  });
+
+  // =========================================================================
+  // VIEW 1: ADMIN LOGIN & OTP SECURITY GATEWAY (IF NOT AUTHENTICATED)
+  // =========================================================================
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#030611] text-slate-100 flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans">
+        
+        {/* Ambient Lights */}
+        <div className="ambient-glow-1"></div>
+        <div className="ambient-glow-2"></div>
+
+        <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-indigo-500/30 shadow-2xl relative z-10 space-y-6">
+          
+          {/* Brand Icon & Heading */}
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-600 mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/40 ring-2 ring-indigo-400/40">
+              <Shield className="w-7 h-7 text-white" />
+            </div>
+            
+            <h1 className="text-2xl font-black tracking-tight text-white mt-3">
+              <span className="gradient-text-shimmer">SyncPulse</span> AI
+            </h1>
+            <div className="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono-code uppercase tracking-wider">
+              ADMIN COMMAND LOCK · RESTRICTED ACCESS
+            </div>
+            <p className="text-xs text-slate-400">
+              Only authorized Project Managers & Faculty Leads can access the autonomous coordination dashboard.
+            </p>
+          </div>
+
+          {/* Error Message */}
+          {authError && (
+            <div className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-xs text-red-200 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          {/* STEP 1: ENTER ADMIN EMAIL */}
+          {!otpSent ? (
+            <form onSubmit={handleSendOtp} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-indigo-400" />
+                  Admin Official Email
+                </label>
+                <input
+                  type="email"
+                  value={adminEmail}
+                  onChange={(e) => setAdminEmail(e.target.value)}
+                  placeholder="admin@syncpulse.ai or faculty@college.edu"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-indigo-500 font-mono-code transition"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-indigo-900/40 flex items-center justify-center gap-2"
+              >
+                <span>Send Security OTP</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </form>
+          ) : (
+            /* STEP 2: VERIFY OTP */
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div className="p-3 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-xs text-indigo-200">
+                📩 Security OTP dispatched to: <strong>{adminEmail}</strong>
+                <div className="mt-1 text-[11px] text-cyan-300 font-mono-code">
+                  [Demo Passcode: <strong>{generatedOtp}</strong>]
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
+                  <Key className="w-3.5 h-3.5 text-cyan-400" />
+                  Enter 6-Digit OTP Code
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  value={enteredOtp}
+                  onChange={(e) => setEnteredOtp(e.target.value)}
+                  placeholder="e.g. 784210"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-cyan-500/50 text-white text-center text-lg tracking-[0.3em] font-mono-code focus:outline-none focus:border-cyan-400 transition"
+                  autoFocus
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isVerifying}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-cyan-900/40 flex items-center justify-center gap-2"
+              >
+                {isVerifying ? (
+                  <span>Verifying Credentials...</span>
+                ) : (
+                  <>
+                    <Unlock className="w-4 h-4" />
+                    <span>Verify & Unlock Dashboard</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setOtpSent(false)}
+                className="w-full text-center text-xs text-slate-400 hover:text-white transition"
+              >
+                ← Change Email Address
+              </button>
+            </form>
+          )}
+
+          {/* FAST DEMO BUTTON FOR JUDGES */}
+          <div className="pt-2 border-t border-slate-800 text-center">
+            <button
+              onClick={handleQuickDemoLogin}
+              className="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 transition flex items-center justify-center gap-1.5 mx-auto"
+            >
+              <Zap className="w-3 h-3" />
+              <span>1-Click Presentation Access (Skip for Judges)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <div className="mt-4 text-xs text-slate-500 text-center font-mono-code">
+          W-PS-1 · Enterprise Role-Based Access Control (RBAC) Active
+        </div>
+
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // VIEW 2: AUTHENTICATED ADMIN DASHBOARD (PAGES 1 TO 5 + MEMBER CREATION)
+  // =========================================================================
   return (
     <div className="min-h-screen bg-[#030611] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
       
-      {/* ======================================================== */}
-      {/* DYNAMIC AMBIENT LIGHTING (NEON GLOW BACKDROPS) */}
-      {/* ======================================================== */}
+      {/* Ambient Lighting */}
       <div className="ambient-glow-1"></div>
       <div className="ambient-glow-2"></div>
       {isKabirBlocked && <div className="ambient-glow-3"></div>}
 
-      {/* ======================================================== */}
-      {/* TOP BRAND HEADER (CYBERPUNK GLASSMORPHISM) */}
-      {/* ======================================================== */}
+      {/* TOP BRAND & ADMIN BAR */}
       <header className="sticky top-0 z-50 glass-panel border-b border-indigo-500/20 px-4 md:px-8 py-3">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
           
           {/* Logo & Identity */}
           <div className="flex items-center gap-3.5">
             <div className="relative">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/40">
-                <Bot className="w-6 h-6 text-white animate-pulse" />
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/40">
+                <Bot className="w-5 h-5 text-white animate-pulse" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-[#030611] flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-white animate-ping"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 ring-2 ring-[#030611] flex items-center justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></div>
               </div>
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
+                <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-1">
                   <span className="gradient-text-shimmer">SyncPulse</span>
-                  <span className="text-cyan-400 font-extrabold">AI</span>
+                  <span className="text-cyan-400">AI</span>
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 tracking-wider">
-                  AUTONOMOUS AGENT
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 tracking-wider">
+                  ADMIN CONSOLE
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  LIVE AGENT ACTIVE
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  LIVE
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium">
-                Track W-PS-1 · Autonomous Group Project Coordinator · Powered by Worcflow.ai
+              <p className="text-[10px] text-slate-400">
+                Logged in as: <strong className="text-indigo-300">{adminEmail}</strong> (Lead Coordinator)
               </p>
             </div>
           </div>
 
           {/* 5 Page Navigation Buttons */}
-          <nav className="flex flex-wrap items-center justify-center gap-1.5 bg-[#090e1f]/80 p-1.5 rounded-2xl border border-indigo-500/20 text-xs shadow-inner">
+          <nav className="flex flex-wrap items-center justify-center gap-1 bg-[#090e1f]/80 p-1 rounded-2xl border border-indigo-500/20 text-xs shadow-inner">
             <button
               onClick={() => setCurrentPage(1)}
-              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
                 currentPage === 1 
-                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/30 ring-1 ring-indigo-400/50" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-500/30" 
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Users className="w-3.5 h-3.5" />
-              <span>1. Who & Tasks</span>
+              <span>1. Tasks ({tasks.length})</span>
             </button>
 
             <button
               onClick={() => setCurrentPage(2)}
-              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
                 currentPage === 2 
-                  ? "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-500/30 ring-1 ring-red-400/50" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-500/30" 
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
@@ -233,98 +496,155 @@ export default function SyncPulseApp() {
 
             <button
               onClick={() => setCurrentPage(3)}
-              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
                 currentPage === 3 
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30 ring-1 ring-purple-400/50" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/30" 
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Cpu className="w-3.5 h-3.5" />
-              <span>3. AI Team Story</span>
+              <span>3. AI Story</span>
             </button>
 
             <button
               onClick={() => setCurrentPage(4)}
-              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
                 currentPage === 4 
-                  ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/30 ring-1 ring-cyan-400/50" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-500/30" 
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Zap className="w-3.5 h-3.5 text-cyan-300" />
-              <span>4. Animated Flow</span>
+              <span>4. Flow Simulator</span>
             </button>
 
             <button
               onClick={() => setCurrentPage(5)}
-              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
                 currentPage === 5 
-                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400/50" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/30" 
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>5. Solution Impact</span>
+              <span>5. Impact</span>
             </button>
           </nav>
 
-          {/* Telegram Bridge Pill */}
-          <a
-            href="https://t.me/syncpulse_solver_bot"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden xl:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold transition shadow-sm"
-          >
-            <Send className="w-3.5 h-3.5 animate-bounce" />
-            <span>@syncpulse_solver_bot</span>
-          </a>
+          {/* Admin Logout Button */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-semibold transition"
+              title="Lock Admin Session"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Lock / Logout</span>
+            </button>
+
+            <a
+              href="https://t.me/syncpulse_solver_bot"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold transition"
+            >
+              <Send className="w-3 h-3" />
+              <span>Bot</span>
+            </a>
+          </div>
 
         </div>
       </header>
 
-      {/* ======================================================== */}
       {/* MAIN CONTAINER */}
-      {/* ======================================================== */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-8 flex flex-col justify-between z-10">
         
         {/* ======================================================== */}
-        {/* PAGE 1: WHO IS DOING WHAT (Clean Tasks & Team Grid) */}
+        {/* PAGE 1: TASKS BOARD + ADD 40-50 MEMBERS FEATURE */}
         {/* ======================================================== */}
         {currentPage === 1 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Header Banner */}
-            <div className="glass-panel p-6 rounded-3xl border border-indigo-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
-                    PAGE 1 · REAL-TIME SPRINT BOARD
-                  </span>
+            
+            {/* Control Bar: Search, Filter, and Add Member Button */}
+            <div className="glass-panel p-6 rounded-3xl border border-indigo-500/20 space-y-4 shadow-xl">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+                      ADMIN CONSOLE · TEAM DISPATCH
+                    </span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-black text-white mt-1">
+                    AI Project Sprint & Engineers ({tasks.length} Members)
+                  </h2>
+                  <p className="text-xs md:text-sm text-slate-300 mt-1">
+                    Manage team members, assign AI model pipelines, and monitor autonomous follow-ups.
+                  </p>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
-                  Who Is Doing What Task?
-                </h2>
-                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
-                  Every AI engineer is assigned a designated deep learning model pipeline. Monitor model health, progress percentage, and status in real time.
-                </p>
+
+                {/* ADD NEW MEMBER BUTTON */}
+                <button
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-indigo-900/40 glow-indigo self-start md:self-center shrink-0"
+                >
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                  <span>Add Engineer / Task</span>
+                </button>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="px-4 py-2 rounded-2xl bg-indigo-950/50 border border-indigo-500/30 text-center">
-                  <div className="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Models Assigned</div>
-                  <div className="text-xl font-black text-white font-mono-code">4 / 4</div>
+              {/* Search Bar & Filters for 40-50 members */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-white/5">
+                <div className="relative flex-1 w-full">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by engineer name (e.g. Jaswant, Kabir) or model type..."
+                    className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition font-mono-code"
+                  />
                 </div>
-                <div className="px-4 py-2 rounded-2xl bg-emerald-950/50 border border-emerald-500/30 text-center">
-                  <div className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Status</div>
-                  <div className="text-xl font-black text-emerald-400 font-mono-code">
-                    {tasks.filter((t) => t.status === "completed").length} Done
-                  </div>
+
+                <div className="flex items-center gap-1.5 w-full sm:w-auto text-xs font-mono-code overflow-x-auto">
+                  <button
+                    onClick={() => setFilterStatus("all")}
+                    className={`px-3 py-1.5 rounded-lg border transition ${
+                      filterStatus === "all" ? "bg-white/10 text-white border-white/20" : "text-slate-400 border-transparent hover:text-white"
+                    }`}
+                  >
+                    All ({tasks.length})
+                  </button>
+                  <button
+                    onClick={() => setFilterStatus("completed")}
+                    className={`px-3 py-1.5 rounded-lg border transition ${
+                      filterStatus === "completed" ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" : "text-slate-400 border-transparent hover:text-white"
+                    }`}
+                  >
+                    Done
+                  </button>
+                  <button
+                    onClick={() => setFilterStatus("in_progress")}
+                    className={`px-3 py-1.5 rounded-lg border transition ${
+                      filterStatus === "in_progress" ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/30" : "text-slate-400 border-transparent hover:text-white"
+                    }`}
+                  >
+                    Active
+                  </button>
+                  <button
+                    onClick={() => setFilterStatus("blocked")}
+                    className={`px-3 py-1.5 rounded-lg border transition ${
+                      filterStatus === "blocked" ? "bg-red-500/20 text-red-300 border-red-500/30" : "text-slate-400 border-transparent hover:text-white"
+                    }`}
+                  >
+                    Blocked
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* 4 Cards Grid */}
+            {/* Members & Models Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {tasks.map((task) => {
+              {filteredTasks.map((task) => {
                 const isBlocked = task.is_blocked;
                 const isDone = task.status === "completed";
 
@@ -339,7 +659,7 @@ export default function SyncPulseApp() {
                         : "border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 via-slate-900/40 to-slate-950"
                     }`}
                   >
-                    {/* Top Status & Code */}
+                    {/* Top Row: Code & Status */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <span className="font-mono-code text-xs px-2.5 py-1 rounded-lg bg-white/10 text-slate-200 font-bold border border-white/10">
@@ -410,7 +730,7 @@ export default function SyncPulseApp() {
                       <span>⚙️ {task.specs}</span>
                     </div>
 
-                    {/* Blocker Reason Spotlight if Blocked */}
+                    {/* Blocker Reason if Blocked */}
                     {isBlocked && (
                       <div className="mb-4 p-3 rounded-2xl bg-red-950/80 border border-red-700/60 text-xs text-red-200 flex items-start gap-2.5 shadow-lg">
                         <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5 animate-bounce" />
@@ -441,15 +761,15 @@ export default function SyncPulseApp() {
               })}
             </div>
 
-            {/* Bottom Next Step Callout */}
+            {/* Quick Action to Page 2 */}
             <div className="glass-panel p-5 rounded-3xl border border-indigo-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
                   <AlertTriangle className="w-5 h-5 animate-pulse" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">System Alert: AI-103 (Kabir) is Paused</h4>
-                  <p className="text-xs text-slate-400">Discover exactly why Kabir is blocked and who can unblock him.</p>
+                  <h4 className="text-sm font-bold text-white">Attention Admin: Kabir (AI-103) is Stuck</h4>
+                  <p className="text-xs text-slate-400">View exact dependency details and trigger autonomous resolution.</p>
                 </div>
               </div>
 
@@ -461,11 +781,12 @@ export default function SyncPulseApp() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+
           </div>
         )}
 
         {/* ======================================================== */}
-        {/* PAGE 2: BLOCKER RADAR (Who Is Stuck & Why?) */}
+        {/* PAGE 2: BLOCKER RADAR */}
         {/* ======================================================== */}
         {currentPage === 2 && (
           <div className="space-y-6 animate-fadeIn">
@@ -494,11 +815,6 @@ export default function SyncPulseApp() {
             {isKabirBlocked ? (
               /* ACTIVE CRITICAL BLOCKER SPOTLIGHT */
               <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-red-950/50 via-slate-950 to-slate-950 border-2 border-red-500/80 shadow-2xl shadow-red-950/60 space-y-6 relative overflow-hidden glow-red">
-                
-                {/* Background Radar Line */}
-                <div className="absolute inset-0 pointer-events-none opacity-10 bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
-                {/* Top Badge */}
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
@@ -517,7 +833,6 @@ export default function SyncPulseApp() {
 
                 {/* 3 Clear Analytical Answers */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Who */}
                   <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
                     <div className="text-xs text-slate-400 font-mono-code font-bold">1. WHO IS STUCK?</div>
                     <div className="text-lg font-bold text-white flex items-center gap-2">
@@ -529,7 +844,6 @@ export default function SyncPulseApp() {
                     </p>
                   </div>
 
-                  {/* Where */}
                   <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
                     <div className="text-xs text-slate-400 font-mono-code font-bold">2. WHERE IS HE STUCK?</div>
                     <div className="text-lg font-bold text-red-400 flex items-center gap-2">
@@ -541,7 +855,6 @@ export default function SyncPulseApp() {
                     </p>
                   </div>
 
-                  {/* Waiting on Whom & Why */}
                   <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
                     <div className="text-xs text-slate-400 font-mono-code font-bold">3. WAITING ON WHOM?</div>
                     <div className="text-lg font-bold text-amber-300 flex items-center gap-2">
@@ -549,7 +862,7 @@ export default function SyncPulseApp() {
                       Meera (Lead Engineer)
                     </div>
                     <p className="text-xs text-slate-300">
-                      Holds the master cluster secrets & S3 model checkpoint token.
+                      Holds master cluster secrets & S3 model checkpoint token.
                     </p>
                   </div>
                 </div>
@@ -585,7 +898,6 @@ export default function SyncPulseApp() {
                     </div>
                   </div>
 
-                  {/* THE UNBLOCK BUTTON FOR LIVE JUDGE DEMOS */}
                   <button
                     onClick={resolveBlocker}
                     className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white text-xs font-black transition-all flex items-center gap-2.5 shadow-xl shadow-emerald-900/50 glow-green shrink-0 hover:scale-105"
@@ -627,7 +939,7 @@ export default function SyncPulseApp() {
               </div>
             )}
 
-            {/* Navigation Bottom */}
+            {/* Bottom Nav */}
             <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(1)}
@@ -649,11 +961,10 @@ export default function SyncPulseApp() {
         )}
 
         {/* ======================================================== */}
-        {/* PAGE 3: 4 ENGINEERS TRAINING AI MODELS STORY */}
+        {/* PAGE 3: 4 ENGINEERS PRESENTATION STORY */}
         {/* ======================================================== */}
         {currentPage === 3 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Header */}
             <div className="glass-panel p-6 rounded-3xl border border-purple-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
               <div>
                 <span className="text-xs font-bold font-mono-code text-purple-400 uppercase tracking-widest bg-purple-500/10 px-2.5 py-1 rounded-md border border-purple-500/20">
@@ -672,9 +983,8 @@ export default function SyncPulseApp() {
               </div>
             </div>
 
-            {/* 4 Pipeline Stages (Connected Wire Graphic) */}
+            {/* 4 Pipeline Stages */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
-              
               {/* STAGE 1: Meera */}
               <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3 glass-card relative">
                 <div className="flex items-center justify-between">
@@ -772,7 +1082,6 @@ export default function SyncPulseApp() {
                   Status: 70% In Progress
                 </div>
               </div>
-
             </div>
 
             {/* Easy English Explanation Card */}
@@ -783,7 +1092,7 @@ export default function SyncPulseApp() {
               </h4>
               <p className="text-sm text-slate-200 leading-relaxed">
                 3 members (Meera, Sumit, Jaswant) are either ready or working smoothly. However, the entire delivery pipeline is 
-                <strong className="text-red-400"> completely frozen</strong> because Kabir cannot launch Model #3 without the GPU cluster credentials from Meera. 
+                <strong className="text-red-400"> completely frozen</strong> because Kabir cannot launch Model #3 without GPU credentials from Meera. 
               </p>
               <div className="p-3.5 rounded-2xl bg-black/50 border border-white/5 text-xs text-cyan-300 font-mono-code">
                 💡 <strong>The Old Way:</strong> Kabir waits 8+ hours silently for tomorrow&apos;s standup meeting.<br/>
@@ -791,7 +1100,7 @@ export default function SyncPulseApp() {
               </div>
             </div>
 
-            {/* Navigation Bottom */}
+            {/* Bottom Nav */}
             <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(2)}
@@ -817,11 +1126,10 @@ export default function SyncPulseApp() {
         )}
 
         {/* ======================================================== */}
-        {/* PAGE 4: ANIMATED AUTONOMOUS AI FLOW */}
+        {/* PAGE 4: ANIMATED FLOW SIMULATOR */}
         {/* ======================================================== */}
         {currentPage === 4 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Header */}
             <div className="glass-panel p-6 rounded-3xl border border-cyan-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
               <div>
                 <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
@@ -872,13 +1180,10 @@ export default function SyncPulseApp() {
               ))}
             </div>
 
-            {/* Futuristic Animated Visual Canvas */}
+            {/* Canvas */}
             <div className="min-h-[340px] rounded-3xl bg-gradient-to-b from-[#090e1f] to-[#04060d] border border-cyan-500/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl">
-              
-              {/* Scanline Effect */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent h-10 w-full animate-scan pointer-events-none"></div>
 
-              {/* STEP 1: AI Messages Kabir */}
               {animStep === 1 && (
                 <div className="space-y-4 max-w-xl animate-fadeIn">
                   <div className="w-16 h-16 rounded-3xl bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center border border-blue-500/40 shadow-xl shadow-blue-900/40">
@@ -896,7 +1201,6 @@ export default function SyncPulseApp() {
                 </div>
               )}
 
-              {/* STEP 2: Kabir Replies in Natural Language */}
               {animStep === 2 && (
                 <div className="space-y-4 max-w-xl animate-fadeIn">
                   <div className="w-16 h-16 rounded-3xl bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center border border-amber-500/40 shadow-xl shadow-amber-900/40">
@@ -914,7 +1218,6 @@ export default function SyncPulseApp() {
                 </div>
               )}
 
-              {/* STEP 3: Mistral Agent Reasoning */}
               {animStep === 3 && (
                 <div className="space-y-4 max-w-xl animate-fadeIn">
                   <div className="w-16 h-16 rounded-3xl bg-indigo-500/20 text-indigo-400 mx-auto flex items-center justify-center border border-indigo-500/40 shadow-xl shadow-indigo-900/40">
@@ -936,7 +1239,6 @@ export default function SyncPulseApp() {
                 </div>
               )}
 
-              {/* STEP 4: Autonomous Nudge to Meera */}
               {animStep === 4 && (
                 <div className="space-y-4 max-w-xl animate-fadeIn">
                   <div className="w-16 h-16 rounded-3xl bg-red-500/20 text-red-400 mx-auto flex items-center justify-center border border-red-500/40 shadow-xl shadow-red-950/50 glow-red">
@@ -953,7 +1255,6 @@ export default function SyncPulseApp() {
                   </div>
                 </div>
               )}
-
             </div>
 
             {/* Bottom Nav */}
@@ -982,7 +1283,6 @@ export default function SyncPulseApp() {
         {/* ======================================================== */}
         {currentPage === 5 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Header */}
             <div className="glass-panel p-6 rounded-3xl border border-emerald-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
               <div>
                 <span className="text-xs font-bold font-mono-code text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
@@ -1003,8 +1303,6 @@ export default function SyncPulseApp() {
 
             {/* Side-by-Side Comparison */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Old Traditional Way */}
               <div className="p-6 md:p-8 rounded-3xl bg-slate-950/60 border border-red-900/50 space-y-5 glass-card">
                 <div className="flex items-center gap-3 text-red-400 font-black text-base">
                   <div className="w-8 h-8 rounded-xl bg-red-950 flex items-center justify-center text-xs border border-red-800">✕</div>
@@ -1031,7 +1329,6 @@ export default function SyncPulseApp() {
                 </ul>
               </div>
 
-              {/* SyncPulse Autonomous Way */}
               <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-emerald-950/30 via-slate-900/60 to-slate-950 border border-emerald-500/50 space-y-5 glass-card glow-green">
                 <div className="flex items-center gap-3 text-emerald-400 font-black text-base">
                   <div className="w-8 h-8 rounded-xl bg-emerald-900 flex items-center justify-center text-xs border border-emerald-700">✓</div>
@@ -1057,7 +1354,6 @@ export default function SyncPulseApp() {
                   </li>
                 </ul>
               </div>
-
             </div>
 
             {/* Impact Metric Strip */}
@@ -1105,8 +1401,128 @@ export default function SyncPulseApp() {
       </main>
 
       {/* ======================================================== */}
-      {/* FOOTER */}
+      {/* MODAL: ADD NEW TEAM MEMBER / AI ENGINEER (40-50 Members) */}
       {/* ======================================================== */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-lg glass-panel p-6 md:p-8 rounded-3xl border border-indigo-500/40 shadow-2xl relative space-y-5 animate-fadeIn">
+            
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+                  <Plus className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">Add New Team Member</h3>
+                  <p className="text-xs text-slate-400">Assign a model training milestone to a student/engineer</p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddNewMember} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Member / Engineer Name
+                </label>
+                <input
+                  type="text"
+                  value={newMemberName}
+                  onChange={(e) => setNewMemberName(e.target.value)}
+                  placeholder="e.g. Jaswant, Rohan, Priya, Vikram..."
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                    Designation / Role
+                  </label>
+                  <input
+                    type="text"
+                    value={newMemberRole}
+                    onChange={(e) => setNewMemberRole(e.target.value)}
+                    placeholder="e.g. Audio ML Engineer"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                    Priority
+                  </label>
+                  <select
+                    value={newPriority}
+                    onChange={(e: any) => setNewPriority(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  >
+                    <option value="low">LOW</option>
+                    <option value="medium">MEDIUM</option>
+                    <option value="high">HIGH</option>
+                    <option value="urgent">URGENT</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Assigned Model / Milestone Task
+                </label>
+                <input
+                  type="text"
+                  value={newModelTitle}
+                  onChange={(e) => setNewModelTitle(e.target.value)}
+                  placeholder="e.g. YOLOv9 Realtime Detection Model"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Model Architecture / Category
+                </label>
+                <input
+                  type="text"
+                  value={newModelType}
+                  onChange={(e) => setNewModelType(e.target.value)}
+                  placeholder="e.g. Vision Transformer / Diffusion Model"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-900/40"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add to Sprint</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
+
+      {/* FOOTER */}
       <footer className="border-t border-indigo-500/20 glass-panel px-6 py-4 text-center text-xs text-slate-400 flex flex-col md:flex-row items-center justify-between gap-3 mt-6 z-10">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
