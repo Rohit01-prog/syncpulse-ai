@@ -651,7 +651,7 @@ export default function SyncPulseLandingAndApp() {
   }, [tickerEvents.length]);
 
   return (
-    <div className="min-h-screen bg-[#050814] text-slate-100 flex flex-col font-sans selection:bg-red-600 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAF7F2] text-stone-900 flex flex-col font-sans selection:bg-[#C89D5C] selection:text-white relative overflow-x-hidden">
       
       {/* Dynamic Ambient Background Glows */}
       <div className="ambient-glow-1"></div>
@@ -661,7 +661,7 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 1. TOP NAVBAR (WITH ADMIN LOGIN BUTTON IN PLACE OF CONTACT) */}
       {/* ========================================================================= */}
-      <header className="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 md:px-8 py-3.5 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 glass-panel border-b border-amber-200/50 px-4 md:px-8 py-3.5 backdrop-blur-xl bg-white/85 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           
           {/* Logo & Identity */}
@@ -674,7 +674,7 @@ export default function SyncPulseLandingAndApp() {
                 <span className="text-xl font-black tracking-tight text-white">
                   SyncPulse <span className="text-red-500">AI</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-500/20 text-red-300 border border-red-500/30 font-mono-code">
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60 font-mono-code">
                   TRACK W-PS-1
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
@@ -682,27 +682,27 @@ export default function SyncPulseLandingAndApp() {
                   AUTONOMOUS AGENT ACTIVE
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400">
+              <p className="text-[10px] text-stone-500">
                 Hackathon Kurukshetra · Powered by Worcflow.ai
               </p>
             </div>
           </div>
 
           {/* Nav Links */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-slate-300">
-            <a href="#sandbox" className="hover:text-red-400 transition flex items-center gap-1.5 text-red-400 font-bold">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse text-red-400" />
+          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-stone-700">
+            <a href="#sandbox" className="hover:text-[#B48530] transition flex items-center gap-1.5 text-[#B48530] font-bold">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse text-[#C89D5C]" />
               <span>AI Sandbox</span>
             </a>
-            <a href="#blocker-radar" className="hover:text-red-400 transition flex items-center gap-1">
+            <a href="#blocker-radar" className="hover:text-[#B48530] transition flex items-center gap-1">
               <span>Blocker Radar</span>
               {isKabirBlocked && <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>}
             </a>
-            <a href="#pipeline-story" className="hover:text-red-400 transition">AI Team</a>
-            <a href="#flow-simulator" className="hover:text-red-400 transition">Flow Simulator</a>
-            <a href="#omnichannel" className="hover:text-red-400 transition">Omnichannel</a>
-            <a href="#roi-calculator" className="hover:text-red-400 transition">ROI Calculator</a>
-            <a href="#faq" className="hover:text-red-400 transition">FAQ</a>
+            <a href="#pipeline-story" className="hover:text-[#B48530] transition">AI Team</a>
+            <a href="#flow-simulator" className="hover:text-[#B48530] transition">Flow Simulator</a>
+            <a href="#omnichannel" className="hover:text-[#B48530] transition">Omnichannel</a>
+            <a href="#roi-calculator" className="hover:text-[#B48530] transition">ROI Calculator</a>
+            <a href="#faq" className="hover:text-[#B48530] transition">FAQ</a>
           </nav>
 
           {/* Action CTAs (Admin Login in place of Contact) */}
@@ -727,7 +727,7 @@ export default function SyncPulseLandingAndApp() {
             ) : (
               <button
                 onClick={() => setIsAdminModalOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wider uppercase transition shadow-lg shadow-red-900/40 glow-red flex items-center gap-2"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs tracking-wider uppercase transition shadow-md shadow-amber-900/15 flex items-center gap-2"
               >
                 <Lock className="w-3.5 h-3.5" />
                 <span>Admin Login</span>
@@ -738,7 +738,7 @@ export default function SyncPulseLandingAndApp() {
               href="https://t.me/syncpulse_solver_bot"
               target="_blank"
               rel="noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-100/70 hover:bg-amber-200/70 text-amber-900 border border-amber-300/60 text-xs font-bold transition"
             >
               <Send className="w-3.5 h-3.5" />
               <span>@syncpulse_solver_bot</span>
@@ -756,19 +756,19 @@ export default function SyncPulseLandingAndApp() {
           
           {/* Left Hero Content */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold font-mono-code uppercase tracking-wider">
-              <Zap className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 border border-amber-300/60 text-amber-900 text-xs font-bold font-mono-code uppercase tracking-wider">
+              <Zap className="w-3.5 h-3.5 text-[#C89D5C] animate-pulse" />
               <span>AUTONOMOUS AI PROJECT COORDINATOR · ZERO FRICTION</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-black text-stone-900 tracking-tight leading-[1.1]">
               Autonomous Team Coordination. <br />
               <span className="gradient-text-shimmer">
                 Zero Blocker Delays.
               </span>
             </h1>
 
-            <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl">
+            <p className="text-stone-600 text-sm md:text-base leading-relaxed max-w-xl">
               SyncPulse AI proactively tracks group milestones, understands casual team status replies via <strong>Mistral AI</strong>, isolates bottlenecks in 1 second, and autonomously nudges blocking teammates across <strong>Web & Telegram</strong>.
             </p>
 
@@ -776,7 +776,7 @@ export default function SyncPulseLandingAndApp() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#pipeline-story"
-                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2 hover:scale-105 active:scale-95"
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-amber-900/15 flex items-center gap-2 hover:scale-105 active:scale-95"
               >
                 <span>Watch 4-Engineer Demo</span>
                 <ArrowRight className="w-4 h-4" />
@@ -784,7 +784,7 @@ export default function SyncPulseLandingAndApp() {
 
               <button
                 onClick={() => setIsAdminModalOpen(true)}
-                className="px-6 py-3.5 rounded-2xl glass-card hover:bg-white/10 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 border border-white/10 hover:border-red-500/40"
+                className="px-6 py-3.5 rounded-2xl glass-card hover:bg-stone-50 text-stone-800 font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 border border-amber-200/60 hover:border-amber-400"
               >
                 <Lock className="w-4 h-4 text-red-400" />
                 <span>Admin Security Access</span>
@@ -792,18 +792,18 @@ export default function SyncPulseLandingAndApp() {
             </div>
 
             {/* Quick Metrics Strip */}
-            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg">
+            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-stone-200 max-w-lg">
               <div className="transition hover:scale-105">
-                <div className="text-2xl md:text-3xl font-black text-red-500 font-mono-code">95%</div>
-                <div className="text-xs text-slate-400 mt-0.5">Faster Resolution</div>
+                <div className="text-2xl md:text-3xl font-black text-[#B48530] font-mono-code">95%</div>
+                <div className="text-xs text-stone-500 mt-0.5">Faster Resolution</div>
               </div>
               <div className="transition hover:scale-105">
-                <div className="text-2xl md:text-3xl font-black text-cyan-400 font-mono-code">45s</div>
-                <div className="text-xs text-slate-400 mt-0.5">Average Unblock</div>
+                <div className="text-2xl md:text-3xl font-black text-stone-800 font-mono-code">45s</div>
+                <div className="text-xs text-stone-500 mt-0.5">Average Unblock</div>
               </div>
               <div className="transition hover:scale-105">
-                <div className="text-2xl md:text-3xl font-black text-emerald-400 font-mono-code">100%</div>
-                <div className="text-xs text-slate-400 mt-0.5">Web-Native & Live</div>
+                <div className="text-2xl md:text-3xl font-black text-emerald-700 font-mono-code">100%</div>
+                <div className="text-xs text-stone-500 mt-0.5">Web-Native & Live</div>
               </div>
             </div>
           </div>
@@ -823,7 +823,7 @@ export default function SyncPulseLandingAndApp() {
               <span>MISTRAL-7B STREAMING</span>
             </div>
 
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-red-500/30 shadow-2xl relative overflow-hidden space-y-5 glow-red">
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-200/70 shadow-xl bg-white/95 relative overflow-hidden space-y-5">
               
               {/* Animated Laser Scanning Line */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl opacity-25">
@@ -839,14 +839,14 @@ export default function SyncPulseLandingAndApp() {
                 />
               </div>
               
-              <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-4 relative z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 animate-pulse">
                     <Flame className="w-5 h-5 text-red-400" />
                   </div>
                   <div>
                     <div className="text-xs text-red-400 font-mono-code font-bold">SPRINT TELEMETRY ACTIVE</div>
-                    <div className="text-base font-bold text-white">4 AI Models Training</div>
+                    <div className="text-base font-bold text-stone-900">4 AI Models Training</div>
                   </div>
                 </div>
 
@@ -857,16 +857,16 @@ export default function SyncPulseLandingAndApp() {
 
               {/* Live Card Mini-List */}
               <div className="space-y-3 font-mono-code text-xs relative z-10">
-                <div className="p-3 rounded-xl bg-slate-950/70 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition">
-                  <span className="text-slate-300 flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-stone-50 border border-emerald-400/40 flex items-center justify-between hover:border-emerald-500 transition">
+                  <span className="text-stone-800 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span>AI-101 · Meera (BERT)</span>
                   </span>
                   <span className="text-emerald-400 font-bold">100% DONE ✓</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950/70 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition">
-                  <span className="text-slate-300 flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-stone-50 border border-emerald-400/40 flex items-center justify-between hover:border-emerald-500 transition">
+                  <span className="text-stone-800 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span>AI-102 · Sumit (ResNet)</span>
                   </span>
@@ -874,7 +874,7 @@ export default function SyncPulseLandingAndApp() {
                 </div>
 
                 <div className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
-                  isKabirBlocked ? "bg-red-950/70 border-red-500/80 text-red-300 animate-pulse-red" : "bg-slate-950/70 border-emerald-500/30 text-emerald-400"
+                  isKabirBlocked ? "bg-red-50 border-red-300 text-red-800 animate-pulse-red" : "bg-stone-50 border-emerald-400/40 text-emerald-800"
                 }`}>
                   <span className="text-slate-300 flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full ${isKabirBlocked ? "bg-red-500 animate-ping" : "bg-emerald-400"}`}></span>
@@ -883,8 +883,8 @@ export default function SyncPulseLandingAndApp() {
                   <span className="font-bold">{isKabirBlocked ? "🚨 BLOCKED (35%)" : "100% DONE ✓"}</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950/70 border border-cyan-500/30 flex items-center justify-between hover:border-cyan-500/60 transition">
-                  <span className="text-slate-300 flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-between hover:border-amber-300 transition">
+                  <span className="text-stone-800 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                     <span>AI-104 · Jaswant (Whisper)</span>
                   </span>
@@ -905,7 +905,7 @@ export default function SyncPulseLandingAndApp() {
                 ) : (
                   <button
                     onClick={resetBlocker}
-                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition hover:scale-[1.02] active:scale-95"
+                    className="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold transition border border-stone-200 hover:scale-[1.02] active:scale-95"
                   >
                     Reset Kabir Blocker (For Re-Testing)
                   </button>
@@ -922,15 +922,15 @@ export default function SyncPulseLandingAndApp() {
       {/* 3. SECTION 2: INSTANT PROJECT DIAGNOSTIC & TELEMETRY FORM */}
       {/* ========================================================================= */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto w-full -mt-6 mb-16 z-20 relative">
-        <div className="glass-panel p-6 md:p-8 rounded-3xl border border-red-500/20 shadow-2xl bg-gradient-to-b from-[#0e1429] to-[#070b16]">
+        <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-200/60 shadow-xl bg-white">
           <div className="text-center mb-6">
-            <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+            <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
               REAL-TIME SPRINT TELEMETRY
             </span>
-            <h3 className="text-2xl font-black text-white mt-2">
+            <h3 className="text-2xl font-black text-stone-900 mt-2">
               Instant AI Model Diagnostic Check
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               Select any engineer to immediately inspect their current milestone health, dependencies, and blockers.
             </p>
           </div>
@@ -941,7 +941,7 @@ export default function SyncPulseLandingAndApp() {
               <select
                 value={diagnosticMember}
                 onChange={(e) => setDiagnosticMember(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500 font-mono-code"
+                className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
               >
                 <option value="Kabir">Kabir (Llama-3 LLM)</option>
                 <option value="Meera">Meera (BERT Classifier)</option>
@@ -952,21 +952,21 @@ export default function SyncPulseLandingAndApp() {
 
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono-code">Pipeline Stage</label>
-              <div className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-slate-400 text-xs font-mono-code">
+              <div className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-600 text-xs font-mono-code">
                 Sequential LoRA Fusion (1-4)
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono-code">Coordinator Channel</label>
-              <div className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-cyan-400 text-xs font-mono-code">
+              <div className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-200 text-[#B48530] text-xs font-mono-code font-bold">
                 Web Dashboard + Telegram Bridge
               </div>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-red-900/40 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#C89D5C] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs uppercase tracking-wider transition shadow-md shadow-amber-900/15 flex items-center justify-center gap-2"
             >
               <Zap className="w-4 h-4" />
               <span>Run AI Diagnostic</span>
@@ -975,7 +975,7 @@ export default function SyncPulseLandingAndApp() {
 
           {/* Diagnostic Result Output Box */}
           {diagnosticResult && (
-            <div className="mt-5 p-4 rounded-2xl bg-black/70 border border-white/10 text-xs font-mono-code text-slate-200 animate-fadeIn flex items-center justify-between">
+            <div className="mt-5 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-mono-code text-stone-900 animate-fadeIn flex items-center justify-between">
               <span>{diagnosticResult}</span>
               <button
                 onClick={() => setDiagnosticResult(null)}
@@ -1000,7 +1000,7 @@ export default function SyncPulseLandingAndApp() {
             {/* Ambient Floating Glow Ring */}
             <div className="absolute -top-4 -left-4 w-28 h-28 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none animate-pulse-glow"></div>
 
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-indigo-500/30 shadow-2xl relative overflow-hidden space-y-6 glow-indigo">
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-200/60 shadow-xl bg-white relative overflow-hidden space-y-6">
               
               {/* Featured Architecture Visual Image */}
               <div className="img-cyber-frame h-44 w-full relative">
@@ -1031,33 +1031,33 @@ export default function SyncPulseLandingAndApp() {
 
               {/* Dynamic Telemetry Specs */}
               <div className="space-y-2.5 font-mono-code text-xs">
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-indigo-500/40 transition">
+                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Binary className="w-3.5 h-3.5 text-indigo-400" />
                     <span>LLM Reasoning Model:</span>
                   </span>
-                  <span className="text-white font-bold">Mistral 7B / Small</span>
+                  <span className="text-stone-900 font-bold">Mistral 7B / Small</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-cyan-500/40 transition">
+                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5 text-cyan-400" />
                     <span>Database Engine:</span>
                   </span>
-                  <span className="text-white font-bold">Supabase Realtime (WSS)</span>
+                  <span className="text-stone-900 font-bold">Supabase Realtime (WSS)</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-emerald-500/40 transition">
+                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Clock className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Cadence Frequency:</span>
                   </span>
                   <span className="text-emerald-400 font-bold">Autonomous Sprints (24/7)</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-cyan-500/40 transition">
+                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Send className="w-3.5 h-3.5 text-cyan-400" />
                     <span>Telegram Bridge:</span>
                   </span>
-                  <span className="text-cyan-400 font-bold">@syncpulse_solver_bot</span>
+                  <span className="text-[#B48530] font-bold">@syncpulse_solver_bot</span>
                 </div>
               </div>
             </div>
@@ -1065,27 +1065,27 @@ export default function SyncPulseLandingAndApp() {
 
           {/* Right Architecture Content */}
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+            <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
               AUTONOMOUS COORDINATOR ARCHITECTURE
             </span>
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl md:text-5xl font-black text-stone-900 tracking-tight leading-tight">
               Delivering Autonomous Intelligence to Engineering Teams
             </h2>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-stone-600 leading-relaxed">
               In college and corporate projects, <strong>70% of delays</strong> are not caused by coding difficulties—they are caused by silent blockers where teammate A waits for teammate B for days without telling anyone.
             </p>
 
-            <div className="space-y-3 text-xs text-slate-300 font-medium">
+            <div className="space-y-3 text-xs text-stone-700 font-medium">
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-red-600/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">✓</div>
                 <span><strong>No Mandatory Telegram:</strong> Works 100% inside the browser dashboard for enterprises where Telegram is restricted.</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-red-600/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">✓</div>
                 <span><strong>Natural Language Understanding:</strong> Team members reply like humans; AI extracts status, bottlenecks, and teammates automatically.</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-red-600/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">✓</div>
                 <span><strong>Autonomous Peer-to-Peer Nudge:</strong> Directly escalates to the blocking engineer with targeted unblock requests.</span>
               </div>
             </div>
@@ -1093,7 +1093,7 @@ export default function SyncPulseLandingAndApp() {
             <div className="pt-2">
               <a
                 href="#pipeline-story"
-                className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs border border-slate-700 transition inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs border border-stone-800 transition inline-flex items-center gap-2"
               >
                 <span>Read The 4-Person Case Study</span>
                 <ChevronRight className="w-4 h-4 text-red-400" />
@@ -1109,14 +1109,14 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="sandbox" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold font-mono-code uppercase tracking-wider">
-            <Terminal className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 border border-amber-300/60 text-amber-900 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Terminal className="w-3.5 h-3.5 text-[#C89D5C] animate-pulse" />
             <span>EXECUTIVE AI SANDBOX · MISTRAL REASONING ENGINE</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-stone-900 tracking-tight">
             Test Drive Autonomous Blocker Detection
           </h2>
-          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm text-stone-500 max-w-2xl mx-auto">
             Experience our semantic NLP pipeline live. Type any engineer standup update or test one of the 3 real-world multi-agent scenarios below. Watch Mistral extract dependencies in under 900ms.
           </p>
         </div>
@@ -1132,8 +1132,8 @@ export default function SyncPulseLandingAndApp() {
             }}
             className={`p-3.5 rounded-2xl border text-left transition ${
               sandboxActivePreset === "preset-kabir"
-                ? "bg-red-950/40 border-red-500/80 shadow-lg shadow-red-950/50"
-                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+                ? "bg-red-50 border-red-400 shadow-md"
+                : "bg-white border-stone-200 hover:border-amber-300"
             }`}
           >
             <div className="flex items-center justify-between mb-1.5">
@@ -1142,8 +1142,8 @@ export default function SyncPulseLandingAndApp() {
               </span>
               <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
             </div>
-            <div className="text-xs font-bold text-white">Kabir Blocked on Meera</div>
-            <p className="text-[11px] text-slate-400 mt-0.5">Missing BERT embeddings for Llama-3</p>
+            <div className="text-xs font-bold text-stone-900">Kabir Blocked on Meera</div>
+            <p className="text-[11px] text-stone-500 mt-0.5">Missing BERT embeddings for Llama-3</p>
           </button>
 
           <button
@@ -1155,8 +1155,8 @@ export default function SyncPulseLandingAndApp() {
             }}
             className={`p-3.5 rounded-2xl border text-left transition ${
               sandboxActivePreset === "preset-sumit"
-                ? "bg-amber-950/40 border-amber-500/80 shadow-lg shadow-amber-950/50"
-                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+                ? "bg-amber-50 border-amber-400 shadow-md"
+                : "bg-white border-stone-200 hover:border-amber-300"
             }`}
           >
             <div className="flex items-center justify-between mb-1.5">
@@ -1165,8 +1165,8 @@ export default function SyncPulseLandingAndApp() {
               </span>
               <Cpu className="w-3.5 h-3.5 text-amber-400" />
             </div>
-            <div className="text-xs font-bold text-white">Sumit CUDA Out Of Memory</div>
-            <p className="text-[11px] text-slate-400 mt-0.5">Cloud GPU VRAM capacity bottleneck</p>
+            <div className="text-xs font-bold text-stone-900">Sumit CUDA Out Of Memory</div>
+            <p className="text-[11px] text-stone-500 mt-0.5">Cloud GPU VRAM capacity bottleneck</p>
           </button>
 
           <button
@@ -1178,8 +1178,8 @@ export default function SyncPulseLandingAndApp() {
             }}
             className={`p-3.5 rounded-2xl border text-left transition ${
               sandboxActivePreset === "preset-jaswant"
-                ? "bg-emerald-950/40 border-emerald-500/80 shadow-lg shadow-emerald-950/50"
-                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+                ? "bg-emerald-50 border-emerald-400 shadow-md"
+                : "bg-white border-stone-200 hover:border-amber-300"
             }`}
           >
             <div className="flex items-center justify-between mb-1.5">
@@ -1188,13 +1188,13 @@ export default function SyncPulseLandingAndApp() {
               </span>
               <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
             </div>
-            <div className="text-xs font-bold text-white">Jaswant Whisper On Track</div>
-            <p className="text-[11px] text-slate-400 mt-0.5">Audio model operating within SLA</p>
+            <div className="text-xs font-bold text-stone-900">Jaswant Whisper On Track</div>
+            <p className="text-[11px] text-stone-500 mt-0.5">Audio model operating within SLA</p>
           </button>
         </div>
 
         {/* Sandbox Console Workspace */}
-        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-white/10 overflow-hidden shadow-2xl">
+        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-amber-200/60 overflow-hidden shadow-xl">
           {/* Console Header Bar */}
           <div className="px-6 py-3.5 bg-slate-950/90 border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -1212,8 +1212,8 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Console Input Area */}
-          <div className="p-6 bg-slate-950/60 space-y-4">
-            <label className="block text-xs font-bold text-slate-300">
+          <div className="p-6 bg-white space-y-4">
+            <label className="block text-xs font-bold text-stone-800">
               Type or Edit Natural Language Standup Update:
             </label>
             <div className="relative">
@@ -1225,7 +1225,7 @@ export default function SyncPulseLandingAndApp() {
                 }}
                 rows={3}
                 placeholder="e.g. Kabir: Waiting for Meera to push BERT tokenizer weights..."
-                className="w-full px-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-700 text-white text-xs md:text-sm font-mono-code focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition leading-relaxed resize-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 border border-stone-200 text-stone-900 text-xs md:text-sm font-mono-code focus:outline-none focus:border-[#C89D5C] focus:ring-1 focus:ring-[#C89D5C] transition leading-relaxed resize-none"
               />
               <div className="absolute right-3 bottom-3 text-[10px] text-slate-500 font-mono-code">
                 {sandboxPrompt.length} chars
@@ -1252,7 +1252,7 @@ export default function SyncPulseLandingAndApp() {
                   type="button"
                   onClick={() => runSandboxAnalysis()}
                   disabled={isSandboxRunning || !sandboxPrompt.trim()}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-xs font-black tracking-wider uppercase transition shadow-lg shadow-red-900/40 glow-red flex items-center gap-2 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#C89D5C] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white text-xs font-black tracking-wider uppercase transition shadow-md shadow-amber-900/15 flex items-center gap-2 disabled:opacity-50"
                 >
                   {isSandboxRunning ? (
                     <>
@@ -1272,10 +1272,10 @@ export default function SyncPulseLandingAndApp() {
 
           {/* Telemetry Output HUD */}
           {sandboxOutput && (
-            <div className="p-6 bg-slate-900/90 border-t border-white/10 space-y-5">
+            <div className="p-6 bg-stone-50 border-t border-stone-200 space-y-5">
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-300">Semantic Parsing Result:</span>
+                  <span className="text-xs font-bold text-stone-800">Semantic Parsing Result:</span>
                   {sandboxOutput.detected ? (
                     <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-red-500/20 text-red-300 border border-red-500/40 flex items-center gap-1.5 font-mono-code">
                       <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
@@ -1299,9 +1299,9 @@ export default function SyncPulseLandingAndApp() {
 
               {/* Parsed Attributes Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/5 space-y-2">
+                <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-2">
                   <span className="text-[10px] font-mono-code text-slate-400 uppercase">Impacted Dependency Node</span>
-                  <div className="text-xs font-bold text-white flex items-center gap-2">
+                  <div className="text-xs font-bold text-stone-900 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-red-400"></span>
                     <span>{sandboxOutput.blockedEngineer}</span>
                   </div>
@@ -1310,7 +1310,7 @@ export default function SyncPulseLandingAndApp() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/5 space-y-2">
+                <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-2">
                   <span className="text-[10px] font-mono-code text-slate-400 uppercase">Autonomous Orchestration Action</span>
                   <div className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -1323,10 +1323,10 @@ export default function SyncPulseLandingAndApp() {
               </div>
 
               {/* Live Interactive Unblock / Inject Toggle */}
-              <div className="p-4 rounded-2xl bg-red-950/20 border border-red-500/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
                   <Flame className="w-4 h-4 text-red-400 shrink-0" />
-                  <span className="text-xs text-slate-300">
+                  <span className="text-xs text-stone-700">
                     Want to see how this updates the live app radar?
                   </span>
                 </div>
@@ -1380,10 +1380,10 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="features" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+          <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
             COMPREHENSIVE CAPABILITIES
           </span>
-          <h2 className="text-3xl md:text-4xl font-black text-white">
+          <h2 className="text-3xl md:text-4xl font-black text-stone-900">
             Everything Required For Autonomous Coordination
           </h2>
           <p className="text-xs md:text-sm text-slate-400">
@@ -1393,7 +1393,7 @@ export default function SyncPulseLandingAndApp() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-red-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" 
@@ -1405,14 +1405,14 @@ export default function SyncPulseLandingAndApp() {
                 <Bot className="w-5 h-5" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition">Proactive Milestone Follow-ups</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Proactive Milestone Follow-ups</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               AI doesn&apos;t wait for humans to report. It automatically pings teammates at scheduled intervals with contextual milestone questions.
             </p>
           </div>
 
           {/* Card 2 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-cyan-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80" 
@@ -1424,14 +1424,14 @@ export default function SyncPulseLandingAndApp() {
                 <AlertTriangle className="w-5 h-5 animate-pulse" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition">Blocker Radar Diagnostic</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Blocker Radar Diagnostic</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Detects who is stuck, where they are stuck, and on whom they are waiting. Flags critical bottlenecks in real-time.
             </p>
           </div>
 
           {/* Card 3 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-purple-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" 
@@ -1443,14 +1443,14 @@ export default function SyncPulseLandingAndApp() {
                 <Terminal className="w-5 h-5" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition">Mistral Semantic Reasoning</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Mistral Semantic Reasoning</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Parses informal chat messages (&quot;waiting for GPU keys from Meera&quot;) and extracts structured dependency records instantly.
             </p>
           </div>
 
           {/* Card 4 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" 
@@ -1462,14 +1462,14 @@ export default function SyncPulseLandingAndApp() {
                 <Zap className="w-5 h-5" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition">Autonomous Peer Escalation</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Autonomous Peer Escalation</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Automatically routes targeted nudges to the blocking engineer across Web & Telegram, resolving blockers in 45 seconds.
             </p>
           </div>
 
           {/* Card 5 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-blue-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" 
@@ -1481,14 +1481,14 @@ export default function SyncPulseLandingAndApp() {
                 <ShieldCheck className="w-5 h-5" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition">Enterprise Role-Based Access</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Enterprise Role-Based Access</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Secure admin lock with official OTP email verification. Faculty and Managers oversee sprints with dedicated team controls.
             </p>
           </div>
 
           {/* Card 6 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-amber-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white hover:border-[#C89D5C]/70 shadow-sm hover:shadow-md transition-all space-y-4 glass-card-hover group relative overflow-hidden">
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
@@ -1500,7 +1500,7 @@ export default function SyncPulseLandingAndApp() {
                 <Users className="w-5 h-5" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition">Scalable to 50+ Engineers</h3>
+            <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#B48530] transition">Scalable to 50+ Engineers</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Dynamically add up to 50 team members with instant search and status filters. Built for large multi-modal cohorts.
             </p>
@@ -1512,14 +1512,14 @@ export default function SyncPulseLandingAndApp() {
       {/* 6. SECTION 5: THE 4-ENGINEER PRESENTATION STORY (PIPELINE) */}
       {/* ========================================================================= */}
       <section id="pipeline-story" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
-        <div className="glass-panel p-8 md:p-12 rounded-3xl border border-indigo-500/30 shadow-2xl space-y-8">
+        <div className="glass-panel p-8 md:p-12 rounded-3xl border border-amber-200/60 shadow-xl bg-white space-y-8">
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
             <div>
-              <span className="text-xs font-bold font-mono-code text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+              <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
                 THE HACKATHON DEMO SCENARIO
               </span>
-              <h2 className="text-3xl md:text-4xl font-black text-white mt-2">
+              <h2 className="text-3xl md:text-4xl font-black text-stone-900 mt-2">
                 4 Engineers Training AI Models Sequentially (बारी-बारी)
               </h2>
               <p className="text-xs md:text-sm text-slate-400 mt-1 max-w-2xl">
@@ -1527,7 +1527,7 @@ export default function SyncPulseLandingAndApp() {
               </p>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 text-indigo-300 text-xs font-bold font-mono-code shrink-0">
+            <div className="px-4 py-2 rounded-2xl bg-amber-100 border border-amber-300/60 text-amber-900 text-xs font-bold font-mono-code shrink-0">
               Pipeline Stage: 3 of 4 Blocked
             </div>
           </div>
@@ -1535,7 +1535,7 @@ export default function SyncPulseLandingAndApp() {
           {/* 4 Pipeline Stages */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             {/* 1. Meera */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3.5 glass-card hover:border-emerald-500 transition-all group">
+            <div className="p-5 rounded-3xl bg-[#FAF7F2]/60 border border-stone-200 space-y-3.5 glass-card hover:border-emerald-500 hover:bg-white transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">01</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
@@ -1550,7 +1550,7 @@ export default function SyncPulseLandingAndApp() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white group-hover:text-emerald-400 transition">Meera</h4>
+                  <h4 className="text-base font-bold text-stone-900 group-hover:text-emerald-700 transition">Meera</h4>
                   <p className="text-[11px] text-emerald-400 font-mono-code">BERT Classifier</p>
                 </div>
               </div>
@@ -1559,13 +1559,13 @@ export default function SyncPulseLandingAndApp() {
                 Trained intent tokenizer & generated cluster security keys. Finished without delays.
               </p>
               
-              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
                 <div className="bg-emerald-500 h-full w-full"></div>
               </div>
             </div>
 
             {/* 2. Sumit */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3.5 glass-card hover:border-emerald-500 transition-all group">
+            <div className="p-5 rounded-3xl bg-[#FAF7F2]/60 border border-stone-200 space-y-3.5 glass-card hover:border-emerald-500 hover:bg-white transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">02</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
@@ -1580,7 +1580,7 @@ export default function SyncPulseLandingAndApp() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white group-hover:text-emerald-400 transition">Sumit</h4>
+                  <h4 className="text-base font-bold text-stone-900 group-hover:text-emerald-700 transition">Sumit</h4>
                   <p className="text-[11px] text-emerald-400 font-mono-code">ResNet-50 Vision</p>
                 </div>
               </div>
@@ -1589,14 +1589,14 @@ export default function SyncPulseLandingAndApp() {
                 Extracted visual feature embeddings and completed testing. Completed on schedule.
               </p>
 
-              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
                 <div className="bg-emerald-500 h-full w-full"></div>
               </div>
             </div>
 
             {/* 3. Kabir */}
             <div className={`p-5 rounded-3xl border space-y-3.5 glass-card transition-all group ${
-              isKabirBlocked ? "bg-red-950/40 border-red-500/80 glow-red animate-pulse-red" : "bg-slate-900/60 border-emerald-500/40"
+              isKabirBlocked ? "bg-red-50/80 border-red-400 animate-pulse-red" : "bg-[#FAF7F2]/60 border-stone-200 hover:bg-white"
             }`}>
               <div className="flex items-center justify-between">
                 <span className={`w-8 h-8 rounded-2xl font-black flex items-center justify-center text-xs text-white ${
@@ -1620,7 +1620,7 @@ export default function SyncPulseLandingAndApp() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition">Kabir</h4>
+                  <h4 className="text-base font-bold text-stone-900 group-hover:text-red-600 transition">Kabir</h4>
                   <p className="text-[11px] text-indigo-400 font-mono-code">Llama-3 Fine-Tuning</p>
                 </div>
               </div>
@@ -1631,13 +1631,13 @@ export default function SyncPulseLandingAndApp() {
                   : "Received credentials from Meera and completed LoRA training!"}
               </p>
 
-              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
                 <div className={`h-full transition-all duration-500 ${isKabirBlocked ? "bg-red-500 w-[35%]" : "bg-emerald-500 w-full"}`}></div>
               </div>
             </div>
 
             {/* 4. Jaswant */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-cyan-500/30 space-y-3.5 glass-card hover:border-cyan-500 transition-all group">
+            <div className="p-5 rounded-3xl bg-[#FAF7F2]/60 border border-stone-200 space-y-3.5 glass-card hover:border-amber-400 hover:bg-white transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-cyan-600 text-white font-black flex items-center justify-center text-xs">04</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">WORKING ⚡</span>
@@ -1652,7 +1652,7 @@ export default function SyncPulseLandingAndApp() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-400 transition">Jaswant</h4>
+                  <h4 className="text-base font-bold text-stone-900 group-hover:text-amber-700 transition">Jaswant</h4>
                   <p className="text-[11px] text-cyan-400 font-mono-code">Whisper Audio AI</p>
                 </div>
               </div>
@@ -1674,7 +1674,7 @@ export default function SyncPulseLandingAndApp() {
                 <span className="text-[9px] font-mono-code text-cyan-300">VOICE ACTIVE</span>
               </div>
 
-              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
                 <div className="bg-cyan-500 h-full w-[70%] animate-pulse"></div>
               </div>
             </div>
@@ -1709,26 +1709,26 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 7. SECTION 6: HIGH IMPACT RED RIBBON STRIP (NUMBERS / METRICS) */}
       {/* ========================================================================= */}
-      <section className="py-12 bg-gradient-to-r from-red-800 via-rose-600 to-red-900 text-white shadow-2xl border-y border-red-500/40 relative overflow-hidden">
+      <section className="py-12 bg-gradient-to-r from-amber-700 via-[#C89D5C] to-amber-800 text-white shadow-2xl border-y border-amber-500/40 relative overflow-hidden">
         {/* Ambient Shimmer Beam */}
         <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent animate-pulse-glow"></div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono-code relative z-10">
           <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
             <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg">95%</div>
-            <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Faster Blocker Resolution</div>
+            <div className="text-xs md:text-sm text-amber-100 font-sans mt-1">Faster Blocker Resolution</div>
           </div>
           <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
             <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg">10,000+</div>
-            <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Standup Minutes Saved</div>
+            <div className="text-xs md:text-sm text-amber-100 font-sans mt-1">Standup Minutes Saved</div>
           </div>
           <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
             <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg text-amber-300">45s</div>
-            <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Autonomous Unblock Time</div>
+            <div className="text-xs md:text-sm text-amber-100 font-sans mt-1">Autonomous Unblock Time</div>
           </div>
           <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
             <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg text-emerald-300">24/7</div>
-            <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Continuous Sprint Monitoring</div>
+            <div className="text-xs md:text-sm text-amber-100 font-sans mt-1">Continuous Sprint Monitoring</div>
           </div>
         </div>
       </section>
@@ -1737,14 +1737,14 @@ export default function SyncPulseLandingAndApp() {
       {/* 8. SECTION 7: 4-STAGE ANIMATED FLOW SIMULATOR */}
       {/* ========================================================================= */}
       <section id="flow-simulator" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
-        <div className="glass-panel p-8 md:p-12 rounded-3xl border border-cyan-500/30 shadow-2xl space-y-6">
+        <div className="glass-panel p-8 md:p-12 rounded-3xl border border-amber-200/60 shadow-xl bg-white space-y-6">
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
             <div>
-              <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+              <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
                 VISUAL TELEMETRY SIMULATOR
               </span>
-              <h2 className="text-3xl md:text-4xl font-black text-white mt-2">
+              <h2 className="text-3xl md:text-4xl font-black text-stone-900 mt-2">
                 How SyncPulse AI Works (Animated Flow)
               </h2>
               <p className="text-xs md:text-sm text-slate-400 mt-1">
@@ -1757,7 +1757,7 @@ export default function SyncPulseLandingAndApp() {
                 setAnimStep(1);
                 setIsSimulating(true);
               }}
-              className="px-5 py-2.5 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-cyan-900/40 flex items-center gap-2 self-start"
+              className="px-5 py-2.5 rounded-2xl bg-[#C89D5C] hover:bg-[#B88746] text-white font-bold text-xs uppercase tracking-wider transition shadow-md shadow-amber-900/15 flex items-center gap-2 self-start"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Replay Animation</span>
@@ -1780,8 +1780,8 @@ export default function SyncPulseLandingAndApp() {
                 }}
                 className={`p-3 rounded-2xl border cursor-pointer transition ${
                   animStep === step.s
-                    ? "bg-cyan-500/20 border-cyan-400 text-cyan-300 glow-cyan"
-                    : "bg-[#090e1f]/60 border-slate-800 text-slate-400 hover:text-white"
+                    ? "bg-amber-100 border-amber-400 text-amber-900 shadow-sm"
+                    : "bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900"
                 }`}
               >
                 {step.title}
@@ -1790,7 +1790,7 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Visual Canvas Box */}
-          <div className="min-h-[320px] rounded-3xl bg-gradient-to-b from-[#090e1f] to-[#04060d] border border-cyan-500/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl">
+          <div className="min-h-[320px] rounded-3xl bg-[#FAF7F2] border border-amber-200/70 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-inner">
             {/* Cyber Circuit Texture Overlay */}
             <div className="absolute inset-0 pointer-events-none opacity-15 mix-blend-screen">
               <img 
@@ -1814,9 +1814,9 @@ export default function SyncPulseLandingAndApp() {
                   <span className="text-xs font-mono-code text-blue-400 font-bold bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">
                     STEP 1: PROACTIVE IN-APP CHECK-IN
                   </span>
-                  <h3 className="text-xl md:text-2xl font-black text-white mt-2">AI Coordinator Reaches Out to Kabir</h3>
+                  <h3 className="text-xl md:text-2xl font-black text-stone-900 mt-2">AI Coordinator Reaches Out to Kabir</h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#0e162e] border border-blue-500/30 text-xs md:text-sm text-blue-200 text-left shadow-lg">
+                <div className="p-4 rounded-2xl bg-white border border-blue-200 text-xs md:text-sm text-stone-800 text-left shadow-md">
                   💬 <strong>SyncPulse AI:</strong> &quot;Hey Kabir! Scheduled milestone check-in for <strong>[AI-103] Llama-3 Fine-Tuning</strong>. Are you facing any blockers with GPU compute or datasets?&quot;
                 </div>
               </div>
@@ -1831,9 +1831,9 @@ export default function SyncPulseLandingAndApp() {
                   <span className="text-xs font-mono-code text-amber-400 font-bold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
                     STEP 2: NATURAL HUMAN RESPONSE
                   </span>
-                  <h3 className="text-xl md:text-2xl font-black text-white mt-2">Kabir Replies in Plain Words</h3>
+                  <h3 className="text-xl md:text-2xl font-black text-stone-900 mt-2">Kabir Replies in Plain Words</h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#1f170c] border border-amber-500/30 text-xs md:text-sm text-amber-200 text-left shadow-lg">
+                <div className="p-4 rounded-2xl bg-white border border-amber-200 text-xs md:text-sm text-stone-800 text-left shadow-md">
                   👤 <strong>Kabir:</strong> &quot;I have configured the LoRA training scripts, but I am stuck because I need GPU cluster API keys and model weights from Meera.&quot;
                 </div>
               </div>
@@ -1848,9 +1848,9 @@ export default function SyncPulseLandingAndApp() {
                   <span className="text-xs font-mono-code text-indigo-400 font-bold bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20">
                     STEP 3: MISTRAL AI AGENT REASONING
                   </span>
-                  <h3 className="text-xl md:text-2xl font-black text-white mt-2">Semantic Dependency Extraction</h3>
+                  <h3 className="text-xl md:text-2xl font-black text-stone-900 mt-2">Semantic Dependency Extraction</h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#0f1124] border border-indigo-500/40 text-xs text-indigo-200 text-left font-mono-code space-y-1 shadow-xl">
+                <div className="p-4 rounded-2xl bg-white border border-indigo-200 text-xs text-stone-800 text-left font-mono-code space-y-1 shadow-md">
                   <div>• <strong>Status Inferred:</strong> <span className="text-red-400 font-bold">BLOCKED</span></div>
                   <div>• <strong>Bottleneck Reason:</strong> &quot;Waiting for GPU API keys & weights&quot;</div>
                   <div>• <strong>Blocking Teammate:</strong> <span className="text-emerald-400 font-bold">Meera</span></div>
@@ -1868,9 +1868,9 @@ export default function SyncPulseLandingAndApp() {
                   <span className="text-xs font-mono-code text-red-400 font-bold bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/20">
                     STEP 4: AUTONOMOUS ESCALATION
                   </span>
-                  <h3 className="text-xl md:text-2xl font-black text-white mt-2">AI Nudges Meera to Unblock Immediately</h3>
+                  <h3 className="text-xl md:text-2xl font-black text-stone-900 mt-2">AI Nudges Meera to Unblock Immediately</h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#240c0f] border border-red-500/40 text-xs md:text-sm text-red-200 text-left shadow-lg">
+                <div className="p-4 rounded-2xl bg-white border border-red-200 text-xs md:text-sm text-stone-800 text-left shadow-md">
                   ⚡ <strong>Autonomous Alert to Meera:</strong> &quot;🚨 Hey Meera! Kabir is blocked waiting on GPU cluster API keys for Llama-3 fine-tuning. Please share credentials to keep the project on track!&quot;
                 </div>
               </div>
@@ -1885,14 +1885,14 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="omnichannel" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-mono-code uppercase tracking-wider">
-            <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 border border-amber-300/60 text-amber-900 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Radio className="w-3.5 h-3.5 text-[#C89D5C] animate-pulse" />
             <span>OMNICHANNEL DISPATCH ENGINE · ZERO IT FRICTION</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-stone-900 tracking-tight">
             Reaching Teammates Wherever They Work
           </h2>
-          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm text-stone-500 max-w-2xl mx-auto">
             Hackathon mentors noted that university firewalls often block Telegram, while enterprise teams live inside Slack. SyncPulse AI solves this with true omnichannel redundancy.
           </p>
         </div>
@@ -1904,8 +1904,8 @@ export default function SyncPulseLandingAndApp() {
             onClick={() => setActiveChannelTab("telegram")}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
               activeChannelTab === "telegram"
-                ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/80 shadow-lg shadow-cyan-950/50"
-                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+                ? "bg-amber-100 text-amber-900 border-amber-400 shadow-sm"
+                : "bg-white text-stone-600 border-stone-200 hover:border-stone-300"
             }`}
           >
             <Send className="w-3.5 h-3.5 text-cyan-400" />
@@ -1917,8 +1917,8 @@ export default function SyncPulseLandingAndApp() {
             onClick={() => setActiveChannelTab("web")}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
               activeChannelTab === "web"
-                ? "bg-red-500/20 text-red-300 border-red-500/80 shadow-lg shadow-red-950/50"
-                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+                ? "bg-amber-100 text-amber-900 border-amber-400 shadow-sm"
+                : "bg-white text-stone-600 border-stone-200 hover:border-stone-300"
             }`}
           >
             <Globe className="w-3.5 h-3.5 text-red-400" />
@@ -1930,8 +1930,8 @@ export default function SyncPulseLandingAndApp() {
             onClick={() => setActiveChannelTab("slack")}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
               activeChannelTab === "slack"
-                ? "bg-purple-500/20 text-purple-300 border-purple-500/80 shadow-lg shadow-purple-950/50"
-                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+                ? "bg-amber-100 text-amber-900 border-amber-400 shadow-sm"
+                : "bg-white text-stone-600 border-stone-200 hover:border-stone-300"
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5 text-purple-400" />
@@ -1943,8 +1943,8 @@ export default function SyncPulseLandingAndApp() {
             onClick={() => setActiveChannelTab("email")}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
               activeChannelTab === "email"
-                ? "bg-amber-500/20 text-amber-300 border-amber-500/80 shadow-lg shadow-amber-950/50"
-                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+                ? "bg-amber-100 text-amber-900 border-amber-400 shadow-sm"
+                : "bg-white text-stone-600 border-stone-200 hover:border-stone-300"
             }`}
           >
             <Mail className="w-3.5 h-3.5 text-amber-400" />
@@ -1953,7 +1953,7 @@ export default function SyncPulseLandingAndApp() {
         </div>
 
         {/* Channel Live Mockup Frame */}
-        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-white/10 overflow-hidden shadow-2xl">
+        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-amber-200/60 overflow-hidden shadow-xl">
           
           {/* Active Tab Preview */}
           <div className="p-6 md:p-8">
@@ -2218,7 +2218,7 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Bottom Bar: Raw JSON Toggle */}
-          <div className="px-6 py-3.5 bg-slate-950/90 border-t border-white/10 flex items-center justify-between">
+          <div className="px-6 py-3.5 bg-stone-50 border-t border-stone-200 flex items-center justify-between">
             <button
               type="button"
               onClick={() => setShowChannelJson(!showChannelJson)}
@@ -2262,10 +2262,10 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="impact" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+          <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
             BUSINESS IMPACT & ROI
           </span>
-          <h2 className="text-3xl md:text-4xl font-black text-white">
+          <h2 className="text-3xl md:text-4xl font-black text-stone-900">
             Traditional Standup Friction vs SyncPulse AI
           </h2>
           <p className="text-xs md:text-sm text-slate-400">
@@ -2275,7 +2275,7 @@ export default function SyncPulseLandingAndApp() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Traditional Broken Way */}
-          <div className="glass-card p-6 md:p-8 rounded-3xl border border-red-900/50 space-y-5 bg-gradient-to-br from-red-950/20 to-slate-950 hover:border-red-500/40 transition group">
+          <div className="glass-card p-6 md:p-8 rounded-3xl border border-red-200 space-y-5 bg-gradient-to-br from-red-50 to-white hover:border-red-300 transition group">
             {/* Visual Image Banner */}
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
@@ -2294,7 +2294,7 @@ export default function SyncPulseLandingAndApp() {
               <span>Without SyncPulse (Traditional Standup)</span>
             </div>
 
-            <ul className="space-y-3.5 text-xs text-slate-300">
+            <ul className="space-y-3.5 text-xs text-stone-700">
               <li className="flex items-start gap-2.5">
                 <span className="text-red-400 font-bold">•</span>
                 <span>Kabir stays blocked for <strong>8+ hours</strong> without anyone noticing.</span>
@@ -2315,7 +2315,7 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* SyncPulse AI Autonomous Way */}
-          <div className="glass-card p-6 md:p-8 rounded-3xl border border-emerald-500/50 space-y-5 bg-gradient-to-br from-emerald-950/30 to-slate-950 glow-green hover:border-emerald-400 transition group">
+          <div className="glass-card p-6 md:p-8 rounded-3xl border border-emerald-300 space-y-5 bg-gradient-to-br from-emerald-50 to-white hover:border-emerald-400 transition group">
             {/* Visual Image Banner */}
             <div className="img-cyber-frame h-36 w-full relative">
               <img 
@@ -2335,7 +2335,7 @@ export default function SyncPulseLandingAndApp() {
               <span>With SyncPulse AI (Our Solution)</span>
             </div>
 
-            <ul className="space-y-3.5 text-xs text-slate-200">
+            <ul className="space-y-3.5 text-xs text-stone-700">
               <li className="flex items-start gap-2.5">
                 <span className="text-emerald-400 font-bold">•</span>
                 <span>AI proactively checks in on Kabir within sprint milestone cycle.</span>
@@ -2362,29 +2362,29 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="roi-calculator" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-mono-code uppercase tracking-wider">
-            <Calculator className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 border border-amber-300/60 text-amber-900 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Calculator className="w-3.5 h-3.5 text-[#C89D5C] animate-pulse" />
             <span>EXECUTIVE ROI & VELOCITY SIMULATOR</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-stone-900 tracking-tight">
             Calculate Your Team&apos;s Reclaimed Hours & Capital
           </h2>
-          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm text-stone-500 max-w-2xl mx-auto">
             Traditional daily standups and unaddressed blocker delays cost modern engineering teams 100+ wasted hours per developer each year. Calculate your team&apos;s exact ROI with SyncPulse AI.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           {/* Sliders Control Panel (Col 7) */}
-          <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-6">
+          <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl border border-stone-200 bg-white space-y-6 shadow-md">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
                 <Sliders className="w-4 h-4 text-emerald-400" />
                 <span>Sprint Cohort Parameters</span>
               </h3>
               
               {/* Currency Selector */}
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-white/10">
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-stone-100 border border-stone-200">
                 <button
                   type="button"
                   onClick={() => {
@@ -2415,8 +2415,8 @@ export default function SyncPulseLandingAndApp() {
             {/* Slider 1: Team Size */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-slate-300">Engineering Cohort Size:</span>
-                <span className="text-emerald-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                <span className="text-stone-700">Engineering Cohort Size:</span>
+                <span className="text-emerald-800 font-mono-code bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200">
                   {calcTeamSize} Engineers
                 </span>
               </div>
@@ -2438,8 +2438,8 @@ export default function SyncPulseLandingAndApp() {
             {/* Slider 2: Average Hourly Rate */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-slate-300">Average Developer Rate:</span>
-                <span className="text-emerald-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                <span className="text-stone-700">Average Developer Rate:</span>
+                <span className="text-emerald-800 font-mono-code bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200">
                   {calcCurrency === "USD" ? `$${calcHourlyRate}/hr` : `₹${calcHourlyRate.toLocaleString()}/hr`}
                 </span>
               </div>
@@ -2462,8 +2462,8 @@ export default function SyncPulseLandingAndApp() {
             {/* Slider 3: Blockers Per Week */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-slate-300">Average Dependency Blockers / Week:</span>
-                <span className="text-amber-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-amber-500/30">
+                <span className="text-stone-700">Average Dependency Blockers / Week:</span>
+                <span className="text-amber-800 font-mono-code bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200">
                   {calcBlockersPerWeek} Blockers / Wk
                 </span>
               </div>
@@ -2483,7 +2483,7 @@ export default function SyncPulseLandingAndApp() {
             </div>
 
             {/* Summary Note */}
-            <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-white/5 text-[11px] text-slate-400 flex items-start gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 text-[11px] text-stone-600 flex items-start gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
               <span>
                 Based on benchmarked <strong>45-second automated unblock latency</strong> compared against traditional 8.4-hour overnight standup waiting periods.
@@ -2494,7 +2494,7 @@ export default function SyncPulseLandingAndApp() {
           {/* Dynamic Computed Outputs (Col 5) */}
           <div className="lg:col-span-5 space-y-4">
             {/* Big Headline Output */}
-            <div className="glass-card p-6 md:p-8 rounded-3xl border border-emerald-500/50 bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 shadow-2xl glow-green space-y-3">
+            <div className="glass-card p-6 md:p-8 rounded-3xl border border-amber-300/80 bg-gradient-to-br from-amber-50 via-white to-amber-50/40 shadow-xl space-y-3">
               <span className="text-[10px] font-mono-code text-emerald-300 uppercase tracking-widest font-bold">
                 ANNUAL CAPITAL LOSS PREVENTED
               </span>
@@ -2579,19 +2579,19 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+          <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
             EVALUATION & BENCHMARKS
           </span>
-          <h2 className="text-3xl font-black text-white">Mentor & Industry Feedback</h2>
+          <h2 className="text-3xl font-black text-stone-900">Mentor & Industry Feedback</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-red-500/40 transition group">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white space-y-4 hover:border-[#C89D5C] shadow-sm transition group">
             <div className="flex items-center justify-between">
               <div className="text-amber-400 text-sm">★★★★★</div>
               <span className="text-[10px] font-mono-code text-slate-500">VERIFIED MENTOR</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed italic">
+            <p className="text-xs text-stone-600 leading-relaxed italic">
               &quot;The Web-Native architecture directly solves the enterprise dilemma where colleges and banks cannot permit Telegram. Pure brilliance.&quot;
             </p>
             <div className="pt-3 border-t border-white/10 flex items-center gap-3">
@@ -2603,18 +2603,18 @@ export default function SyncPulseLandingAndApp() {
                 />
               </div>
               <div>
-                <strong className="text-white text-xs block">College Mentors & Faculty</strong>
+                <strong className="text-stone-900 text-xs block">College Mentors & Faculty</strong>
                 <div className="text-[10px] text-slate-400">Dr. D.Y. Patil Institute, Pune</div>
               </div>
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-cyan-500/40 transition group">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white space-y-4 hover:border-[#C89D5C] shadow-sm transition group">
             <div className="flex items-center justify-between">
               <div className="text-amber-400 text-sm">★★★★★</div>
               <span className="text-[10px] font-mono-code text-slate-500">OFFICIAL JURY</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed italic">
+            <p className="text-xs text-stone-600 leading-relaxed italic">
               &quot;Natural language parsing from human replies into structured task blockers represents real-world agentic workflow engineering.&quot;
             </p>
             <div className="pt-3 border-t border-white/10 flex items-center gap-3">
@@ -2626,18 +2626,18 @@ export default function SyncPulseLandingAndApp() {
                 />
               </div>
               <div>
-                <strong className="text-white text-xs block">Track W-PS-1 Judges</strong>
+                <strong className="text-stone-900 text-xs block">Track W-PS-1 Judges</strong>
                 <div className="text-[10px] text-slate-400">Hackathon Kurukshetra</div>
               </div>
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-emerald-500/40 transition group">
+          <div className="glass-card p-6 rounded-3xl border border-amber-200/50 bg-white space-y-4 hover:border-[#C89D5C] shadow-sm transition group">
             <div className="flex items-center justify-between">
               <div className="text-amber-400 text-sm">★★★★★</div>
               <span className="text-[10px] font-mono-code text-slate-500">SPONSOR REVIEW</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed italic">
+            <p className="text-xs text-stone-600 leading-relaxed italic">
               &quot;Autonomous escalation that actually nudges the blocking engineer without human manager intervention is a 1st prize caliber solution.&quot;
             </p>
             <div className="pt-3 border-t border-white/10 flex items-center gap-3">
@@ -2649,7 +2649,7 @@ export default function SyncPulseLandingAndApp() {
                 />
               </div>
               <div>
-                <strong className="text-white text-xs block">AI Project Sponsors</strong>
+                <strong className="text-stone-900 text-xs block">AI Project Sponsors</strong>
                 <div className="text-[10px] text-slate-400">Powered by Worcflow.ai</div>
               </div>
             </div>
@@ -2662,10 +2662,10 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       <section id="faq" className="py-16 px-4 md:px-8 max-w-4xl mx-auto w-full">
         <div className="text-center mb-10 space-y-2">
-          <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+          <span className="text-xs font-bold font-mono-code text-amber-900 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300/60">
             FREQUENT QUESTIONS
           </span>
-          <h2 className="text-3xl font-black text-white">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-black text-stone-900">Frequently Asked Questions</h2>
         </div>
 
         <div className="space-y-4">
@@ -2689,18 +2689,18 @@ export default function SyncPulseLandingAndApp() {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="glass-card rounded-2xl border border-white/10 overflow-hidden transition"
+              className="glass-card rounded-2xl border border-amber-200/50 bg-white overflow-hidden shadow-sm transition"
             >
               <button
                 onClick={() => toggleFaq(idx)}
-                className="w-full p-5 text-left font-bold text-sm text-white flex items-center justify-between gap-4"
+                className="w-full p-5 text-left font-bold text-sm text-stone-900 flex items-center justify-between gap-4"
               >
                 <span>{item.q}</span>
                 <ChevronDown className={`w-4 h-4 text-red-400 transition-transform ${openFaq === idx ? "rotate-180" : ""}`} />
               </button>
 
               {openFaq === idx && (
-                <div className="px-5 pb-5 text-xs text-slate-300 leading-relaxed border-t border-white/5 pt-3 animate-fadeIn">
+                <div className="px-5 pb-5 text-xs text-stone-600 leading-relaxed border-t border-stone-100 pt-3 animate-fadeIn">
                   {item.a}
                 </div>
               )}
@@ -2716,7 +2716,7 @@ export default function SyncPulseLandingAndApp() {
       {/* 12. SECTION 11: CALL TO ACTION BANNER */}
       {/* ========================================================================= */}
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
-        <div className="glass-panel p-8 md:p-14 rounded-3xl border border-red-500/40 text-center space-y-6 bg-gradient-to-tr from-red-950/60 via-slate-900 to-indigo-950/60 shadow-2xl glow-red relative overflow-hidden">
+        <div className="glass-panel p-8 md:p-14 rounded-3xl border border-amber-200/70 text-center space-y-6 bg-gradient-to-tr from-[#FAF7F2] via-white to-amber-50/60 shadow-xl relative overflow-hidden">
           
           {/* Panoramic Cyber Background Image */}
           <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen">
@@ -2734,17 +2734,17 @@ export default function SyncPulseLandingAndApp() {
             <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
               HACKATHON KURUKSHETRA READY · TRACK W-PS-1
             </span>
-            <h2 className="text-3xl md:text-5xl font-black text-white max-w-2xl mx-auto tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-black text-stone-900 max-w-2xl mx-auto tracking-tight">
               Put Your Group Projects On <span className="gradient-text-shimmer">Autonomous Autopilot</span>
             </h2>
-            <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs md:text-sm text-stone-600 max-w-xl mx-auto leading-relaxed">
               Eliminate wasted standups, discover hidden bottlenecks in real time, and deliver every project milestone on schedule with zero friction.
             </p>
 
             <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
               <button
                 onClick={() => setIsAdminModalOpen(true)}
-                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2 hover:scale-105 active:scale-95"
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-amber-900/15 flex items-center gap-2 hover:scale-105 active:scale-95"
               >
                 <Lock className="w-4 h-4" />
                 <span>Access Admin Gateway</span>
@@ -2754,7 +2754,7 @@ export default function SyncPulseLandingAndApp() {
                 href="https://t.me/syncpulse_solver_bot"
                 target="_blank"
                 rel="noreferrer"
-                className="px-8 py-4 rounded-2xl glass-card hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition border border-white/10 flex items-center gap-2 hover:scale-105 active:scale-95"
+                className="px-8 py-4 rounded-2xl glass-card hover:bg-stone-50 text-stone-800 font-bold text-xs uppercase tracking-wider transition border border-amber-200/60 flex items-center gap-2 hover:scale-105 active:scale-95"
               >
                 <Send className="w-4 h-4 text-cyan-400" />
                 <span>Open Telegram Bot (@syncpulse_solver_bot)</span>
@@ -2769,7 +2769,7 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {isAdminAuthenticated && (
         <section id="admin-console" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full border-t border-red-500/30">
-          <div className="glass-panel p-8 rounded-3xl border border-red-500/40 space-y-6 shadow-2xl">
+          <div className="glass-panel p-8 rounded-3xl border border-amber-200/60 space-y-6 shadow-xl bg-white">
             
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -2780,7 +2780,7 @@ export default function SyncPulseLandingAndApp() {
                   </span>
                   <span className="text-xs text-slate-400 font-mono-code">({adminEmail})</span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-black text-white mt-1">
+                <h2 className="text-2xl md:text-3xl font-black text-stone-900 mt-1">
                   Sprint Command Center ({tasks.length} Members)
                 </h2>
               </div>
@@ -2796,7 +2796,7 @@ export default function SyncPulseLandingAndApp() {
 
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700 transition"
+                  className="px-4 py-2.5 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold border border-stone-200 transition"
                 >
                   Logout
                 </button>
@@ -2812,7 +2812,7 @@ export default function SyncPulseLandingAndApp() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by engineer (Kabir, Jaswant) or model..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500 font-mono-code"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#C89D5C] font-mono-code"
                 />
               </div>
 
@@ -2912,7 +2912,7 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 14. FOOTER (RICH MULTI-COLUMN DESIGN LIKE REFERENCE SITE) */}
       {/* ========================================================================= */}
-      <footer className="border-t border-white/10 bg-[#03050c] pt-16 pb-8 px-4 md:px-8 text-xs text-slate-400">
+      <footer className="border-t border-stone-800 bg-[#141210] pt-16 pb-8 px-4 md:px-8 text-xs text-stone-400">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/5">
           
           {/* Col 1: Brand Info */}
@@ -2990,11 +2990,11 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {isAdminModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-red-500/40 shadow-2xl relative space-y-6 animate-fadeIn glow-red">
+          <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-amber-200/80 shadow-2xl relative space-y-6 animate-fadeIn bg-white text-stone-900">
             
             <button
               onClick={() => setIsAdminModalOpen(false)}
-              className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition"
+              className="absolute top-4 right-4 p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-900 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -3004,8 +3004,8 @@ export default function SyncPulseLandingAndApp() {
                 <Shield className="w-7 h-7 text-white" />
               </div>
               
-              <h3 className="text-2xl font-black text-white mt-3">
-                SyncPulse <span className="text-red-500">AI</span>
+              <h3 className="text-2xl font-black text-stone-900 mt-3">
+                SyncPulse <span className="text-[#C89D5C]">AI</span>
               </h3>
               <div className="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold bg-red-500/20 text-red-300 border border-red-500/30 font-mono-code uppercase">
                 ADMIN COMMAND LOCK · RESTRICTED ACCESS
@@ -3047,7 +3047,7 @@ export default function SyncPulseLandingAndApp() {
                     value={adminEmail}
                     onChange={(e) => setAdminEmail(e.target.value)}
                     placeholder="rohit.bcastudent25.30916@cimage.in"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500 font-mono-code"
+                    className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
                     required
                   />
                 </div>
@@ -3094,7 +3094,7 @@ export default function SyncPulseLandingAndApp() {
                     value={enteredOtp}
                     onChange={(e) => setEnteredOtp(e.target.value)}
                     placeholder="e.g. 739201"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-cyan-500/50 text-white text-center text-xl tracking-[0.35em] font-mono-code focus:outline-none focus:border-cyan-400 transition"
+                    className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-amber-400 text-stone-900 text-center text-xl tracking-[0.35em] font-mono-code focus:outline-none focus:border-[#C89D5C] transition"
                     autoFocus
                     required
                   />
@@ -3262,7 +3262,7 @@ export default function SyncPulseLandingAndApp() {
       {/* 17. FLOATING EXECUTIVE TELEMETRY HUD (LIVE ACTIVITY STREAM) */}
       {/* ========================================================================= */}
       <div className="fixed bottom-5 right-5 z-40 max-w-xs sm:max-w-sm">
-        <div className="p-3.5 rounded-2xl glass-card border border-white/10 bg-slate-950/90 shadow-2xl backdrop-blur-xl space-y-2">
+        <div className="p-3.5 rounded-2xl glass-card border border-amber-200/70 bg-white/95 shadow-xl backdrop-blur-xl space-y-2 text-stone-800">
           {/* Header */}
           <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-2">
             <div className="flex items-center gap-2">
@@ -3270,7 +3270,7 @@ export default function SyncPulseLandingAndApp() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[10px] font-bold font-mono-code text-white tracking-wider uppercase">
+              <span className="text-[10px] font-bold font-mono-code text-stone-900 tracking-wider uppercase">
                 COORDINATOR LIVE STREAM
               </span>
             </div>
