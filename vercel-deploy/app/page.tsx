@@ -31,6 +31,13 @@ interface Task {
   progress: number;
   specs: string;
   avatarColor: string;
+  // Student Detailed Contact & Academic Profile
+  student_roll_no: string;
+  student_email: string;
+  student_phone: string;
+  student_telegram: string;
+  student_college: string;
+  last_active_time: string;
 }
 
 export default function SyncPulseLandingAndApp() {
@@ -297,7 +304,7 @@ export default function SyncPulseLandingAndApp() {
       task_code: "AI-101",
       title: "BERT Text Classifier Training",
       description: "Fine-tuning 110M parameter BERT for domain intent detection & tokenization.",
-      assigned_to_name: "Meera",
+      assigned_to_name: "Meera Sharma",
       role: "NLP & Data Lead",
       status: "completed",
       priority: "high",
@@ -306,13 +313,19 @@ export default function SyncPulseLandingAndApp() {
       progress: 100,
       specs: "110M params · 99.4% Acc · 12ms",
       avatarColor: "from-emerald-500 to-teal-400",
+      student_roll_no: "CIMAGE-BCA-2026-101",
+      student_email: "meera.sharma26@cimage.in",
+      student_phone: "+91 98350 41201",
+      student_telegram: "@meera_nlp_lead",
+      student_college: "CIMAGE Professional College, Patna",
+      last_active_time: "4 mins ago (Tokenizer Pushed)",
     },
     {
       id: "2",
       task_code: "AI-102",
       title: "ResNet-50 Vision Embedding Pipeline",
       description: "Transfer learning on ResNet-50 feature extractor with ONNX runtime export.",
-      assigned_to_name: "Sumit",
+      assigned_to_name: "Sumit Kumar",
       role: "Computer Vision Engineer",
       status: "completed",
       priority: "high",
@@ -321,30 +334,42 @@ export default function SyncPulseLandingAndApp() {
       progress: 100,
       specs: "25.6M params · TensorRT · 60 FPS",
       avatarColor: "from-blue-500 to-indigo-500",
+      student_roll_no: "CIMAGE-BCA-2026-102",
+      student_email: "sumit.kumar26@cimage.in",
+      student_phone: "+91 94712 88302",
+      student_telegram: "@sumit_vision_dev",
+      student_college: "CIMAGE Professional College, Patna",
+      last_active_time: "12 mins ago (Embeddings Uploaded)",
     },
     {
       id: "3",
       task_code: "AI-103",
       title: "Llama-3 8B Instruction Fine-Tuning",
-      description: "LoRA adapter training for task synthesis. Paused waiting for GPU cluster credentials.",
-      assigned_to_name: "Kabir",
+      description: "LoRA adapter training for task synthesis. Paused waiting for GPU cluster credentials from Meera.",
+      assigned_to_name: "Kabir Verma",
       role: "LLM Systems Engineer",
       status: "blocked",
       priority: "urgent",
       is_blocked: true,
       blocker_reason: "Waiting for GPU Cluster API Key & S3 Weights from Meera",
-      blocked_by_member_name: "Meera",
+      blocked_by_member_name: "Meera Sharma",
       model_type: "LLM LoRA Engine (Llama-3)",
       progress: 35,
       specs: "8B params · 4-bit QLoRA · Needs A100",
       avatarColor: "from-rose-500 to-red-600",
+      student_roll_no: "CIMAGE-BCA-2026-103",
+      student_email: "kabir.verma26@cimage.in",
+      student_phone: "+91 91234 56789",
+      student_telegram: "@kabir_llama3_eng",
+      student_college: "CIMAGE Professional College, Patna",
+      last_active_time: "Halted (Stuck 45 mins · Bot Nudge Pending)",
     },
     {
       id: "4",
       task_code: "AI-104",
       title: "Whisper Audio Speech-to-Text Model",
       description: "Audio spectrogram preprocessing & real-time streaming inference testing.",
-      assigned_to_name: "Jaswant",
+      assigned_to_name: "Jaswant Singh",
       role: "Speech & Audio Engineer",
       status: "in_progress",
       priority: "medium",
@@ -353,6 +378,12 @@ export default function SyncPulseLandingAndApp() {
       progress: 70,
       specs: "39M params · Mel-spectrogram · 0.8x RTF",
       avatarColor: "from-cyan-500 to-blue-400",
+      student_roll_no: "CIMAGE-BCA-2026-104",
+      student_email: "jaswant.singh26@cimage.in",
+      student_phone: "+91 97890 12345",
+      student_telegram: "@jaswant_audio_ml",
+      student_college: "CIMAGE Professional College, Patna",
+      last_active_time: "Active (Preprocessing Spectrograms)",
     },
   ]);
 
@@ -403,6 +434,68 @@ export default function SyncPulseLandingAndApp() {
   const [newModelTitle, setNewModelTitle] = useState("");
   const [newModelType, setNewModelType] = useState("Deep Learning");
   const [newPriority, setNewPriority] = useState<"low" | "medium" | "high" | "urgent">("high");
+  const [newRollNo, setNewRollNo] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newTelegram, setNewTelegram] = useState("");
+
+  // Emergency Human Intervention / Bot Fallback State
+  const [isEmergencyModalOpen, setIsEmergencyModalOpen] = useState<boolean>(false);
+  const [emergencyTargetTask, setEmergencyTargetTask] = useState<Task | null>(null);
+  const [emergencyMessage, setEmergencyMessage] = useState<string>("");
+  const [emergencySentChannels, setEmergencySentChannels] = useState<{
+    whatsapp: boolean;
+    telegram: boolean;
+    email: boolean;
+  }>({ whatsapp: true, telegram: true, email: true });
+  const [isEmergencySending, setIsEmergencySending] = useState<boolean>(false);
+  const [emergencySuccessToast, setEmergencySuccessToast] = useState<string>("");
+
+  const openEmergencyDispatcher = (task: Task) => {
+    setEmergencyTargetTask(task);
+    setEmergencyMessage(
+      task.is_blocked
+        ? `Hello ${task.assigned_to_name}, this is Project Coordinator Rohit. I noticed you are blocked on task [${task.task_code}] waiting for ${task.blocked_by_member_name || "teammates"}. I am directly dispatching the required GPU credentials & checkpoint access token: [sk-mistral-cluster-token-2026]. Please confirm when received and resume fine-tuning.`
+        : `Hello ${task.assigned_to_name}, Project Coordinator Rohit here. Scheduled milestone check-in for [${task.task_code}]: ${task.title}. Please confirm if you need additional cluster resources.`
+    );
+    setIsEmergencyModalOpen(true);
+  };
+
+  const handleDispatchEmergency = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emergencyTargetTask) return;
+    setIsEmergencySending(true);
+
+    setTimeout(() => {
+      setIsEmergencySending(false);
+      setIsEmergencyModalOpen(false);
+
+      // If target task was blocked, automatically unblock upon manual rescue!
+      if (emergencyTargetTask.is_blocked) {
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === emergencyTargetTask.id
+              ? {
+                  ...t,
+                  status: "completed",
+                  is_blocked: false,
+                  progress: 100,
+                  blocker_reason: undefined,
+                  blocked_by_member_name: undefined,
+                  last_active_time: "Rescued & Unblocked by Admin Rohit (100% DONE)",
+                }
+              : t
+          )
+        );
+      }
+
+      setEmergencySuccessToast(
+        `Direct Intervention Dispatched to ${emergencyTargetTask.assigned_to_name} (${emergencyTargetTask.student_phone} · ${emergencyTargetTask.student_email})! Bot fallback handled.`
+      );
+
+      setTimeout(() => setEmergencySuccessToast(""), 7000);
+    }, 1200);
+  };
 
   const handleAddNewMember = (e: React.FormEvent) => {
     e.preventDefault();
@@ -429,14 +522,24 @@ export default function SyncPulseLandingAndApp() {
       priority: newPriority,
       is_blocked: false,
       model_type: newModelType,
-      progress: 20,
+      progress: 25,
       specs: "Automated Tracking Active · Live Pulse",
       avatarColor: pickedColor,
+      student_roll_no: newRollNo || `CIMAGE-2026-AI${100 + tasks.length + 1}`,
+      student_email: newEmail || `${newMemberName.toLowerCase().replace(/\s+/g, '.')}26@cimage.in`,
+      student_phone: newPhone || "+91 98765 00000",
+      student_telegram: newTelegram ? (newTelegram.startsWith('@') ? newTelegram : `@${newTelegram}`) : `@${newMemberName.toLowerCase().replace(/\s+/g, '_')}_ai`,
+      student_college: "CIMAGE Professional College, Patna",
+      last_active_time: "Just Assigned by Admin Rohit",
     };
 
     setTasks((prev) => [newTask, ...prev]);
     setNewMemberName("");
     setNewModelTitle("");
+    setNewRollNo("");
+    setNewPhone("");
+    setNewEmail("");
+    setNewTelegram("");
     setIsAddModalOpen(false);
   };
 
@@ -2873,8 +2976,19 @@ export default function SyncPulseLandingAndApp() {
               </div>
             </div>
 
-            {/* Task Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Success Toast for Emergency Intervention */}
+            {emergencySuccessToast && (
+              <div className="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 text-xs font-bold font-cinzel animate-fadeIn flex items-center justify-between shadow-lg">
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <span>{emergencySuccessToast}</span>
+                </div>
+                <button onClick={() => setEmergencySuccessToast("")} className="text-emerald-700 hover:text-emerald-950 font-mono-code text-sm">✕</button>
+              </div>
+            )}
+
+            {/* Task Cards Grid with Full Student Contact Dossier & Rescue Bar */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filteredTasks.map((task) => {
                 const isBlocked = task.is_blocked;
                 const isDone = task.status === "completed";
@@ -2882,45 +2996,175 @@ export default function SyncPulseLandingAndApp() {
                 return (
                   <div
                     key={task.id}
-                    className={`p-5 rounded-3xl border glass-card transition-all ${
+                    className={`p-6 rounded-3xl border-2 transition-all space-y-4 shadow-sm hover:shadow-md ${
                       isBlocked
-                        ? "border-red-500/60 bg-red-950/20 glow-red"
+                        ? "border-red-400 bg-red-50/60 shadow-red-900/10"
                         : isDone
-                        ? "border-emerald-500/30 bg-emerald-950/10"
-                        : "border-slate-800 bg-slate-900/40"
+                        ? "border-emerald-300 bg-emerald-50/30"
+                        : "border-amber-200/80 bg-white"
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-3 font-mono-code text-xs">
-                      <span className="px-2 py-0.5 rounded bg-white/10 text-slate-300 font-bold">{task.task_code}</span>
-                      <span className={`px-2.5 py-0.5 rounded-full font-bold ${
-                        isBlocked ? "bg-red-500/20 text-red-300" : isDone ? "bg-emerald-500/20 text-emerald-300" : "bg-cyan-500/20 text-cyan-300"
-                      }`}>
-                        {isBlocked ? "🚨 BLOCKED" : isDone ? "COMPLETED" : "IN PROGRESS"}
-                      </span>
+                    {/* Header: Code & Live Status Badge */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-bold font-mono-code text-xs border border-amber-300/60 shadow-xs">
+                          {task.task_code}
+                        </span>
+                        <span className="text-[10px] font-mono-code text-stone-500 uppercase px-2 py-0.5 rounded-full bg-stone-100">
+                          {task.model_type}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold font-cinzel tracking-wider border shadow-xs ${
+                          isBlocked
+                            ? "bg-red-100 text-red-800 border-red-300 animate-pulse"
+                            : isDone
+                            ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                            : "bg-blue-100 text-blue-800 border-blue-300"
+                        }`}>
+                          {isBlocked ? "🚨 BLOCKED" : isDone ? "COMPLETED ✓" : "IN PROGRESS ⚡"}
+                        </span>
+                      </div>
                     </div>
 
-                    <h4 className="text-base font-bold text-white mb-1">{task.title}</h4>
-                    <p className="text-xs text-slate-400 mb-3">{task.description}</p>
+                    {/* Task Title & Description */}
+                    <div>
+                      <h4 className="text-base md:text-lg font-bold text-stone-900 font-cinzel leading-snug">
+                        {task.title}
+                      </h4>
+                      <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                        {task.description}
+                      </p>
+                    </div>
 
+                    {/* Blocker Alert Banner (if stuck) */}
                     {isBlocked && (
-                      <div className="p-2.5 rounded-xl bg-red-950/80 border border-red-700/60 text-xs text-red-300 mb-3">
-                        <strong>Bottleneck:</strong> {task.blocker_reason}
+                      <div className="p-3.5 rounded-2xl bg-red-100 border border-red-300 text-xs text-red-900 space-y-1 shadow-xs">
+                        <div className="font-bold flex items-center gap-1.5 text-red-800">
+                          <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                          <span>BOT ESCALATION ACTIVE: Bottleneck Detected</span>
+                        </div>
+                        <div className="text-[11px] leading-relaxed">
+                          <strong>Reason:</strong> {task.blocker_reason}
+                        </div>
+                        <div className="text-[10px] text-red-700 font-mono-code pt-0.5">
+                          Waiting On Teammate: <strong>{task.blocked_by_member_name || "Meera"}</strong> · Autonomous Nudge Sent via Telegram Bot
+                        </div>
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-xs pt-3 border-t border-white/5">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-7 h-7 rounded-full bg-gradient-to-tr ${task.avatarColor} text-white font-bold flex items-center justify-center text-[10px]`}>
-                          {task.assigned_to_name.substring(0, 2).toUpperCase()}
+                    {/* Full Student Identity & Contact Dossier (Visible Only To Authenticated Admin) */}
+                    <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-amber-200/80 space-y-3">
+                      <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                        <div className="flex items-center gap-2.5">
+                          <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${task.avatarColor} text-white font-bold flex items-center justify-center text-xs shadow-sm`}>
+                            {task.assigned_to_name.substring(0, 2).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="text-sm font-bold text-stone-900 font-cinzel flex items-center gap-2">
+                              <span>{task.assigned_to_name}</span>
+                              <span className="text-[10px] font-mono-code px-2 py-0.5 rounded-full bg-stone-200/70 text-stone-700 font-semibold">
+                                {task.student_roll_no}
+                              </span>
+                            </div>
+                            <div className="text-[11px] text-stone-500">{task.role} · {task.student_college}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="text-white font-bold">{task.assigned_to_name}</div>
-                          <div className="text-[10px] text-slate-400">{task.role}</div>
+
+                        <div className="text-right">
+                          <div className="text-[10px] text-stone-500 font-mono-code">Sprint Velocity</div>
+                          <div className="text-xs font-bold text-stone-900 font-mono-code">{task.progress}% Progress</div>
                         </div>
                       </div>
 
-                      <span className="text-[11px] font-mono-code text-slate-400">{task.progress}% Progress</span>
+                      {/* Direct Student Contact Numbers & Handles */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono-code text-stone-800">
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-stone-200 shadow-xs">
+                          <Phone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <a href={`tel:${task.student_phone.replace(/\s+/g, '')}`} className="hover:text-emerald-700 hover:underline font-bold">
+                            {task.student_phone}
+                          </a>
+                        </div>
+
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-stone-200 shadow-xs">
+                          <Mail className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          <a href={`mailto:${task.student_email}`} className="truncate hover:text-amber-700 hover:underline font-bold" title={task.student_email}>
+                            {task.student_email}
+                          </a>
+                        </div>
+
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-stone-200 shadow-xs">
+                          <Send className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
+                          <a href={`https://t.me/${task.student_telegram.replace('@', '')}`} target="_blank" rel="noreferrer" className="hover:text-cyan-700 hover:underline font-bold">
+                            {task.student_telegram}
+                          </a>
+                        </div>
+
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-stone-200 shadow-xs">
+                          <Clock className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                          <span className="text-[11px] text-stone-600 truncate">{task.last_active_time}</span>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Emergency Direct Communication & Bot Fallback Action Bar */}
+                    <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-stone-200/80">
+                      {/* 1-Click Multi-Channel Contact Triggers */}
+                      <div className="flex items-center gap-1.5">
+                        <a
+                          href={`https://wa.me/${task.student_phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                            `Hello ${task.assigned_to_name}, this is Project Coordinator Rohit. Checking in on task [${task.task_code}]: ${task.title}.`
+                          )}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold transition flex items-center gap-1 shadow-xs"
+                          title="Direct WhatsApp Message"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>WhatsApp</span>
+                        </a>
+
+                        <a
+                          href={`mailto:${task.student_email}?subject=${encodeURIComponent(
+                            `[SyncPulse AI Coordinator Alert] Task ${task.task_code} Update`
+                          )}&body=${encodeURIComponent(
+                            `Hi ${task.assigned_to_name},\n\nRegarding task ${task.task_code} (${task.title}):\nStatus: ${task.status}\n\nPlease share latest progress or required credentials.\n\nBest,\nRohit (Lead Coordinator)`
+                          )}`}
+                          className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition flex items-center gap-1 shadow-xs"
+                          title="Direct Priority Email"
+                        >
+                          <Mail className="w-3.5 h-3.5 text-amber-600" />
+                          <span>Email</span>
+                        </a>
+
+                        <a
+                          href={`https://t.me/${task.student_telegram.replace('@', '')}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-3 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-300 text-xs font-bold transition flex items-center gap-1 shadow-xs"
+                          title="Direct Telegram DM"
+                        >
+                          <Send className="w-3.5 h-3.5 text-cyan-600" />
+                          <span>Telegram</span>
+                        </a>
+                      </div>
+
+                      {/* Direct In-App Emergency Rescue Dispatcher Button */}
+                      <button
+                        type="button"
+                        onClick={() => openEmergencyDispatcher(task)}
+                        className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center gap-1.5 font-cinzel ${
+                          isBlocked
+                            ? "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white shadow-red-900/20 animate-pulse"
+                            : "bg-gradient-to-r from-[#C89D5C] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white"
+                        }`}
+                      >
+                        <Zap className="w-3.5 h-3.5 fill-white" />
+                        <span>{isBlocked ? "🚨 Dispatch Emergency Rescue" : "Send Instructions / Keys"}</span>
+                      </button>
+                    </div>
+
                   </div>
                 );
               })}
@@ -3094,6 +3338,164 @@ export default function SyncPulseLandingAndApp() {
           </div>
         </div>
       </footer>
+
+      {/* ========================================================================= */}
+      {/* 14.5. MODAL: EMERGENCY INTERVENTION & BOT FALLBACK DISPATCHER */}
+      {/* ========================================================================= */}
+      {isEmergencyModalOpen && emergencyTargetTask && (
+        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-lg glass-panel p-6 md:p-8 rounded-3xl border-2 border-amber-300/80 shadow-2xl relative space-y-5 animate-fadeIn bg-white text-stone-900">
+            
+            <div className="flex items-center justify-between border-b border-stone-200 pb-4">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white font-bold shadow-md ${
+                  emergencyTargetTask.is_blocked ? "bg-red-600 animate-pulse" : "bg-[#C89D5C]"
+                }`}>
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-stone-900 font-cinzel">
+                    {emergencyTargetTask.is_blocked ? "Emergency Blocker Intervention" : "Direct Coordinator Dispatch"}
+                  </h3>
+                  <p className="text-xs text-stone-500">
+                    Human Admin Fallback to bypass automated bot latency
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setIsEmergencyModalOpen(false)}
+                className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-900 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Student Target Summary */}
+            <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-amber-200/80 flex items-center justify-between text-xs">
+              <div>
+                <div className="font-bold text-stone-900 font-cinzel text-sm">
+                  {emergencyTargetTask.assigned_to_name}
+                </div>
+                <div className="text-stone-500 font-mono-code text-[11px]">
+                  Roll No: {emergencyTargetTask.student_roll_no} · {emergencyTargetTask.task_code}
+                </div>
+              </div>
+
+              <div className="text-right font-mono-code text-[11px]">
+                <div className="text-emerald-700 font-bold">{emergencyTargetTask.student_phone}</div>
+                <div className="text-amber-800">{emergencyTargetTask.student_email}</div>
+              </div>
+            </div>
+
+            {/* Quick Action Preset Buttons */}
+            <div className="space-y-1.5">
+              <label className="block text-[11px] font-bold text-stone-700 font-cinzel">
+                Quick Preset Dispatch Message:
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono-code">
+                <button
+                  type="button"
+                  onClick={() => setEmergencyMessage(`Meera has verified the cluster credentials! Here is your access token: [sk-mistral-A100-key-${Math.floor(1000+Math.random()*9000)}]. Please resume LoRA fine-tuning immediately.`)}
+                  className="p-2 rounded-xl bg-stone-50 hover:bg-amber-50 border border-stone-200 text-stone-800 text-left transition hover:border-amber-300"
+                >
+                  🔑 Share GPU & Model Keys
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEmergencyMessage(`Hi ${emergencyTargetTask.assigned_to_name}, let's hop on an urgent 5-minute call on Google Meet to resolve the pipeline roadblock: https://meet.google.com/sync-pulse-rescue`)}
+                  className="p-2 rounded-xl bg-stone-50 hover:bg-amber-50 border border-stone-200 text-stone-800 text-left transition hover:border-amber-300"
+                >
+                  📞 Schedule Quick Voice Sync
+                </button>
+              </div>
+            </div>
+
+            {/* Message Textarea */}
+            <form onSubmit={handleDispatchEmergency} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">
+                  Emergency Instruction / Credential Payload:
+                </label>
+                <textarea
+                  value={emergencyMessage}
+                  onChange={(e) => setEmergencyMessage(e.target.value)}
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-2xl bg-stone-50 border border-stone-300 text-stone-900 text-xs font-mono-code focus:outline-none focus:border-[#C89D5C] focus:ring-1 focus:ring-[#C89D5C] transition leading-relaxed resize-none shadow-inner"
+                  required
+                />
+              </div>
+
+              {/* Multi-Channel Delivery Channels */}
+              <div className="p-3 rounded-xl bg-[#FAF7F2] border border-amber-200/60 space-y-2">
+                <div className="text-[11px] font-bold text-stone-800 font-cinzel">
+                  Deliver Through Redundant Channels:
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-xs font-mono-code">
+                  <label className="flex items-center gap-1.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={emergencySentChannels.whatsapp}
+                      onChange={(e) => setEmergencySentChannels({ ...emergencySentChannels, whatsapp: e.target.checked })}
+                      className="accent-emerald-600 rounded"
+                    />
+                    <span className="text-emerald-800 font-bold">WhatsApp</span>
+                  </label>
+
+                  <label className="flex items-center gap-1.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={emergencySentChannels.telegram}
+                      onChange={(e) => setEmergencySentChannels({ ...emergencySentChannels, telegram: e.target.checked })}
+                      className="accent-cyan-600 rounded"
+                    />
+                    <span className="text-cyan-800 font-bold">Telegram Bot</span>
+                  </label>
+
+                  <label className="flex items-center gap-1.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={emergencySentChannels.email}
+                      onChange={(e) => setEmergencySentChannels({ ...emergencySentChannels, email: e.target.checked })}
+                      className="accent-amber-600 rounded"
+                    />
+                    <span className="text-amber-800 font-bold">Official Email</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Submit Buttons */}
+              <div className="pt-2 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsEmergencyModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold font-cinzel"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isEmergencySending}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider transition shadow-md shadow-red-900/30 flex items-center gap-2 font-cinzel disabled:opacity-50"
+                >
+                  {isEmergencySending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Dispatching Channels...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>🚀 Dispatch Rescue & Unblock</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* 15. MODAL: ADMIN LOGIN (POPUP TRIGGERED BY "ADMIN LOGIN" INSTEAD OF CONTACT) */}
@@ -3283,7 +3685,7 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-lg glass-panel p-6 md:p-8 rounded-3xl border border-red-500/40 shadow-2xl relative space-y-5 animate-fadeIn">
+          <div className="w-full max-w-lg glass-panel p-6 md:p-8 rounded-3xl border-2 border-amber-300 shadow-2xl relative space-y-5 animate-fadeIn bg-white text-stone-900">
             
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div className="flex items-center gap-2.5">
@@ -3304,38 +3706,74 @@ export default function SyncPulseLandingAndApp() {
               </button>
             </div>
 
-            <form onSubmit={handleAddNewMember} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Member / Engineer Name</label>
-                <input
-                  type="text"
-                  value={newMemberName}
-                  onChange={(e) => setNewMemberName(e.target.value)}
-                  placeholder="e.g. Jaswant, Rohan, Priya, Vikram..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500 font-mono-code"
-                  required
-                />
-              </div>
-
+            <form onSubmit={handleAddNewMember} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Designation / Role</label>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Student / Engineer Name</label>
                   <input
                     type="text"
-                    value={newMemberRole}
-                    onChange={(e) => setNewMemberRole(e.target.value)}
-                    placeholder="e.g. Audio ML Engineer"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500"
+                    value={newMemberName}
+                    onChange={(e) => setNewMemberName(e.target.value)}
+                    placeholder="e.g. Priya Sharma"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Priority</label>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">College Roll No / ID</label>
+                  <input
+                    type="text"
+                    value={newRollNo}
+                    onChange={(e) => setNewRollNo(e.target.value)}
+                    placeholder="e.g. CIMAGE-2026-AI05"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Student Mobile / WhatsApp</label>
+                  <input
+                    type="tel"
+                    value={newPhone}
+                    onChange={(e) => setNewPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Student Official Email</label>
+                  <input
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    placeholder="priya.ai26@cimage.in"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Telegram Username</label>
+                  <input
+                    type="text"
+                    value={newTelegram}
+                    onChange={(e) => setNewTelegram(e.target.value)}
+                    placeholder="@priya_ai_ml"
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Sprint Priority</label>
                   <select
                     value={newPriority}
                     onChange={(e: any) => setNewPriority(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500 font-mono-code"
+                    className="w-full px-3 py-2 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
                   >
                     <option value="low">LOW</option>
                     <option value="medium">MEDIUM</option>
@@ -3346,13 +3784,13 @@ export default function SyncPulseLandingAndApp() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Assigned Model / Milestone Task</label>
+                <label className="block text-xs font-bold text-stone-800 mb-1 font-cinzel">Assigned Model / Milestone Task</label>
                 <input
                   type="text"
                   value={newModelTitle}
                   onChange={(e) => setNewModelTitle(e.target.value)}
-                  placeholder="e.g. YOLOv9 Realtime Vision Model"
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-red-500"
+                  placeholder="e.g. YOLOv9 Realtime Vision Pipeline"
+                  className="w-full px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
                   required
                 />
               </div>
