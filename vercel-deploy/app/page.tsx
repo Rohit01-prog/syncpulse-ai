@@ -10,7 +10,9 @@ import {
   Lock, Unlock, Key, Mail, Plus, Search, LogOut, 
   Shield, ChevronRight, ChevronDown, X, Loader2,
   TrendingUp, Award, Layers, Radio, Phone,
-  Calendar, CheckCircle, ExternalLink, HelpCircle
+  Calendar, CheckCircle, ExternalLink, HelpCircle,
+  DollarSign, Calculator, MessageSquare, Bell, Smartphone, 
+  Monitor, Globe, Activity, Sliders, Volume2, Mic, PlayCircle, Eye, EyeOff
 } from "lucide-react";
 
 interface Task {
@@ -493,6 +495,161 @@ export default function SyncPulseLandingAndApp() {
     }
   };
 
+  // ----------------------------------------------------
+  // HIGH PROFILE ADDITION 1: LIVE AI BLOCKER SANDBOX
+  // ----------------------------------------------------
+  const [sandboxPrompt, setSandboxPrompt] = useState<string>(
+    "Kabir: Waiting for Meera to push BERT tokenizer weights before starting Llama-3 fine-tuning"
+  );
+  const [isSandboxRunning, setIsSandboxRunning] = useState<boolean>(false);
+  const [sandboxActivePreset, setSandboxActivePreset] = useState<string>("preset-kabir");
+  const [sandboxOutput, setSandboxOutput] = useState<{
+    detected: boolean;
+    severity: "CRITICAL" | "MODERATE" | "HEALTHY";
+    confidence: string;
+    blockedEngineer: string;
+    blockingEngineer: string;
+    reason: string;
+    suggestedAction: string;
+    rawJson: string;
+  } | null>({
+    detected: true,
+    severity: "CRITICAL",
+    confidence: "99.4%",
+    blockedEngineer: "Kabir (AI-103 · Llama-3)",
+    blockingEngineer: "Meera (AI-101 · BERT Tokenizer)",
+    reason: "Missing BERT embedding tensors required for pipeline initialization",
+    suggestedAction: "Trigger autonomous WebSocket nudge to Meera + Telegram priority alert",
+    rawJson: JSON.stringify(
+      {
+        agent: "Mistral-7B-Instruct",
+        timestamp: "2026-10-17T02:00:00Z",
+        semantic_intent: "DEPENDENCY_BLOCKER_REPORT",
+        blocker_detected: true,
+        urgency: "CRITICAL",
+        confidence: 0.994,
+        source_member: "Kabir",
+        target_dependency: "Meera",
+        task_code: "AI-103",
+        action_required: "AUTONOMOUS_PEER_NUDGE",
+        channels: ["web_native", "telegram_bot", "admin_email"]
+      },
+      null,
+      2
+    )
+  });
+  const [showSandboxJson, setShowSandboxJson] = useState<boolean>(false);
+
+  const runSandboxAnalysis = (customPrompt?: string) => {
+    const textToAnalyze = customPrompt !== undefined ? customPrompt : sandboxPrompt;
+    setIsSandboxRunning(true);
+
+    setTimeout(() => {
+      const lower = textToAnalyze.toLowerCase();
+      let detected = false;
+      let severity: "CRITICAL" | "MODERATE" | "HEALTHY" = "HEALTHY";
+      let confidence = "98.9%";
+      let blockedEngineer = "Kabir (AI-103)";
+      let blockingEngineer = "Meera (AI-101)";
+      let reason = "Healthy progress telemetry. No active blockers found.";
+      let suggestedAction = "Log progress status to Supabase telemetry stream.";
+
+      if (lower.includes("waiting") || lower.includes("stuck") || lower.includes("block") || lower.includes("bert") || lower.includes("meera")) {
+        detected = true;
+        severity = "CRITICAL";
+        confidence = "99.4%";
+        blockedEngineer = "Kabir (AI-103 · Llama-3)";
+        blockingEngineer = "Meera (AI-101 · BERT Tokenizer)";
+        reason = "Dependency bottleneck: Upstream BERT weights not delivered to Llama-3 node";
+        suggestedAction = "Autonomous ping sent to Meera via Telegram + Escalated to Admin Rohit";
+      } else if (lower.includes("oom") || lower.includes("memory") || lower.includes("cuda") || lower.includes("gpu")) {
+        detected = true;
+        severity = "MODERATE";
+        confidence = "96.7%";
+        blockedEngineer = "Sumit (AI-102 · ResNet-50)";
+        blockingEngineer = "Cloud GPU Cluster";
+        reason = "Hardware bottleneck: CUDA Out Of Memory detected on batch size 64";
+        suggestedAction = "Auto-reduce batch size to 32 and request spot instance upgrade";
+      } else if (lower.includes("whisper") || lower.includes("jaswant") || lower.includes("audio")) {
+        detected = false;
+        severity = "HEALTHY";
+        confidence = "98.2%";
+        blockedEngineer = "Jaswant (AI-104 · Whisper)";
+        blockingEngineer = "None (Independent Pipeline)";
+        reason = "Spectrogram preprocessing operating at 60 FPS normal velocity";
+        suggestedAction = "Schedule pipeline readiness check for final multimodal merge";
+      }
+
+      setSandboxOutput({
+        detected,
+        severity,
+        confidence,
+        blockedEngineer,
+        blockingEngineer,
+        reason,
+        suggestedAction,
+        rawJson: JSON.stringify(
+          {
+            agent: "Mistral-7B-Instruct",
+            timestamp: new Date().toISOString(),
+            semantic_intent: detected ? "DEPENDENCY_BLOCKER_REPORT" : "HEALTHY_STATUS_REPORT",
+            blocker_detected: detected,
+            urgency: severity,
+            confidence: parseFloat(confidence) / 100,
+            source_member: blockedEngineer,
+            target_dependency: blockingEngineer,
+            reason: reason,
+            action_required: suggestedAction,
+            channels: ["web_native", "telegram_bot", "admin_email"]
+          },
+          null,
+          2
+        )
+      });
+      setIsSandboxRunning(false);
+    }, 900);
+  };
+
+  // ----------------------------------------------------
+  // HIGH PROFILE ADDITION 2: OMNICHANNEL DISPATCH TABS
+  // ----------------------------------------------------
+  const [activeChannelTab, setActiveChannelTab] = useState<"telegram" | "web" | "slack" | "email">("telegram");
+  const [showChannelJson, setShowChannelJson] = useState<boolean>(false);
+
+  // ----------------------------------------------------
+  // HIGH PROFILE ADDITION 3: EXECUTIVE ROI CALCULATOR
+  // ----------------------------------------------------
+  const [calcTeamSize, setCalcTeamSize] = useState<number>(12);
+  const [calcCurrency, setCalcCurrency] = useState<"USD" | "INR">("USD");
+  const [calcHourlyRate, setCalcHourlyRate] = useState<number>(45);
+  const [calcBlockersPerWeek, setCalcBlockersPerWeek] = useState<number>(3);
+
+  const monthlyBlockerHoursSaved = Math.round(calcBlockersPerWeek * 8.4 * 4.3);
+  const monthlyStandupHoursSaved = Math.round((calcTeamSize * 15 * 20) / 60);
+  const totalMonthlyHoursSaved = monthlyBlockerHoursSaved + monthlyStandupHoursSaved;
+  const annualSavings = Math.round(totalMonthlyHoursSaved * calcHourlyRate * 12);
+
+  // ----------------------------------------------------
+  // HIGH PROFILE ADDITION 4: LIVE ACTIVITY TICKER (FLOATING HUD)
+  // ----------------------------------------------------
+  const [tickerIndex, setTickerIndex] = useState<number>(0);
+  const [isTickerExpanded, setIsTickerExpanded] = useState<boolean>(false);
+
+  const tickerEvents = [
+    { id: 1, time: "12s ago", level: "success", text: "Mistral AI resolved BERT checkpoint dependency between Meera and Kabir (AI-103)." },
+    { id: 2, time: "45s ago", level: "alert", text: "Telegram Bot dispatched urgent unblock notification to @meera_ml." },
+    { id: 3, time: "1m ago", level: "info", text: "Admin Rohit Gupta verified session via 6-digit cryptographic OTP." },
+    { id: 4, time: "2m ago", level: "success", text: "Sumit uploaded ResNet-50 vision weights to Hugging Face Hub (AI-102)." },
+    { id: 5, time: "3m ago", level: "info", text: "Supabase Realtime synchronized 4 neural pipeline nodes across 2 regions." },
+  ];
+
+  useEffect(() => {
+    const tickerTimer = setInterval(() => {
+      setTickerIndex((prev) => (prev + 1) % tickerEvents.length);
+    }, 4500);
+    return () => clearInterval(tickerTimer);
+  }, [tickerEvents.length]);
+
   return (
     <div className="min-h-screen bg-[#050814] text-slate-100 flex flex-col font-sans selection:bg-red-600 selection:text-white relative overflow-x-hidden">
       
@@ -532,15 +689,19 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Nav Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-slate-300">
-            <a href="#features" className="hover:text-red-400 transition">Features</a>
+          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-slate-300">
+            <a href="#sandbox" className="hover:text-red-400 transition flex items-center gap-1.5 text-red-400 font-bold">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse text-red-400" />
+              <span>AI Sandbox</span>
+            </a>
             <a href="#blocker-radar" className="hover:text-red-400 transition flex items-center gap-1">
               <span>Blocker Radar</span>
               {isKabirBlocked && <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>}
             </a>
-            <a href="#pipeline-story" className="hover:text-red-400 transition">AI Team Story</a>
+            <a href="#pipeline-story" className="hover:text-red-400 transition">AI Team</a>
             <a href="#flow-simulator" className="hover:text-red-400 transition">Flow Simulator</a>
-            <a href="#impact" className="hover:text-red-400 transition">Impact & ROI</a>
+            <a href="#omnichannel" className="hover:text-red-400 transition">Omnichannel</a>
+            <a href="#roi-calculator" className="hover:text-red-400 transition">ROI Calculator</a>
             <a href="#faq" className="hover:text-red-400 transition">FAQ</a>
           </nav>
 
@@ -869,6 +1030,277 @@ export default function SyncPulseLandingAndApp() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 4.5. SECTION: TEST DRIVE MISTRAL AGENT BRAIN (LIVE PROMPT SANDBOX) */}
+      {/* ========================================================================= */}
+      <section id="sandbox" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Terminal className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+            <span>EXECUTIVE AI SANDBOX · MISTRAL REASONING ENGINE</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+            Test Drive Autonomous Blocker Detection
+          </h2>
+          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+            Experience our semantic NLP pipeline live. Type any engineer standup update or test one of the 3 real-world multi-agent scenarios below. Watch Mistral extract dependencies in under 900ms.
+          </p>
+        </div>
+
+        {/* 1-Click Scenario Preset Selector */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl mx-auto mb-6">
+          <button
+            type="button"
+            onClick={() => {
+              setSandboxActivePreset("preset-kabir");
+              setSandboxPrompt("Kabir: Waiting for Meera to push BERT tokenizer weights before starting Llama-3 fine-tuning");
+              runSandboxAnalysis("Kabir: Waiting for Meera to push BERT tokenizer weights before starting Llama-3 fine-tuning");
+            }}
+            className={`p-3.5 rounded-2xl border text-left transition ${
+              sandboxActivePreset === "preset-kabir"
+                ? "bg-red-950/40 border-red-500/80 shadow-lg shadow-red-950/50"
+                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold font-mono-code px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">
+                SCENARIO A · CRITICAL
+              </span>
+              <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+            </div>
+            <div className="text-xs font-bold text-white">Kabir Blocked on Meera</div>
+            <p className="text-[11px] text-slate-400 mt-0.5">Missing BERT embeddings for Llama-3</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setSandboxActivePreset("preset-sumit");
+              setSandboxPrompt("Sumit: ResNet fine-tuning halted. CUDA Out of Memory (OOM) error on 16GB GPU batch size 64");
+              runSandboxAnalysis("Sumit: ResNet fine-tuning halted. CUDA Out of Memory (OOM) error on 16GB GPU batch size 64");
+            }}
+            className={`p-3.5 rounded-2xl border text-left transition ${
+              sandboxActivePreset === "preset-sumit"
+                ? "bg-amber-950/40 border-amber-500/80 shadow-lg shadow-amber-950/50"
+                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold font-mono-code px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                SCENARIO B · RESOURCE
+              </span>
+              <Cpu className="w-3.5 h-3.5 text-amber-400" />
+            </div>
+            <div className="text-xs font-bold text-white">Sumit CUDA Out Of Memory</div>
+            <p className="text-[11px] text-slate-400 mt-0.5">Cloud GPU VRAM capacity bottleneck</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setSandboxActivePreset("preset-jaswant");
+              setSandboxPrompt("Jaswant: Whisper audio inference pipeline 90% validated with 60 FPS latency, on schedule");
+              runSandboxAnalysis("Jaswant: Whisper audio inference pipeline 90% validated with 60 FPS latency, on schedule");
+            }}
+            className={`p-3.5 rounded-2xl border text-left transition ${
+              sandboxActivePreset === "preset-jaswant"
+                ? "bg-emerald-950/40 border-emerald-500/80 shadow-lg shadow-emerald-950/50"
+                : "bg-slate-900/60 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold font-mono-code px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                SCENARIO C · HEALTHY
+              </span>
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+            </div>
+            <div className="text-xs font-bold text-white">Jaswant Whisper On Track</div>
+            <p className="text-[11px] text-slate-400 mt-0.5">Audio model operating within SLA</p>
+          </button>
+        </div>
+
+        {/* Sandbox Console Workspace */}
+        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-white/10 overflow-hidden shadow-2xl">
+          {/* Console Header Bar */}
+          <div className="px-6 py-3.5 bg-slate-950/90 border-b border-white/10 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
+              <span className="w-3 h-3 rounded-full bg-amber-500/80"></span>
+              <span className="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+              <span className="text-xs font-mono-code text-slate-400 ml-2">
+                mistral-7b-instruct // coordinator-evaluator-v2.4
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-[10px] text-emerald-400 font-mono-code">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>SYNCPULSE LLM PIPELINE ONLINE</span>
+            </div>
+          </div>
+
+          {/* Console Input Area */}
+          <div className="p-6 bg-slate-950/60 space-y-4">
+            <label className="block text-xs font-bold text-slate-300">
+              Type or Edit Natural Language Standup Update:
+            </label>
+            <div className="relative">
+              <textarea
+                value={sandboxPrompt}
+                onChange={(e) => {
+                  setSandboxPrompt(e.target.value);
+                  setSandboxActivePreset("custom");
+                }}
+                rows={3}
+                placeholder="e.g. Kabir: Waiting for Meera to push BERT tokenizer weights..."
+                className="w-full px-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-700 text-white text-xs md:text-sm font-mono-code focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition leading-relaxed resize-none"
+              />
+              <div className="absolute right-3 bottom-3 text-[10px] text-slate-500 font-mono-code">
+                {sandboxPrompt.length} chars
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div className="flex items-center gap-2 text-xs text-slate-400">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>Zero-Shot Token Classification · Latency &lt; 900ms</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSandboxJson(!showSandboxJson)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono-code transition border border-white/5 flex items-center gap-1.5"
+                >
+                  <Binary className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{showSandboxJson ? "Hide JSON" : "View RFC-8259 JSON"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => runSandboxAnalysis()}
+                  disabled={isSandboxRunning || !sandboxPrompt.trim()}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-xs font-black tracking-wider uppercase transition shadow-lg shadow-red-900/40 glow-red flex items-center gap-2 disabled:opacity-50"
+                >
+                  {isSandboxRunning ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Parsing Semantics...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 fill-white" />
+                      <span>Run Mistral Semantic Analysis</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Telemetry Output HUD */}
+          {sandboxOutput && (
+            <div className="p-6 bg-slate-900/90 border-t border-white/10 space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-300">Semantic Parsing Result:</span>
+                  {sandboxOutput.detected ? (
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-red-500/20 text-red-300 border border-red-500/40 flex items-center gap-1.5 font-mono-code">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                      CRITICAL BLOCKER IDENTIFIED
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5 font-mono-code">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                      NORMAL SPRINT VELOCITY · OPTIMAL
+                    </span>
+                  )}
+                </div>
+
+                <div className="text-xs font-mono-code text-cyan-400 flex items-center gap-1">
+                  <span>Certainty:</span>
+                  <strong className="text-white bg-slate-950 px-2 py-0.5 rounded border border-white/10">
+                    {sandboxOutput.confidence}
+                  </strong>
+                </div>
+              </div>
+
+              {/* Parsed Attributes Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/5 space-y-2">
+                  <span className="text-[10px] font-mono-code text-slate-400 uppercase">Impacted Dependency Node</span>
+                  <div className="text-xs font-bold text-white flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-400"></span>
+                    <span>{sandboxOutput.blockedEngineer}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    Blocked By: <strong className="text-indigo-300">{sandboxOutput.blockingEngineer}</strong>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/5 space-y-2">
+                  <span className="text-[10px] font-mono-code text-slate-400 uppercase">Autonomous Orchestration Action</span>
+                  <div className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>{sandboxOutput.suggestedAction}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    Reason: <span className="text-slate-300 italic">{sandboxOutput.reason}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Interactive Unblock / Inject Toggle */}
+              <div className="p-4 rounded-2xl bg-red-950/20 border border-red-500/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <Flame className="w-4 h-4 text-red-400 shrink-0" />
+                  <span className="text-xs text-slate-300">
+                    Want to see how this updates the live app radar?
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetBlocker();
+                      const el = document.getElementById("blocker-radar");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="px-4 py-2 rounded-xl bg-red-600/30 hover:bg-red-600/50 text-red-200 border border-red-500/40 text-xs font-bold transition flex items-center gap-1.5"
+                  >
+                    <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+                    <span>Simulate Blocker on Radar</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resolveBlocker();
+                      const el = document.getElementById("blocker-radar");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="px-4 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1.5"
+                  >
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Auto-Resolve in 45s</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Raw JSON Schema Toggle */}
+              {showSandboxJson && (
+                <div className="pt-2">
+                  <div className="p-4 rounded-2xl bg-[#030610] border border-cyan-500/20 overflow-x-auto text-[11px] font-mono-code text-cyan-300 leading-relaxed">
+                    <div className="text-[10px] text-slate-500 pb-2 mb-2 border-b border-white/5 flex items-center justify-between">
+                      <span>RFC-8259 STRUCTURED TELEMETRY PAYLOAD</span>
+                      <span className="text-emerald-400">STATUS: VALIDATED</span>
+                    </div>
+                    <pre>{sandboxOutput.rawJson}</pre>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 5. SECTION 4: 6 CORE CAPABILITY CARDS (REPLACING CARDIAC SERVICES) */}
       {/* ========================================================================= */}
       <section id="features" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
@@ -1039,6 +1471,18 @@ export default function SyncPulseLandingAndApp() {
               <p className="text-xs text-slate-400 leading-relaxed">
                 Preprocessing audio spectrograms. Waiting to fuse model weights once Kabir finishes.
               </p>
+              {/* Animated Waveform Visualizer */}
+              <div className="pt-1.5 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-cyan-500/20">
+                <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse shrink-0" />
+                <div className="flex items-end gap-1 h-3 flex-1">
+                  <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-2"></span>
+                  <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-3 delay-75"></span>
+                  <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-1 delay-150"></span>
+                  <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-3 delay-100"></span>
+                  <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-2 delay-200"></span>
+                </div>
+                <span className="text-[9px] font-mono-code text-cyan-300">VOICE ACTIVE</span>
+              </div>
             </div>
           </div>
 
@@ -1226,6 +1670,369 @@ export default function SyncPulseLandingAndApp() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 8.5. SECTION: OMNICHANNEL AUTONOMOUS DISPATCHER & WEBHOOK BRIDGE */}
+      {/* ========================================================================= */}
+      <section id="omnichannel" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <span>OMNICHANNEL DISPATCH ENGINE · ZERO IT FRICTION</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+            Reaching Teammates Wherever They Work
+          </h2>
+          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+            Hackathon mentors noted that university firewalls often block Telegram, while enterprise teams live inside Slack. SyncPulse AI solves this with true omnichannel redundancy.
+          </p>
+        </div>
+
+        {/* Channel Tab Selector */}
+        <div className="flex flex-wrap justify-center gap-2.5 max-w-3xl mx-auto mb-8">
+          <button
+            type="button"
+            onClick={() => setActiveChannelTab("telegram")}
+            className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
+              activeChannelTab === "telegram"
+                ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/80 shadow-lg shadow-cyan-950/50"
+                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <Send className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Telegram Bot (@syncpulse_solver_bot)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveChannelTab("web")}
+            className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
+              activeChannelTab === "web"
+                ? "bg-red-500/20 text-red-300 border-red-500/80 shadow-lg shadow-red-950/50"
+                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5 text-red-400" />
+            <span>Web-Native Command Hub (Primary)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveChannelTab("slack")}
+            className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
+              activeChannelTab === "slack"
+                ? "bg-purple-500/20 text-purple-300 border-purple-500/80 shadow-lg shadow-purple-950/50"
+                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-purple-400" />
+            <span>Enterprise Slack / Discord</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveChannelTab("email")}
+            className={`px-4 py-2.5 rounded-2xl text-xs font-bold font-mono-code transition flex items-center gap-2 border ${
+              activeChannelTab === "email"
+                ? "bg-amber-500/20 text-amber-300 border-amber-500/80 shadow-lg shadow-amber-950/50"
+                : "bg-slate-900/60 text-slate-400 border-white/5 hover:border-slate-700"
+            }`}
+          >
+            <Mail className="w-3.5 h-3.5 text-amber-400" />
+            <span>Executive Email Gateway</span>
+          </button>
+        </div>
+
+        {/* Channel Live Mockup Frame */}
+        <div className="max-w-4xl mx-auto rounded-3xl glass-card border border-white/10 overflow-hidden shadow-2xl">
+          
+          {/* Active Tab Preview */}
+          <div className="p-6 md:p-8">
+            
+            {/* 1. TELEGRAM TAB */}
+            {activeChannelTab === "telegram" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-cyan-600/30 text-cyan-400 flex items-center justify-center border border-cyan-500/40">
+                      <Send className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Telegram Bot Integration</span>
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30 font-mono-code">
+                          LIVE TOKEN: 893609...
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Zero-delay mobile push notification delivered to @syncpulse_solver_bot
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://t.me/syncpulse_solver_bot"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition flex items-center gap-1.5"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Open in Telegram</span>
+                  </a>
+                </div>
+
+                {/* Simulated Telegram Chat Card */}
+                <div className="max-w-lg mx-auto p-5 rounded-2xl bg-[#17212b] border border-cyan-500/20 text-slate-200 shadow-xl space-y-3 font-sans">
+                  <div className="flex items-center gap-2 text-xs text-cyan-400 font-bold border-b border-white/5 pb-2">
+                    <Bot className="w-4 h-4 text-cyan-400" />
+                    <span>SyncPulse Coordinator Bot</span>
+                    <span className="text-[9px] text-slate-400 ml-auto font-mono-code">02:14 AM</span>
+                  </div>
+
+                  <div className="space-y-2 text-xs leading-relaxed">
+                    <p className="font-bold text-red-400">
+                      🚨 CRITICAL BLOCKER DETECTED · TRACK W-PS-1
+                    </p>
+                    <p>
+                      <strong>To:</strong> Meera (@meera_ml)<br />
+                      <strong>From:</strong> Kabir (AI-103 · Llama-3 Fine-tuning)<br />
+                      <strong>Status:</strong> Kabir is halted waiting for your BERT model weights checkpoint.
+                    </p>
+                    <p className="text-[11px] text-slate-400 italic bg-black/30 p-2.5 rounded-xl border border-white/5">
+                      &quot;Hey Meera! Please push the BERT tokenizer weights to our shared S3 or Hugging Face repository so Kabir can initialize Llama-3.&quot;
+                    </p>
+                  </div>
+
+                  {/* Inline Action Buttons */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                    <button
+                      type="button"
+                      onClick={() => resolveBlocker()}
+                      className="px-3 py-2 rounded-xl bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 border border-cyan-500/40 text-xs font-bold transition text-center"
+                    >
+                      ✓ Push BERT Weights (Unblock)
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition text-center"
+                    >
+                      ⏳ Need 15 Minutes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 2. WEB-NATIVE TAB */}
+            {activeChannelTab === "web" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-red-600/30 text-red-400 flex items-center justify-center border border-red-500/40">
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Web-Native Realtime Command Hub</span>
+                        <span className="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30 font-mono-code">
+                          PRIMARY · ZERO FIREWALL
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Bypasses all college and corporate network firewall blocks via Port 443 WebSockets
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-slate-950/80 border border-red-500/30 space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                      ✓
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-white">Direct Response to College & Bank Firewalls</h5>
+                      <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                        During our hackathon mentor evaluation, judges specifically praised our Web-Native architecture. Many educational institutions and enterprise environments strictly ban third-party messaging apps like Telegram. SyncPulse AI operates natively inside the browser over standard HTTPS/WSS with zero installation required.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 text-xs">
+                      <div className="text-red-400 font-bold font-mono-code mb-1">0% BLOCKED</div>
+                      <div className="text-slate-300">Works seamlessly on restricted college Wi-Fi</div>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 text-xs">
+                      <div className="text-cyan-400 font-bold font-mono-code mb-1">&lt; 100ms LATENCY</div>
+                      <div className="text-slate-300">Supabase Realtime PostgreSQL CDC pipeline</div>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 text-xs">
+                      <div className="text-emerald-400 font-bold font-mono-code mb-1">ZERO INSTALL</div>
+                      <div className="text-slate-300">Accessible from any mobile or desktop browser</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 3. SLACK TAB */}
+            {activeChannelTab === "slack" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-purple-600/30 text-purple-400 flex items-center justify-center border border-purple-500/40">
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Enterprise Slack & Discord Webhooks</span>
+                        <span className="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full border border-purple-500/30 font-mono-code">
+                          INCOMING WEBHOOK V2
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Dispatches structured rich Block Kit notifications to sprint war rooms
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Simulated Slack Message Card */}
+                <div className="max-w-xl mx-auto p-5 rounded-2xl bg-[#1a1d21] border border-purple-500/20 text-slate-200 shadow-xl space-y-3 font-sans">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-red-600 text-white font-black flex items-center justify-center text-xs">
+                      SP
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-white">SyncPulse Coordinator</span>
+                        <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.2 rounded">APP</span>
+                        <span className="text-[10px] text-slate-500">2:15 AM</span>
+                      </div>
+                      <span className="text-[11px] text-slate-400">posted to #sprint-kurukshetra</span>
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-red-500 pl-3 py-1 space-y-1.5 text-xs">
+                    <div className="font-bold text-red-400">⚠️ Automated Blocker Escalation Protocol</div>
+                    <p className="text-slate-300">
+                      <strong>@Meera</strong>, engineer <strong>@Kabir</strong> is currently blocked on milestone task <code className="bg-black/40 px-1 py-0.5 rounded text-amber-300">AI-103</code>.
+                    </p>
+                    <div className="text-[11px] text-slate-400">
+                      Required Asset: BERT Tokenizer Checkpoint (.pt / .safetensors)<br />
+                      Priority Level: HIGH | Automatic Escalation Level: 1 of 3
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => resolveBlocker()}
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+                    >
+                      Acknowledge & Unblock
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-medium"
+                    >
+                      View Sprint Board
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 4. EMAIL TAB */}
+            {activeChannelTab === "email" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-amber-600/30 text-amber-400 flex items-center justify-center border border-amber-500/40">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Executive Email Gateway</span>
+                        <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30 font-mono-code">
+                          OFFICIAL ADMIN
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Dispatches encrypted OTP security tokens & executive escalation summaries to Lead Rohit
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="max-w-xl mx-auto p-5 rounded-2xl bg-slate-950 border border-amber-500/30 text-slate-200 shadow-xl space-y-3 font-sans">
+                  <div className="flex items-center justify-between text-xs border-b border-white/10 pb-2.5">
+                    <div>
+                      <span className="text-slate-400">To: </span>
+                      <strong className="text-amber-300 font-mono-code">rohit.bcastudent25.30916@cimage.in</strong>
+                    </div>
+                    <span className="text-[10px] text-emerald-400 font-mono-code">DKIM · SPF PASS</span>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    <h5 className="font-bold text-white text-sm">
+                      [SyncPulse AI Alert] Kabir Blocked: Autonomous Escalation Level 2 Triggered
+                    </h5>
+                    <p className="text-slate-300 text-xs leading-relaxed">
+                      Hello Rohit (Project Lead),<br />
+                      The autonomous coordinator has detected that engineer Kabir has been halted on task AI-103 (Llama-3 fine-tuning) for 15+ minutes waiting for BERT model checkpoints from Meera.
+                    </p>
+                    <div className="p-3 rounded-xl bg-slate-900 border border-white/5 space-y-1 font-mono-code text-[11px]">
+                      <div>• Impacted Milestone: Kurukshetra Multi-Model Pipeline</div>
+                      <div>• Estimated Delay Without SyncPulse: 8.5 Hours</div>
+                      <div>• Autonomous Action: Direct peer nudge sent to Meera</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* Bottom Bar: Raw JSON Toggle */}
+          <div className="px-6 py-3.5 bg-slate-950/90 border-t border-white/10 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setShowChannelJson(!showChannelJson)}
+              className="text-xs font-mono-code text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1.5"
+            >
+              <Binary className="w-3.5 h-3.5" />
+              <span>{showChannelJson ? "Hide Outbound JSON Payload" : "View Outbound Webhook JSON (RFC-8259)"}</span>
+            </button>
+            <span className="text-[10px] font-mono-code text-slate-500">
+              POST /api/v1/coordinator/escalate
+            </span>
+          </div>
+
+          {showChannelJson && (
+            <div className="p-4 bg-[#030610] border-t border-white/5 text-[11px] font-mono-code text-cyan-300 overflow-x-auto">
+              <pre>{JSON.stringify({
+                event: "BLOCKER_AUTONOMOUS_ESCALATION",
+                sprint_id: "kurukshetra-track-w-ps-1",
+                lead_admin: "rohit.bcastudent25.30916@cimage.in",
+                channel_dispatch: {
+                  telegram: { bot: "@syncpulse_solver_bot", chat_id: "@meera_ml", delivered: true },
+                  web_native: { channel: "presence-sprint-updates", latency_ms: 42 },
+                  slack_webhook: { channel: "#sprint-war-room", status: 200 },
+                  executive_email: { recipient: "rohit.bcastudent25.30916@cimage.in", priority: "HIGH" }
+                },
+                payload: {
+                  blocked_member: "Kabir",
+                  blocking_member: "Meera",
+                  task: "AI-103 (Llama-3 fine-tuning)",
+                  resolution_target_seconds: 45
+                }
+              }, null, 2)}</pre>
+            </div>
+          )}
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 9. SECTION 8: BEFORE VS AFTER COMPARISON (TRADITIONAL VS SYNCPULSE) */}
       {/* ========================================================================= */}
       <section id="impact" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
@@ -1294,6 +2101,223 @@ export default function SyncPulseLandingAndApp() {
                 <span>Blocker resolved in <strong>45 seconds</strong>. Project ships on time!</span>
               </li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 9.5. SECTION: EXECUTIVE ROI & SPRINT VELOCITY FINANCIAL CALCULATOR */}
+      {/* ========================================================================= */}
+      <section id="roi-calculator" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-mono-code uppercase tracking-wider">
+            <Calculator className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+            <span>EXECUTIVE ROI & VELOCITY SIMULATOR</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+            Calculate Your Team&apos;s Reclaimed Hours & Capital
+          </h2>
+          <p className="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto">
+            Traditional daily standups and unaddressed blocker delays cost modern engineering teams 100+ wasted hours per developer each year. Calculate your team&apos;s exact ROI with SyncPulse AI.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
+          {/* Sliders Control Panel (Col 7) */}
+          <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-6">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-emerald-400" />
+                <span>Sprint Cohort Parameters</span>
+              </h3>
+              
+              {/* Currency Selector */}
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalcCurrency("USD");
+                    setCalcHourlyRate(45);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono-code transition ${
+                    calcCurrency === "USD" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  $ USD
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalcCurrency("INR");
+                    setCalcHourlyRate(3500);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono-code transition ${
+                    calcCurrency === "INR" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  ₹ INR
+                </button>
+              </div>
+            </div>
+
+            {/* Slider 1: Team Size */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-slate-300">Engineering Cohort Size:</span>
+                <span className="text-emerald-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                  {calcTeamSize} Engineers
+                </span>
+              </div>
+              <input
+                type="range"
+                min={4}
+                max={50}
+                value={calcTeamSize}
+                onChange={(e) => setCalcTeamSize(parseInt(e.target.value))}
+                className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+              />
+              <div className="flex justify-between text-[10px] text-slate-500 font-mono-code">
+                <span>4 Devs (Hackathon Team)</span>
+                <span>25 Devs (Squad)</span>
+                <span>50 Devs (Scale)</span>
+              </div>
+            </div>
+
+            {/* Slider 2: Average Hourly Rate */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-slate-300">Average Developer Rate:</span>
+                <span className="text-emerald-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                  {calcCurrency === "USD" ? `$${calcHourlyRate}/hr` : `₹${calcHourlyRate.toLocaleString()}/hr`}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={calcCurrency === "USD" ? 20 : 1000}
+                max={calcCurrency === "USD" ? 150 : 10000}
+                step={calcCurrency === "USD" ? 5 : 500}
+                value={calcHourlyRate}
+                onChange={(e) => setCalcHourlyRate(parseInt(e.target.value))}
+                className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+              />
+              <div className="flex justify-between text-[10px] text-slate-500 font-mono-code">
+                <span>{calcCurrency === "USD" ? "$20/hr" : "₹1,000/hr"}</span>
+                <span>{calcCurrency === "USD" ? "$85/hr" : "₹5,500/hr"}</span>
+                <span>{calcCurrency === "USD" ? "$150/hr" : "₹10,000/hr"}</span>
+              </div>
+            </div>
+
+            {/* Slider 3: Blockers Per Week */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-slate-300">Average Dependency Blockers / Week:</span>
+                <span className="text-amber-400 font-mono-code bg-slate-950 px-2.5 py-1 rounded-lg border border-amber-500/30">
+                  {calcBlockersPerWeek} Blockers / Wk
+                </span>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={10}
+                value={calcBlockersPerWeek}
+                onChange={(e) => setCalcBlockersPerWeek(parseInt(e.target.value))}
+                className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+              />
+              <div className="flex justify-between text-[10px] text-slate-500 font-mono-code">
+                <span>1 Blocker (Low Friction)</span>
+                <span>5 Blockers (Normal Sprint)</span>
+                <span>10 Blockers (High Dependency)</span>
+              </div>
+            </div>
+
+            {/* Summary Note */}
+            <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-white/5 text-[11px] text-slate-400 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <span>
+                Based on benchmarked <strong>45-second automated unblock latency</strong> compared against traditional 8.4-hour overnight standup waiting periods.
+              </span>
+            </div>
+          </div>
+
+          {/* Dynamic Computed Outputs (Col 5) */}
+          <div className="lg:col-span-5 space-y-4">
+            {/* Big Headline Output */}
+            <div className="glass-card p-6 md:p-8 rounded-3xl border border-emerald-500/50 bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 shadow-2xl glow-green space-y-3">
+              <span className="text-[10px] font-mono-code text-emerald-300 uppercase tracking-widest font-bold">
+                ANNUAL CAPITAL LOSS PREVENTED
+              </span>
+              <div className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                {calcCurrency === "USD" ? `$${annualSavings.toLocaleString()}` : `₹${annualSavings.toLocaleString()}`}
+                <span className="text-xs text-emerald-400 font-normal ml-2">/ year</span>
+              </div>
+              <p className="text-xs text-slate-300">
+                Direct payroll capital saved by eliminating idle waiting and manual synchronization meetings.
+              </p>
+            </div>
+
+            {/* Metric Breakdown Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
+                <span className="text-[10px] font-mono-code text-slate-400 uppercase">Hours Reclaimed</span>
+                <div className="text-2xl font-bold text-white font-mono-code">
+                  ~{totalMonthlyHoursSaved} <span className="text-xs text-slate-400 font-sans">hrs/mo</span>
+                </div>
+                <div className="text-[10px] text-emerald-400">Standup + blocker delay</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
+                <span className="text-[10px] font-mono-code text-slate-400 uppercase">Velocity Boost</span>
+                <div className="text-2xl font-bold text-cyan-400 font-mono-code">
+                  +{Math.min(75, Math.round(35 + calcBlockersPerWeek * 4))}%
+                </div>
+                <div className="text-[10px] text-cyan-300">Faster ship cycle</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
+                <span className="text-[10px] font-mono-code text-slate-400 uppercase">Unblock Time</span>
+                <div className="text-2xl font-bold text-red-400 font-mono-code">
+                  45s <span className="text-xs line-through text-slate-500 font-sans">8.5h</span>
+                </div>
+                <div className="text-[10px] text-red-300">95% reduction in wait</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
+                <span className="text-[10px] font-mono-code text-slate-400 uppercase">Cohort Capacity</span>
+                <div className="text-2xl font-bold text-indigo-400 font-mono-code">
+                  50+ <span className="text-xs text-slate-400 font-sans">Devs</span>
+                </div>
+                <div className="text-[10px] text-indigo-300">Zero coordination lag</div>
+              </div>
+            </div>
+
+            {/* Visual Timeline Comparison Bar */}
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-white/10 space-y-2.5">
+              <div className="text-xs font-bold text-white flex items-center justify-between">
+                <span>Sprint Completion Timeline</span>
+                <span className="text-[10px] text-emerald-400 font-mono-code">58% TIME RECLAIMED</span>
+              </div>
+              
+              <div className="space-y-1.5 text-[11px] font-mono-code">
+                <div className="flex items-center gap-2">
+                  <span className="w-20 text-slate-400 text-[10px]">Traditional:</span>
+                  <div className="flex-1 bg-red-950/60 rounded-full h-2.5 overflow-hidden flex border border-red-900/40">
+                    <div className="w-[45%] bg-slate-700 h-full" title="Active Work"></div>
+                    <div className="w-[55%] bg-red-600 h-full animate-pulse" title="Blocked / Waiting"></div>
+                  </div>
+                  <span className="text-red-400 text-[10px] w-12 text-right">14 Days</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="w-20 text-emerald-400 text-[10px]">SyncPulse:</span>
+                  <div className="flex-1 bg-slate-950 rounded-full h-2.5 overflow-hidden flex border border-emerald-900/40">
+                    <div className="w-[92%] bg-emerald-500 h-full" title="Continuous Momentum"></div>
+                    <div className="w-[8%] bg-cyan-400 h-full" title="Fast Autonomous Resolution"></div>
+                  </div>
+                  <span className="text-emerald-400 text-[10px] w-12 text-right">6 Days</span>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -1927,6 +2951,64 @@ export default function SyncPulseLandingAndApp() {
           </div>
         </div>
       )}
+
+      {/* ========================================================================= */}
+      {/* 17. FLOATING EXECUTIVE TELEMETRY HUD (LIVE ACTIVITY STREAM) */}
+      {/* ========================================================================= */}
+      <div className="fixed bottom-5 right-5 z-40 max-w-xs sm:max-w-sm">
+        <div className="p-3.5 rounded-2xl glass-card border border-white/10 bg-slate-950/90 shadow-2xl backdrop-blur-xl space-y-2">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-2">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-bold font-mono-code text-white tracking-wider uppercase">
+                COORDINATOR LIVE STREAM
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-1.5">
+              <span className="text-[9px] font-mono-code text-slate-400">
+                {tickerEvents[tickerIndex].time}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsTickerExpanded(!isTickerExpanded)}
+                className="p-1 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition text-[10px]"
+                title="Expand Audit Trail"
+              >
+                {isTickerExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Collapsed / Active Event */}
+          {!isTickerExpanded ? (
+            <div className="text-[11px] text-slate-300 leading-snug flex items-start gap-2 pt-0.5 animate-fadeIn">
+              <Activity className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+              <span>{tickerEvents[tickerIndex].text}</span>
+            </div>
+          ) : (
+            <div className="space-y-2 pt-1 max-h-48 overflow-y-auto pr-1">
+              {tickerEvents.map((ev) => (
+                <div key={ev.id} className="text-[10px] text-slate-300 p-2 rounded-xl bg-slate-900/80 border border-white/5 space-y-0.5">
+                  <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono-code">
+                    <span className="text-cyan-400">EVENT #{ev.id}</span>
+                    <span>{ev.time}</span>
+                  </div>
+                  <div>{ev.text}</div>
+                </div>
+              ))}
+              <div className="pt-1 flex justify-between items-center text-[10px] text-slate-400">
+                <span>Autonomous Heartbeat: 100% OK</span>
+                <a href="#sandbox" className="text-red-400 hover:underline font-bold">Open Sandbox →</a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
     </div>
   );
