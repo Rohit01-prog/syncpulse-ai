@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { 
   Bot, AlertTriangle, CheckCircle2, Send, 
   Sparkles, RefreshCw, Users, ShieldCheck, 
   ArrowRight, ArrowLeft, Zap, Check, Cpu, 
   Play, RotateCcw, Flame, Terminal, Binary, 
   Lock, Unlock, Key, Mail, Plus, Search, LogOut, 
-  UserCheck, Shield, ChevronRight, X
+  UserCheck, Shield, ChevronRight, X, Loader2
 } from "lucide-react";
 
 interface Task {
@@ -30,15 +31,19 @@ interface Task {
 
 export default function SyncPulseApp() {
   // ----------------------------------------------------
-  // ADMIN AUTHENTICATION STATE (OTP & LOCK)
+  // REAL ADMIN AUTHENTICATION STATE (SUPABASE EMAIL OTP)
   // ----------------------------------------------------
+  const AUTHORIZED_ADMIN_EMAIL = "rohit.bcastudent25.30916@cimage.in";
+  
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
-  const [adminEmail, setAdminEmail] = useState<string>("admin@syncpulse.ai");
+  const [adminEmail, setAdminEmail] = useState<string>("rohit.bcastudent25.30916@cimage.in");
   const [otpSent, setOtpSent] = useState<boolean>(false);
   const [enteredOtp, setEnteredOtp] = useState<string>("");
-  const [generatedOtp, setGeneratedOtp] = useState<string>("784210");
   const [authError, setAuthError] = useState<string>("");
+  const [authSuccess, setAuthSuccess] = useState<string>("");
+  const [isSendingOtp, setIsSendingOtp] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
+  const [resendCountdown, setResendCountdown] = useState<number>(0);
 
   // Check saved login on load
   useEffect(() => {
@@ -48,42 +53,103 @@ export default function SyncPulseApp() {
     }
   }, []);
 
-  // Handle Send OTP
-  const handleSendOtp = (e?: React.FormEvent) => {
+  // Countdown timer for Resend OTP
+  useEffect(() => {
+    if (resendCountdown <= 0) return;
+    const interval = setInterval(() => {
+      setResendCountdown((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resendCountdown]);
+
+  // Handle Send REAL OTP via Supabase
+  const handleSendOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!adminEmail || !adminEmail.includes("@")) {
-      setAuthError("Kripya ek valid email address enter karein.");
+    setAuthError("");
+    setAuthSuccess("");
+
+    const inputEmail = adminEmail.trim().toLowerCase();
+
+    // 1. Strict Whitelist Check
+    if (inputEmail !== AUTHORIZED_ADMIN_EMAIL.toLowerCase()) {
+      setAuthError(`INVALID: You are not an admin! Only the official registered admin (${AUTHORIZED_ADMIN_EMAIL}) can access this coordinator console.`);
       return;
     }
-    setAuthError("");
-    const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(randomCode);
-    setOtpSent(true);
+
+    setIsSendingOtp(true);
+
+    try {
+      // 2. Real Supabase OTP Email Dispatch!
+      const { error } = await supabase.auth.signInWithOtp({
+        email: AUTHORIZED_ADMIN_EMAIL,
+        options: {
+          shouldCreateUser: true,
+        },
+      });
+
+      if (error) {
+        setAuthError(`Email Delivery Failed: ${error.message}. Please try again.`);
+      } else {
+        setOtpSent(true);
+        setResendCountdown(45);
+        setAuthSuccess(`Real OTP has been dispatched to your official inbox (${AUTHORIZED_ADMIN_EMAIL}). Please check your email (and Spam folder).`);
+      }
+    } catch (err: any) {
+      setAuthError(`Network Error: ${err.message || "Failed to reach auth servers"}`);
+    } finally {
+      setIsSendingOtp(false);
+    }
   };
 
-  // Handle Verify OTP
-  const handleVerifyOtp = (e?: React.FormEvent) => {
+  // Handle Verify REAL OTP via Supabase
+  const handleVerifyOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (!enteredOtp || enteredOtp.trim().length < 6) {
+      setAuthError("Please enter the complete 6-digit OTP code received on your email.");
+      return;
+    }
+
     setIsVerifying(true);
     setAuthError("");
+    setAuthSuccess("");
 
-    setTimeout(() => {
-      if (enteredOtp.trim() === generatedOtp || enteredOtp.trim() === "123456" || enteredOtp.trim() === "784210") {
+    try {
+      // Safety emergency bypass (in case college Wi-Fi delays email during live demo)
+      if (enteredOtp.trim() === "784210" || enteredOtp.trim() === "123456") {
         setIsAdminAuthenticated(true);
         localStorage.setItem("syncpulse_admin_logged", "true");
-        setAuthError("");
-      } else {
-        setAuthError("Galat OTP code hai. Kripya check karke dobara dalein.");
+        localStorage.setItem("syncpulse_admin_email", AUTHORIZED_ADMIN_EMAIL);
+        return;
       }
+
+      // Real Supabase OTP Verification
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: AUTHORIZED_ADMIN_EMAIL,
+        token: enteredOtp.trim(),
+        type: "email",
+      });
+
+      if (error) {
+        setAuthError(`Invalid OTP: ${error.message}. Check your email and enter the latest 6-digit code.`);
+      } else {
+        setIsAdminAuthenticated(true);
+        localStorage.setItem("syncpulse_admin_logged", "true");
+        localStorage.setItem("syncpulse_admin_email", AUTHORIZED_ADMIN_EMAIL);
+        setAuthSuccess("OTP Verified successfully! Welcome Admin.");
+      }
+    } catch (err: any) {
+      setAuthError(`Verification Error: ${err.message || "Failed to verify token"}`);
+    } finally {
       setIsVerifying(false);
-    }, 600);
+    }
   };
 
-  // Quick Demo Login (For judges presentation)
+  // Quick Demo Login (Only for judges presentation)
   const handleQuickDemoLogin = () => {
-    setAdminEmail("lead.faculty@kurukshetra.edu");
+    setAdminEmail(AUTHORIZED_ADMIN_EMAIL);
     setIsAdminAuthenticated(true);
     localStorage.setItem("syncpulse_admin_logged", "true");
+    localStorage.setItem("syncpulse_admin_email", AUTHORIZED_ADMIN_EMAIL);
   };
 
   // Handle Logout
@@ -91,6 +157,8 @@ export default function SyncPulseApp() {
     setIsAdminAuthenticated(false);
     setOtpSent(false);
     setEnteredOtp("");
+    setAuthError("");
+    setAuthSuccess("");
     localStorage.removeItem("syncpulse_admin_logged");
   };
 
@@ -315,9 +383,17 @@ export default function SyncPulseApp() {
 
           {/* Error Message */}
           {authError && (
-            <div className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-xs text-red-200 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-              <span>{authError}</span>
+            <div className="p-3.5 rounded-2xl bg-red-950/90 border border-red-500/70 text-xs text-red-200 flex items-start gap-2.5 shadow-lg shadow-red-950/50 animate-fadeIn">
+              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+              <div className="font-medium leading-relaxed">{authError}</div>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {authSuccess && (
+            <div className="p-3.5 rounded-2xl bg-emerald-950/90 border border-emerald-500/70 text-xs text-emerald-200 flex items-start gap-2.5 shadow-lg shadow-emerald-950/50 animate-fadeIn">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="font-medium leading-relaxed">{authSuccess}</div>
             </div>
           )}
 
@@ -325,15 +401,18 @@ export default function SyncPulseApp() {
           {!otpSent ? (
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-indigo-400" />
-                  Admin Official Email
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-indigo-400" />
+                    Admin Registered Email
+                  </span>
+                  <span className="text-[10px] text-cyan-400 font-mono-code">Strict Whitelist Active</span>
                 </label>
                 <input
                   type="email"
                   value={adminEmail}
                   onChange={(e) => setAdminEmail(e.target.value)}
-                  placeholder="admin@syncpulse.ai or faculty@college.edu"
+                  placeholder="rohit.bcastudent25.30916@cimage.in"
                   className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-indigo-500 font-mono-code transition"
                   required
                 />
@@ -341,34 +420,50 @@ export default function SyncPulseApp() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-indigo-900/40 flex items-center justify-center gap-2"
+                disabled={isSendingOtp}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-indigo-900/40 flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                <span>Send Security OTP</span>
-                <ChevronRight className="w-4 h-4" />
+                {isSendingOtp ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Dispatching OTP via Supabase...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Real OTP to My Email</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
           ) : (
-            /* STEP 2: VERIFY OTP */
+            /* STEP 2: VERIFY REAL OTP */
             <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <div className="p-3 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-xs text-indigo-200">
-                📩 Security OTP dispatched to: <strong>{adminEmail}</strong>
-                <div className="mt-1 text-[11px] text-cyan-300 font-mono-code">
-                  [Demo Passcode: <strong>{generatedOtp}</strong>]
+              <div className="p-3.5 rounded-2xl bg-indigo-950/50 border border-indigo-500/40 text-xs text-indigo-200 space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-white">
+                  <Mail className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Check Your Real Email Inbox</span>
                 </div>
+                <p className="text-[11px] text-slate-300">
+                  Supabase has sent a 6-digit verification code to: <strong className="text-cyan-300 font-mono-code">{adminEmail}</strong>
+                </p>
+                <p className="text-[10px] text-slate-400 italic">
+                  (Check your primary inbox, Updates tab, or Spam folder)
+                </p>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-cyan-400" />
-                  Enter 6-Digit OTP Code
+                  Enter 6-Digit OTP From Email
                 </label>
                 <input
                   type="text"
                   maxLength={6}
                   value={enteredOtp}
                   onChange={(e) => setEnteredOtp(e.target.value)}
-                  placeholder="e.g. 784210"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-cyan-500/50 text-white text-center text-lg tracking-[0.3em] font-mono-code focus:outline-none focus:border-cyan-400 transition"
+                  placeholder="e.g. 592814"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-cyan-500/50 text-white text-center text-xl tracking-[0.35em] font-mono-code focus:outline-none focus:border-cyan-400 transition"
                   autoFocus
                   required
                 />
@@ -377,10 +472,13 @@ export default function SyncPulseApp() {
               <button
                 type="submit"
                 disabled={isVerifying}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-cyan-900/40 flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-cyan-900/40 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isVerifying ? (
-                  <span>Verifying Credentials...</span>
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Verifying Code With Supabase...</span>
+                  </>
                 ) : (
                   <>
                     <Unlock className="w-4 h-4" />
@@ -389,13 +487,28 @@ export default function SyncPulseApp() {
                 )}
               </button>
 
-              <button
-                type="button"
-                onClick={() => setOtpSent(false)}
-                className="w-full text-center text-xs text-slate-400 hover:text-white transition"
-              >
-                ← Change Email Address
-              </button>
+              <div className="flex items-center justify-between text-xs pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setAuthError("");
+                    setAuthSuccess("");
+                  }}
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  ← Change Email
+                </button>
+
+                <button
+                  type="button"
+                  disabled={resendCountdown > 0 || isSendingOtp}
+                  onClick={() => handleSendOtp()}
+                  className="text-cyan-400 hover:text-cyan-300 disabled:text-slate-600 transition font-mono-code text-[11px]"
+                >
+                  {resendCountdown > 0 ? `Resend OTP in ${resendCountdown}s` : "Resend OTP"}
+                </button>
+              </div>
             </form>
           )}
 
