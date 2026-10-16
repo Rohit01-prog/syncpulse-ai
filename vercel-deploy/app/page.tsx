@@ -41,7 +41,7 @@ export default function SyncPulseLandingAndApp() {
   
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
-  const [adminEmail, setAdminEmail] = useState<string>("rohit.bcastudent25.30916@cimage.in");
+  const [adminEmail, setAdminEmail] = useState<string>("");
   const [otpSent, setOtpSent] = useState<boolean>(false);
   const [enteredOtp, setEnteredOtp] = useState<string>("");
   const [sessionOtpCode, setSessionOtpCode] = useState<string>("849201");
@@ -738,9 +738,11 @@ export default function SyncPulseLandingAndApp() {
               href="https://t.me/syncpulse_solver_bot"
               target="_blank"
               rel="noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-[#C89D5C] text-[#8C6228] hover:text-white border border-[#C89D5C] text-xs font-bold transition shadow-sm font-cinzel"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 via-cyan-50 to-blue-50 hover:from-[#C89D5C] hover:to-[#B88746] text-stone-900 hover:text-white border-2 border-[#C89D5C] text-xs font-bold transition shadow-sm hover:shadow-md font-cinzel group hover:scale-105"
+              title="Open Official Telegram Solver Bot"
             >
-              <Send className="w-3.5 h-3.5" />
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-ping"></span>
+              <Bot className="w-4 h-4 text-[#C89D5C] group-hover:text-white transition" />
               <span>@syncpulse_solver_bot</span>
             </a>
           </div>
@@ -835,8 +837,7 @@ export default function SyncPulseLandingAndApp() {
                 <img 
                   src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
                   alt="Cyber Mesh" 
-                  className="w-full h-full object-cover"
-                />
+                  className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               </div>
               
               <div className="flex items-center justify-between border-b border-stone-100 pb-4 relative z-10">
@@ -1002,62 +1003,100 @@ export default function SyncPulseLandingAndApp() {
 
             <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-200/60 shadow-xl bg-white relative overflow-hidden space-y-6">
               
-              {/* Featured Architecture Visual Image */}
-              <div className="img-cyber-frame h-44 w-full relative">
+              {/* Featured Architecture Visual: High-Reliability Neural Network Mesh */}
+              <div className="img-cyber-frame h-44 w-full relative bg-gradient-to-br from-stone-900 via-stone-850 to-stone-950 overflow-hidden rounded-2xl border border-amber-200/50 shadow-md">
                 <img 
-                  src="https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80" 
+                  src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" 
                   alt="Mistral AI Neural Architecture"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
+                  onError={(e) => {
+                    // Fallback to pure CSS aesthetic if network fails
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/60 to-transparent"></div>
                 
                 {/* Floating Centered Brain Badge */}
-                <div className="absolute bottom-3 left-4 flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/50 border border-white/20 animate-pulse">
+                <div className="absolute bottom-3 left-4 flex items-center gap-3 z-10">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C89D5C] via-[#D4A362] to-[#B88746] flex items-center justify-center shadow-lg shadow-amber-950/40 border-2 border-white/40 animate-pulse">
                     <Cpu className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-base font-black text-white">Mistral AI Agent Brain</h4>
-                    <p className="text-[10px] text-cyan-300 font-mono-code">Semantic NLP Reasoning Engine</p>
+                    <h4 className="text-base font-black text-white font-cinzel tracking-wide drop-shadow-md">Mistral AI Agent Brain</h4>
+                    <p className="text-[10px] text-amber-200 font-mono-code font-bold">Semantic NLP Reasoning Engine</p>
                   </div>
                 </div>
 
                 {/* Radar Sweep Ring Badge */}
-                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-950/80 border border-cyan-500/40 text-[9px] font-mono-code text-cyan-400 flex items-center gap-1.5 backdrop-blur-md">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-                  <span>7B PARAMS ACTIVE</span>
+                <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-stone-900/90 border border-amber-400/60 text-[9px] font-mono-code text-amber-300 flex items-center gap-1.5 backdrop-blur-md shadow-md z-10">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span className="font-bold">7B PARAMS ACTIVE</span>
                 </div>
               </div>
 
-              {/* Dynamic Telemetry Specs */}
-              <div className="space-y-2.5 font-mono-code text-xs">
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
-                  <span className="text-slate-400 flex items-center gap-2">
-                    <Binary className="w-3.5 h-3.5 text-indigo-400" />
+              {/* Dynamic Telemetry Specs: Rich Colors & Highlighted Telegram Solver Bot */}
+              <div className="space-y-3 text-xs">
+                {/* 1. LLM Reasoning Model */}
+                <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-indigo-400 transition shadow-sm group">
+                  <span className="text-stone-800 font-bold font-cinzel flex items-center gap-2.5">
+                    <span className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 shadow-sm group-hover:scale-110 transition">
+                      <Binary className="w-4 h-4" />
+                    </span>
                     <span>LLM Reasoning Model:</span>
                   </span>
-                  <span className="text-stone-900 font-bold">Mistral 7B / Small</span>
+                  <span className="px-3 py-1 rounded-xl bg-white border border-stone-200 text-stone-900 font-bold font-mono-code shadow-sm">
+                    Mistral 7B / Small
+                  </span>
                 </div>
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
-                  <span className="text-slate-400 flex items-center gap-2">
-                    <Zap className="w-3.5 h-3.5 text-cyan-400" />
+
+                {/* 2. Database Engine */}
+                <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-emerald-400 transition shadow-sm group">
+                  <span className="text-stone-800 font-bold font-cinzel flex items-center gap-2.5">
+                    <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center border border-emerald-200 shadow-sm group-hover:scale-110 transition">
+                      <Zap className="w-4 h-4" />
+                    </span>
                     <span>Database Engine:</span>
                   </span>
-                  <span className="text-stone-900 font-bold">Supabase Realtime (WSS)</span>
+                  <span className="px-3 py-1 rounded-xl bg-white border border-stone-200 text-stone-900 font-bold font-mono-code shadow-sm">
+                    Supabase Realtime (WSS)
+                  </span>
                 </div>
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
-                  <span className="text-slate-400 flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-emerald-400" />
+
+                {/* 3. Cadence Frequency */}
+                <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-amber-400 transition shadow-sm group">
+                  <span className="text-stone-800 font-bold font-cinzel flex items-center gap-2.5">
+                    <span className="w-8 h-8 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center border border-amber-300 shadow-sm group-hover:scale-110 transition">
+                      <Clock className="w-4 h-4" />
+                    </span>
                     <span>Cadence Frequency:</span>
                   </span>
-                  <span className="text-emerald-400 font-bold">Autonomous Sprints (24/7)</span>
-                </div>
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between hover:border-amber-300 transition">
-                  <span className="text-slate-400 flex items-center gap-2">
-                    <Send className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>Telegram Bridge:</span>
+                  <span className="px-3 py-1 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold font-mono-code shadow-sm">
+                    Autonomous Sprints (24/7)
                   </span>
-                  <span className="text-[#B48530] font-bold">@syncpulse_solver_bot</span>
+                </div>
+
+                {/* 4. Telegram Bridge & HIGHLIGHTED BOT ROW */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-100/90 via-amber-50 to-cyan-50 border-2 border-[#C89D5C] flex items-center justify-between shadow-md hover:shadow-lg transition group">
+                  <span className="text-stone-900 font-black font-cinzel flex items-center gap-2.5">
+                    <span className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center shadow-md animate-pulse">
+                      <Bot className="w-5 h-5 text-white" />
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span>Telegram Solver Bot:</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    </span>
+                  </span>
+                  <a
+                    href="https://t.me/syncpulse_solver_bot"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-black text-xs font-mono-code flex items-center gap-1.5 shadow-md hover:scale-105 transition"
+                    title="Launch Official Telegram Bot"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    <span>@syncpulse_solver_bot</span>
+                    <ExternalLink className="w-3 h-3 opacity-75" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -1398,8 +1437,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" 
                 alt="Proactive Follow-ups" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 backdrop-blur-md">
                 <Bot className="w-5 h-5" />
@@ -1417,8 +1455,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80" 
                 alt="Blocker Radar Diagnostic" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 backdrop-blur-md">
                 <AlertTriangle className="w-5 h-5 animate-pulse" />
@@ -1436,8 +1473,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" 
                 alt="Mistral Semantic Reasoning" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 backdrop-blur-md">
                 <Terminal className="w-5 h-5" />
@@ -1455,8 +1491,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" 
                 alt="Autonomous Peer Escalation" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 backdrop-blur-md">
                 <Zap className="w-5 h-5" />
@@ -1474,8 +1509,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" 
                 alt="Enterprise Role-Based Access" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 backdrop-blur-md">
                 <ShieldCheck className="w-5 h-5" />
@@ -1493,8 +1527,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
                 alt="Scalable to 50+ Engineers" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
               <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 backdrop-blur-md">
                 <Users className="w-5 h-5" />
@@ -1546,8 +1579,7 @@ export default function SyncPulseLandingAndApp() {
                   <img 
                     src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80" 
                     alt="Meera" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                  />
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-stone-900 group-hover:text-emerald-700 transition">Meera</h4>
@@ -1576,8 +1608,7 @@ export default function SyncPulseLandingAndApp() {
                   <img 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80" 
                     alt="Sumit" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                  />
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-stone-900 group-hover:text-emerald-700 transition">Sumit</h4>
@@ -1616,8 +1647,7 @@ export default function SyncPulseLandingAndApp() {
                   <img 
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80" 
                     alt="Kabir" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                  />
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-stone-900 group-hover:text-red-600 transition">Kabir</h4>
@@ -1648,8 +1678,7 @@ export default function SyncPulseLandingAndApp() {
                   <img 
                     src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80" 
                     alt="Jaswant" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                  />
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-stone-900 group-hover:text-amber-700 transition">Jaswant</h4>
@@ -1796,8 +1825,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80" 
                 alt="Circuit Board" 
-                className="w-full h-full object-cover"
-              />
+                className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
             </div>
 
             {/* Scanning beam */}
@@ -2059,8 +2087,7 @@ export default function SyncPulseLandingAndApp() {
                     <img 
                       src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" 
                       alt="Global Web Network" 
-                      className="w-full h-full object-cover"
-                    />
+                      className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
                     <div className="absolute bottom-3 left-4 flex items-center gap-2 text-xs font-mono-code font-bold text-red-300">
                       <Globe className="w-4 h-4 text-red-400 animate-spin" />
@@ -2281,8 +2308,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" 
                 alt="Traditional Bottlenecks" 
-                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500"
-              />
+                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
               <div className="absolute bottom-3 left-3 px-3 py-1 rounded-xl bg-red-950/90 text-red-300 border border-red-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md">
                 8+ HOURS SPRINT DELAY
@@ -2321,8 +2347,7 @@ export default function SyncPulseLandingAndApp() {
               <img 
                 src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" 
                 alt="SyncPulse AI Autonomous Flow" 
-                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-              />
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-500" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
               <div className="absolute bottom-3 left-3 px-3 py-1 rounded-xl bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
@@ -2599,8 +2624,7 @@ export default function SyncPulseLandingAndApp() {
                 <img 
                   src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" 
                   alt="Faculty Mentor" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                />
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               </div>
               <div>
                 <strong className="text-stone-900 text-xs block">College Mentors & Faculty</strong>
@@ -2622,8 +2646,7 @@ export default function SyncPulseLandingAndApp() {
                 <img 
                   src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" 
                   alt="Jury Member" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                />
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               </div>
               <div>
                 <strong className="text-stone-900 text-xs block">Track W-PS-1 Judges</strong>
@@ -2645,8 +2668,7 @@ export default function SyncPulseLandingAndApp() {
                 <img 
                   src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80" 
                   alt="Sponsor Lead" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                />
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300" onError={(e) => { e.currentTarget.style.display = "none"; }} />
               </div>
               <div>
                 <strong className="text-stone-900 text-xs block">AI Project Sponsors</strong>
@@ -2723,8 +2745,7 @@ export default function SyncPulseLandingAndApp() {
             <img 
               src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80" 
               alt="Cyber Launchpad" 
-              className="w-full h-full object-cover"
-            />
+              className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
           </div>
 
           {/* Shimmer Ambient Glow */}
@@ -3135,16 +3156,26 @@ export default function SyncPulseLandingAndApp() {
                     type="email"
                     value={adminEmail}
                     onChange={(e) => setAdminEmail(e.target.value)}
-                    placeholder="rohit.bcastudent25.30916@cimage.in"
-                    className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code"
+                    placeholder="Enter authorized administrator email (e.g. admin@organization.edu)"
+                    className="w-full px-4 py-3 rounded-xl bg-stone-50 border border-stone-300 text-stone-900 text-xs focus:outline-none focus:border-[#C89D5C] font-mono-code placeholder:text-stone-400 shadow-inner"
                     required
                   />
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-[10px] text-stone-500 font-cinzel">Official Admin Whitelist Active</span>
+                    <button
+                      type="button"
+                      onClick={() => setAdminEmail(AUTHORIZED_ADMIN_EMAIL)}
+                      className="text-[10px] text-amber-800 hover:text-amber-950 underline font-semibold transition font-cinzel"
+                    >
+                      ⚡ Quick Auto-Fill
+                    </button>
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSendingOtp}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wider uppercase transition shadow-lg shadow-red-900/40 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs tracking-wider uppercase transition shadow-lg shadow-amber-900/15 flex items-center justify-center gap-2 disabled:opacity-50 font-cinzel"
                 >
                   {isSendingOtp ? (
                     <>
