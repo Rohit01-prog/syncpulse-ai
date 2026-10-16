@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
 import { 
-  Bot, AlertTriangle, CheckCircle2, Clock, ListTodo, Send, 
-  ExternalLink, Sparkles, RefreshCw, Plus, Users, Globe, ShieldCheck, 
-  ArrowRight, ArrowLeft, MessageSquare, Zap, Check, Bell, Cpu, 
-  Layers, Play, RotateCcw, Activity, HelpCircle, Flame
+  Bot, AlertTriangle, CheckCircle2, Clock, Send, 
+  Sparkles, RefreshCw, Users, ShieldCheck, 
+  ArrowRight, ArrowLeft, Zap, Check, Bell, Cpu, 
+  Layers, Play, RotateCcw, Activity, Flame, 
+  Terminal, Sliders, Radio, Eye, Binary, TrendingUp, XCircle
 } from "lucide-react";
 
 interface Task {
@@ -15,65 +15,85 @@ interface Task {
   title: string;
   description: string;
   assigned_to_name: string;
+  role: string;
   status: "todo" | "in_progress" | "blocked" | "completed";
   priority: "low" | "medium" | "high" | "urgent";
   is_blocked: boolean;
   blocker_reason?: string;
   blocked_by_member_name?: string;
-  model_type?: string;
+  model_type: string;
+  progress: number;
+  specs: string;
+  avatarColor: string;
 }
 
 export default function SyncPulseApp() {
-  // Navigation: 5 Pages/Sections
+  // Navigation: 5 Pages
   const [currentPage, setCurrentPage] = useState<1 | 2 | 3 | 4 | 5>(1);
 
-  // 4 AI Engineers Training Models (As requested by Rohit)
+  // 4 AI Engineers Training Models
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: "1",
       task_code: "AI-101",
       title: "BERT Text Classifier Training",
-      description: "Dataset tokenization, fine-tuning BERT base model, and validating accuracy metrics.",
+      description: "Fine-tuning 110M parameter BERT for domain intent detection & tokenization.",
       assigned_to_name: "Meera",
+      role: "NLP & Data Lead",
       status: "completed",
       priority: "high",
       is_blocked: false,
-      model_type: "NLP Classifier",
+      model_type: "NLP Matrix (BERT)",
+      progress: 100,
+      specs: "110M params · 99.4% Acc · 12ms",
+      avatarColor: "from-emerald-500 to-teal-400",
     },
     {
       id: "2",
       task_code: "AI-102",
-      title: "ResNet-50 Computer Vision Model",
-      description: "Image augmentation, transfer learning on ResNet-50, and exporting ONNX weights.",
+      title: "ResNet-50 Vision Embedding Pipeline",
+      description: "Transfer learning on ResNet-50 feature extractor with ONNX runtime export.",
       assigned_to_name: "Sumit",
+      role: "Computer Vision Engineer",
       status: "completed",
       priority: "high",
       is_blocked: false,
-      model_type: "Vision Model",
+      model_type: "Vision Tensor (ResNet)",
+      progress: 100,
+      specs: "25.6M params · TensorRT · 60 FPS",
+      avatarColor: "from-blue-500 to-indigo-500",
     },
     {
       id: "3",
       task_code: "AI-103",
       title: "Llama-3 8B Instruction Fine-Tuning",
-      description: "LoRA adapter training for domain instruction tasks. Waiting for GPU cluster credentials.",
+      description: "LoRA adapter training for task synthesis. Paused waiting for GPU cluster credentials.",
       assigned_to_name: "Kabir",
+      role: "LLM Systems Engineer",
       status: "blocked",
       priority: "urgent",
       is_blocked: true,
-      blocker_reason: "Waiting for GPU Cluster API Key & Model Weights from Meera",
+      blocker_reason: "Waiting for GPU Cluster API Key & S3 Weights from Meera",
       blocked_by_member_name: "Meera",
-      model_type: "LLM Fine-Tuning",
+      model_type: "LLM LoRA Engine (Llama-3)",
+      progress: 35,
+      specs: "8B params · 4-bit QLoRA · Needs A100",
+      avatarColor: "from-rose-500 to-red-600",
     },
     {
       id: "4",
       task_code: "AI-104",
       title: "Whisper Audio Speech-to-Text Model",
-      description: "Audio pipeline preprocessing and inference speed benchmark.",
+      description: "Audio spectrogram preprocessing & real-time streaming inference testing.",
       assigned_to_name: "Jaswant",
+      role: "Speech & Audio Engineer",
       status: "in_progress",
       priority: "medium",
       is_blocked: false,
-      model_type: "Audio AI",
+      model_type: "Audio Spectrogram (Whisper)",
+      progress: 70,
+      specs: "39M params · Mel-spectrogram · 0.8x RTF",
+      avatarColor: "from-cyan-500 to-blue-400",
     },
   ]);
 
@@ -90,11 +110,11 @@ export default function SyncPulseApp() {
       } else {
         setIsSimulating(false);
       }
-    }, 2800);
+    }, 3200);
     return () => clearTimeout(timer);
   }, [isSimulating, animStep]);
 
-  // Unblock Action (Resolves the blocker)
+  // Unblock Kabir
   const resolveBlocker = () => {
     setTasks((prev) =>
       prev.map((t) =>
@@ -103,14 +123,17 @@ export default function SyncPulseApp() {
               ...t,
               status: "completed",
               is_blocked: false,
+              progress: 100,
               blocker_reason: undefined,
               blocked_by_member_name: undefined,
+              specs: "8B params · 4-bit QLoRA · Fully Fine-Tuned ✓",
             }
           : t
       )
     );
   };
 
+  // Reset Kabir to blocked for repeat demos
   const resetBlocker = () => {
     setTasks((prev) =>
       prev.map((t) =>
@@ -119,8 +142,10 @@ export default function SyncPulseApp() {
               ...t,
               status: "blocked",
               is_blocked: true,
-              blocker_reason: "Waiting for GPU Cluster API Key & Model Weights from Meera",
+              progress: 35,
+              blocker_reason: "Waiting for GPU Cluster API Key & S3 Weights from Meera",
               blocked_by_member_name: "Meera",
+              specs: "8B params · 4-bit QLoRA · Needs A100",
             }
           : t
       )
@@ -131,42 +156,60 @@ export default function SyncPulseApp() {
   const isKabirBlocked = kabirTask?.is_blocked;
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#030611] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
       
       {/* ======================================================== */}
-      {/* TOP BRAND HEADER (Always visible on all pages) */}
+      {/* DYNAMIC AMBIENT LIGHTING (NEON GLOW BACKDROPS) */}
       {/* ======================================================== */}
-      <header className="sticky top-0 z-50 bg-[#0a0d16]/90 backdrop-blur-xl border-b border-slate-800/80 px-4 md:px-8 py-3.5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="ambient-glow-1"></div>
+      <div className="ambient-glow-2"></div>
+      {isKabirBlocked && <div className="ambient-glow-3"></div>}
+
+      {/* ======================================================== */}
+      {/* TOP BRAND HEADER (CYBERPUNK GLASSMORPHISM) */}
+      {/* ======================================================== */}
+      <header className="sticky top-0 z-50 glass-panel border-b border-indigo-500/20 px-4 md:px-8 py-3">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
           
           {/* Logo & Identity */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-              <Bot className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-3.5">
+            <div className="relative">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/40">
+                <Bot className="w-6 h-6 text-white animate-pulse" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-[#030611] flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-white animate-ping"></div>
+              </div>
             </div>
+
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-extrabold tracking-tight text-white space-heading">SyncPulse AI</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                  AUTONOMOUS COORDINATOR
+                <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
+                  <span className="gradient-text-shimmer">SyncPulse</span>
+                  <span className="text-cyan-400 font-extrabold">AI</span>
+                </h1>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 tracking-wider">
+                  AUTONOMOUS AGENT
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  LIVE
+                  LIVE AGENT ACTIVE
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Track W-PS-1 · Hackathon Kurukshetra · Powered by Worcflow.ai
+              <p className="text-[11px] text-slate-400 font-medium">
+                Track W-PS-1 · Autonomous Group Project Coordinator · Powered by Worcflow.ai
               </p>
             </div>
           </div>
 
-          {/* 5 Page Navigation Switcher */}
-          <nav className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
+          {/* 5 Page Navigation Buttons */}
+          <nav className="flex flex-wrap items-center justify-center gap-1.5 bg-[#090e1f]/80 p-1.5 rounded-2xl border border-indigo-500/20 text-xs shadow-inner">
             <button
               onClick={() => setCurrentPage(1)}
-              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
-                currentPage === 1 ? "bg-indigo-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+                currentPage === 1 
+                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/30 ring-1 ring-indigo-400/50" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
               <Users className="w-3.5 h-3.5" />
@@ -175,11 +218,13 @@ export default function SyncPulseApp() {
 
             <button
               onClick={() => setCurrentPage(2)}
-              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
-                currentPage === 2 ? "bg-red-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+                currentPage === 2 
+                  ? "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-500/30 ring-1 ring-red-400/50" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
-              <AlertTriangle className="w-3.5 h-3.5" />
+              <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
               <span>2. Blocker Radar</span>
               {isKabirBlocked && (
                 <span className="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
@@ -188,8 +233,10 @@ export default function SyncPulseApp() {
 
             <button
               onClick={() => setCurrentPage(3)}
-              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
-                currentPage === 3 ? "bg-indigo-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+                currentPage === 3 
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30 ring-1 ring-purple-400/50" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
               <Cpu className="w-3.5 h-3.5" />
@@ -198,18 +245,22 @@ export default function SyncPulseApp() {
 
             <button
               onClick={() => setCurrentPage(4)}
-              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
-                currentPage === 4 ? "bg-cyan-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+                currentPage === 4 
+                  ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/30 ring-1 ring-cyan-400/50" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
-              <Zap className="w-3.5 h-3.5" />
+              <Zap className="w-3.5 h-3.5 text-cyan-300" />
               <span>4. Animated Flow</span>
             </button>
 
             <button
               onClick={() => setCurrentPage(5)}
-              className={`px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 ${
-                currentPage === 5 ? "bg-emerald-600 text-white shadow-md" : "text-slate-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 ${
+                currentPage === 5 
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400/50" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -217,14 +268,14 @@ export default function SyncPulseApp() {
             </button>
           </nav>
 
-          {/* Quick Telegram Bridge Pill */}
+          {/* Telegram Bridge Pill */}
           <a
             href="https://t.me/syncpulse_solver_bot"
             target="_blank"
             rel="noreferrer"
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-semibold transition"
+            className="hidden xl:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold transition shadow-sm"
           >
-            <Send className="w-3.5 h-3.5" />
+            <Send className="w-3.5 h-3.5 animate-bounce" />
             <span>@syncpulse_solver_bot</span>
           </a>
 
@@ -232,41 +283,47 @@ export default function SyncPulseApp() {
       </header>
 
       {/* ======================================================== */}
-      {/* MAIN DYNAMIC CONTENT CONTAINER */}
+      {/* MAIN CONTAINER */}
       {/* ======================================================== */}
-      <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-8 flex flex-col justify-between">
+      <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-8 flex flex-col justify-between z-10">
         
         {/* ======================================================== */}
         {/* PAGE 1: WHO IS DOING WHAT (Clean Tasks & Team Grid) */}
         {/* ======================================================== */}
         {currentPage === 1 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Page Header */}
-            <div className="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            {/* Header Banner */}
+            <div className="glass-panel p-6 rounded-3xl border border-indigo-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Page 1 · Live Overview</span>
+                  <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+                    PAGE 1 · REAL-TIME SPRINT BOARD
+                  </span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
                   Who Is Doing What Task?
                 </h2>
-                <p className="text-sm text-slate-400 mt-1">
-                  Clean assignment board showing each team member, their assigned AI milestone, and current progress.
+                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+                  Every AI engineer is assigned a designated deep learning model pipeline. Monitor model health, progress percentage, and status in real time.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-                  Total Milestones: <strong className="text-white">4</strong>
-                </span>
-                <span className="text-xs px-3 py-1.5 rounded-lg bg-emerald-950/50 border border-emerald-800/40 text-emerald-400">
-                  Completed: <strong>{tasks.filter((t) => t.status === "completed").length}</strong>
-                </span>
+              <div className="flex items-center gap-3">
+                <div className="px-4 py-2 rounded-2xl bg-indigo-950/50 border border-indigo-500/30 text-center">
+                  <div className="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Models Assigned</div>
+                  <div className="text-xl font-black text-white font-mono-code">4 / 4</div>
+                </div>
+                <div className="px-4 py-2 rounded-2xl bg-emerald-950/50 border border-emerald-500/30 text-center">
+                  <div className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Status</div>
+                  <div className="text-xl font-black text-emerald-400 font-mono-code">
+                    {tasks.filter((t) => t.status === "completed").length} Done
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* 4 Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {tasks.map((task) => {
                 const isBlocked = task.is_blocked;
                 const isDone = task.status === "completed";
@@ -274,77 +331,133 @@ export default function SyncPulseApp() {
                 return (
                   <div
                     key={task.id}
-                    className={`p-5 rounded-2xl border transition-all duration-300 ${
+                    className={`p-6 rounded-3xl border glass-card transition-all duration-300 glass-card-hover relative overflow-hidden ${
                       isBlocked
-                        ? "bg-red-950/25 border-red-500/50 shadow-xl shadow-red-950/30"
+                        ? "border-red-500/60 bg-gradient-to-br from-red-950/40 via-red-900/15 to-slate-950 glow-red animate-pulse-red"
                         : isDone
-                        ? "bg-slate-900/60 border-emerald-500/30 shadow-md"
-                        : "bg-slate-900/60 border-slate-800"
+                        ? "border-emerald-500/30 bg-gradient-to-br from-emerald-950/20 via-slate-900/40 to-slate-950"
+                        : "border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 via-slate-900/40 to-slate-950"
                     }`}
                   >
-                    {/* Top Row: Code & Status */}
-                    <div className="flex items-center justify-between mb-3">
+                    {/* Top Status & Code */}
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">
+                        <span className="font-mono-code text-xs px-2.5 py-1 rounded-lg bg-white/10 text-slate-200 font-bold border border-white/10">
                           {task.task_code}
                         </span>
-                        <span className="text-xs text-indigo-400 font-semibold">{task.model_type}</span>
+                        <span className="text-xs font-semibold text-cyan-300 flex items-center gap-1.5">
+                          <Binary className="w-3.5 h-3.5" />
+                          {task.model_type}
+                        </span>
                       </div>
 
                       <span
-                        className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                        className={`text-[11px] px-3 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5 ${
                           isBlocked
-                            ? "bg-red-500/20 text-red-300 border border-red-500/40 animate-pulse"
+                            ? "bg-red-500/20 text-red-300 border border-red-500/50 animate-pulse"
                             : isDone
                             ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                            : "bg-blue-500/20 text-blue-300 border border-blue-500/40"
+                            : "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
                         }`}
                       >
-                        {isBlocked ? "🚨 BLOCKED" : isDone ? "✓ COMPLETED" : "⚡ IN PROGRESS"}
+                        {isBlocked ? (
+                          <>
+                            <span className="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+                            🚨 BLOCKED
+                          </>
+                        ) : isDone ? (
+                          <>
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                            COMPLETED
+                          </>
+                        ) : (
+                          <>
+                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                            IN PROGRESS
+                          </>
+                        )}
                       </span>
                     </div>
 
                     {/* Task Title & Desc */}
-                    <h3 className="text-base font-bold text-white mb-1.5">{task.title}</h3>
-                    <p className="text-xs text-slate-400 leading-relaxed mb-4">{task.description}</p>
+                    <h3 className="text-lg font-bold text-white mb-1.5 tracking-tight">{task.title}</h3>
+                    <p className="text-xs text-slate-300 leading-relaxed mb-4">{task.description}</p>
 
-                    {/* Blocker Alert Line if blocked */}
+                    {/* Progress Bar */}
+                    <div className="space-y-1.5 mb-4">
+                      <div className="flex justify-between text-[11px] font-mono-code">
+                        <span className="text-slate-400">Training Progress</span>
+                        <span className={isBlocked ? "text-red-400 font-bold" : "text-emerald-400 font-bold"}>
+                          {task.progress}%
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-slate-800/80 overflow-hidden border border-slate-700/50">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            isBlocked
+                              ? "bg-gradient-to-r from-red-600 to-rose-400"
+                              : isDone
+                              ? "bg-gradient-to-r from-emerald-500 to-teal-400"
+                              : "bg-gradient-to-r from-cyan-500 to-blue-500"
+                          }`}
+                          style={{ width: `${task.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    {/* Specs Chip */}
+                    <div className="p-2 rounded-xl bg-black/40 border border-white/5 text-[11px] text-slate-400 font-mono-code mb-4 flex items-center justify-between">
+                      <span>⚙️ {task.specs}</span>
+                    </div>
+
+                    {/* Blocker Reason Spotlight if Blocked */}
                     {isBlocked && (
-                      <div className="mb-4 p-2.5 rounded-xl bg-red-950/60 border border-red-800/40 text-xs text-red-300 flex items-start gap-2">
-                        <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <div className="mb-4 p-3 rounded-2xl bg-red-950/80 border border-red-700/60 text-xs text-red-200 flex items-start gap-2.5 shadow-lg">
+                        <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5 animate-bounce" />
                         <div>
-                          <strong>Stuck on:</strong> {task.blocker_reason}
+                          <strong className="text-red-300">Bottleneck:</strong> {task.blocker_reason}
                         </div>
                       </div>
                     )}
 
-                    {/* Member Assigned */}
-                    <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white text-[11px]">
+                    {/* Member Footer */}
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-tr ${task.avatarColor} flex items-center justify-center font-bold text-white text-xs shadow-md ring-1 ring-white/20`}>
                           {task.assigned_to_name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
-                          <span className="text-slate-400">Owner:</span>{" "}
-                          <strong className="text-white">{task.assigned_to_name}</strong>
+                          <div className="text-white font-bold">{task.assigned_to_name}</div>
+                          <div className="text-[10px] text-slate-400">{task.role}</div>
                         </div>
                       </div>
 
-                      <span className="text-slate-500 text-[11px]">Priority: {task.priority.toUpperCase()}</span>
+                      <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                        {task.priority.toUpperCase()} PRIORITY
+                      </span>
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* Bottom Callout */}
-            <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-              <span>Notice how <strong>AI-103 (Kabir)</strong> is flagged as BLOCKED. Want to see why?</span>
+            {/* Bottom Next Step Callout */}
+            <div className="glass-panel p-5 rounded-3xl border border-indigo-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
+                  <AlertTriangle className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white">System Alert: AI-103 (Kabir) is Paused</h4>
+                  <p className="text-xs text-slate-400">Discover exactly why Kabir is blocked and who can unblock him.</p>
+                </div>
+              </div>
+
               <button
                 onClick={() => setCurrentPage(2)}
-                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition flex items-center gap-2"
+                className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-red-900/40 shrink-0"
               >
-                <span>View Blocker Radar</span>
+                <span>Inspect Blocker Radar</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -352,115 +465,173 @@ export default function SyncPulseApp() {
         )}
 
         {/* ======================================================== */}
-        {/* PAGE 2: WHO IS STUCK, WHERE, AND WHY (Blocker Radar) */}
+        {/* PAGE 2: BLOCKER RADAR (Who Is Stuck & Why?) */}
         {/* ======================================================== */}
         {currentPage === 2 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Page Header */}
-            <div className="border-b border-slate-800 pb-4">
-              <span className="text-xs font-bold text-red-400 uppercase tracking-wider">Page 2 · Critical Bottlenecks</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
-                Blocker Radar: Who Is Stuck & Why?
-              </h2>
-              <p className="text-sm text-slate-400 mt-1">
-                Instant diagnostic showing the exact team member who is blocked, their bottleneck reason, and the blocking dependency.
-              </p>
+            {/* Header */}
+            <div className="glass-panel p-6 rounded-3xl border border-red-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+              <div>
+                <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-2.5 py-1 rounded-md border border-red-500/20">
+                  PAGE 2 · CRITICAL DEPENDENCY RADAR
+                </span>
+                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
+                  Blocker Radar: Who Is Stuck, Where & Why?
+                </h2>
+                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+                  Proactive dependency telemetry that isolates team bottlenecks before they jeopardize deadlines.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3.5 py-1.5 rounded-2xl bg-red-950/60 border border-red-500/40 text-red-300 text-xs font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+                  RADAR SCANNING LIVE
+                </span>
+              </div>
             </div>
 
             {isKabirBlocked ? (
-              /* ACTIVE BLOCKER SPOTLIGHT */
-              <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-red-950/40 via-red-900/20 to-slate-950 border border-red-500/60 shadow-2xl shadow-red-950/50 space-y-6">
+              /* ACTIVE CRITICAL BLOCKER SPOTLIGHT */
+              <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-red-950/50 via-slate-950 to-slate-950 border-2 border-red-500/80 shadow-2xl shadow-red-950/60 space-y-6 relative overflow-hidden glow-red">
                 
-                {/* Header Badge */}
-                <div className="flex flex-wrap items-center justify-between gap-3">
+                {/* Background Radar Line */}
+                <div className="absolute inset-0 pointer-events-none opacity-10 bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                {/* Top Badge */}
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
-                      <AlertTriangle className="w-6 h-6 animate-bounce" />
+                      <Flame className="w-7 h-7 animate-bounce" />
                     </div>
                     <div>
-                      <span className="text-xs font-mono font-bold text-red-400">TASK-103 IN JEOPARDY</span>
-                      <h3 className="text-xl font-extrabold text-white">Kabir Is Currently Blocked</h3>
+                      <span className="text-xs font-mono-code font-bold text-red-400">🚨 PIPELINE HALTED</span>
+                      <h3 className="text-xl md:text-2xl font-black text-white">Kabir Is Currently Blocked</h3>
                     </div>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold">
-                    🚨 CRITICAL BOTTLENECK
+                  <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-200 border border-red-500/50 text-xs font-mono-code font-bold">
+                    SEVERITY: CRITICAL (P0)
                   </span>
                 </div>
 
-                {/* 3 Questions Answered Cleanly */}
+                {/* 3 Clear Analytical Answers */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Who */}
-                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                    <div className="text-xs text-slate-400 font-medium">1. WHO IS STUCK?</div>
-                    <div className="text-lg font-bold text-white mt-1 flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-red-600 text-white text-xs flex items-center justify-center">KB</span>
-                      Kabir (AI Engineer)
+                  <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
+                    <div className="text-xs text-slate-400 font-mono-code font-bold">1. WHO IS STUCK?</div>
+                    <div className="text-lg font-bold text-white flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-rose-600 text-white text-xs font-bold flex items-center justify-center">KB</div>
+                      Kabir
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">Assigned to Llama-3 Fine-Tuning</p>
-                  </div>
-
-                  {/* Where */}
-                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                    <div className="text-xs text-slate-400 font-medium">2. WHERE IS HE STUCK?</div>
-                    <div className="text-lg font-bold text-red-300 mt-1">GPU Compute Cluster</div>
-                    <p className="text-xs text-slate-400 mt-1">Cannot launch training job without access</p>
-                  </div>
-
-                  {/* Why & On Whom */}
-                  <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                    <div className="text-xs text-slate-400 font-medium">3. WAITING ON WHOM?</div>
-                    <div className="text-lg font-bold text-amber-400 mt-1 flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-amber-500 text-black text-xs font-bold flex items-center justify-center">MR</span>
-                      Meera (Frontend & API Lead)
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">Holds the test credentials & API keys</p>
-                  </div>
-                </div>
-
-                {/* Autonomous Action Banner */}
-                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <Bot className="w-5 h-5 text-cyan-400 shrink-0" />
                     <p className="text-xs text-slate-300">
-                      <strong>Autonomous Action Taken:</strong> SyncPulse AI detected this dependency from Kabir&apos;s natural chat and automatically dispatched a targeted nudge to <strong>Meera</strong>.
+                      AI Systems Engineer assigned to Llama-3 8B Fine-Tuning.
                     </p>
                   </div>
 
+                  {/* Where */}
+                  <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
+                    <div className="text-xs text-slate-400 font-mono-code font-bold">2. WHERE IS HE STUCK?</div>
+                    <div className="text-lg font-bold text-red-400 flex items-center gap-2">
+                      <Cpu className="w-5 h-5 text-red-400" />
+                      GPU Compute Cluster
+                    </div>
+                    <p className="text-xs text-slate-300">
+                      Cannot spin up multi-GPU cluster node without valid access keys.
+                    </p>
+                  </div>
+
+                  {/* Waiting on Whom & Why */}
+                  <div className="p-5 rounded-2xl bg-[#090e1d]/90 border border-slate-800 space-y-2">
+                    <div className="text-xs text-slate-400 font-mono-code font-bold">3. WAITING ON WHOM?</div>
+                    <div className="text-lg font-bold text-amber-300 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">MR</div>
+                      Meera (Lead Engineer)
+                    </div>
+                    <p className="text-xs text-slate-300">
+                      Holds the master cluster secrets & S3 model checkpoint token.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Visual Dependency Flow Arrow */}
+                <div className="p-4 rounded-2xl bg-black/60 border border-indigo-500/20 flex flex-col md:flex-row items-center justify-between gap-4 font-mono-code text-xs">
+                  <div className="flex items-center gap-2 text-emerald-400">
+                    <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+                    <strong>Meera (BERT Lead)</strong> [Has Key 🔑]
+                  </div>
+
+                  <div className="flex items-center gap-2 text-red-400 animate-pulse font-bold">
+                    <span>─────── ⚡ Waiting On Dependency ───────▶</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-rose-400">
+                    <span className="w-3 h-3 rounded-full bg-rose-500"></span>
+                    <strong>Kabir (Llama-3 Lead)</strong> [Blocked 🚫]
+                  </div>
+                </div>
+
+                {/* Autonomous Action & Interactive Live Unblock Button */}
+                <div className="p-5 rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-900 border border-indigo-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                      <Bot className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white">Autonomous Agent Escalation Dispatched:</h4>
+                      <p className="text-xs text-slate-300">
+                        SyncPulse AI parsed Kabir&apos;s natural message, flagged the Meera dependency, and automatically nudged her across Web & Telegram!
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* THE UNBLOCK BUTTON FOR LIVE JUDGE DEMOS */}
                   <button
                     onClick={resolveBlocker}
-                    className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-900/40 shrink-0"
+                    className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white text-xs font-black transition-all flex items-center gap-2.5 shadow-xl shadow-emerald-900/50 glow-green shrink-0 hover:scale-105"
                   >
-                    <Check className="w-4 h-4" />
-                    <span>Meera Shares Keys (Unblock)</span>
+                    <Check className="w-4 h-4 stroke-[3]" />
+                    <span>Meera Shares Keys (Click to Unblock!)</span>
                   </button>
                 </div>
 
               </div>
             ) : (
-              /* RESOLVED SUCCESS STATE */
-              <div className="p-8 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 text-center space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
-                  <CheckCircle2 className="w-8 h-8" />
+              /* RESOLVED SUCCESS SCREEN */
+              <div className="p-10 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 border-2 border-emerald-500/60 text-center space-y-4 glow-green">
+                <div className="w-16 h-16 rounded-3xl bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center border border-emerald-500/40 shadow-xl shadow-emerald-900/40">
+                  <CheckCircle2 className="w-10 h-10 animate-bounce" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">All Blockers Have Been Resolved!</h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto">
-                  Meera shared the required credentials. Kabir was unblocked and Llama-3 fine-tuning completed successfully!
+                <h3 className="text-2xl md:text-3xl font-black text-white">
+                  All Blockers Autonomously Resolved!
+                </h3>
+                <p className="text-sm text-slate-300 max-w-lg mx-auto">
+                  Meera received the autonomous nudge and shared the GPU cluster credentials. Kabir is now unblocked and Llama-3 instruction fine-tuning is completed!
                 </p>
-                <button
-                  onClick={resetBlocker}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
-                >
-                  Reset Blocker (For Testing)
-                </button>
+
+                <div className="pt-2 flex justify-center gap-3">
+                  <button
+                    onClick={resetBlocker}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+                  >
+                    Reset Blocker (For Re-Testing)
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage(3)}
+                    className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-2"
+                  >
+                    <span>Proceed to 4-Person Story</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Navigation Row */}
-            <div className="flex justify-between items-center pt-4">
+            {/* Navigation Bottom */}
+            <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(1)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-800 flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Tasks</span>
@@ -468,7 +639,7 @@ export default function SyncPulseApp() {
 
               <button
                 onClick={() => setCurrentPage(3)}
-                className="px-5 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-950/40"
               >
                 <span>3. See 4-Person AI Story</span>
                 <ArrowRight className="w-4 h-4" />
@@ -482,121 +653,152 @@ export default function SyncPulseApp() {
         {/* ======================================================== */}
         {currentPage === 3 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Page Header */}
-            <div className="border-b border-slate-800 pb-4">
-              <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Page 3 · Presentation Story</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
-                The Scenario: 4 Engineers Training AI Models
-              </h2>
-              <p className="text-sm text-slate-400 mt-1">
-                In this project, Meera, Sumit, Kabir, and Jaswant must train 4 AI models sequentially (बारी-बारी).
-              </p>
+            {/* Header */}
+            <div className="glass-panel p-6 rounded-3xl border border-purple-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+              <div>
+                <span className="text-xs font-bold font-mono-code text-purple-400 uppercase tracking-widest bg-purple-500/10 px-2.5 py-1 rounded-md border border-purple-500/20">
+                  PAGE 3 · THE PRESENTATION SCENARIO
+                </span>
+                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
+                  The Story: 4 Engineers Training Models Sequentially
+                </h2>
+                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+                  Meera, Sumit, Kabir, and Jaswant are building an end-to-end multi-modal AI stack. Watch how each engineer depends on the previous model weights.
+                </p>
+              </div>
+
+              <div className="px-4 py-2 rounded-2xl bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs font-bold">
+                Sequential Pipeline (बारी-बारी)
+              </div>
             </div>
 
-            {/* 4 People Stage Timeline */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {/* Person 1: Meera */}
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-emerald-500/30 space-y-3 relative">
+            {/* 4 Pipeline Stages (Connected Wire Graphic) */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+              
+              {/* STAGE 1: Meera */}
+              <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3 glass-card relative">
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
-                    1
+                  <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">
+                    01
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">DONE</span>
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    DONE ✓
+                  </span>
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-white">Meera</h4>
-                  <p className="text-xs text-indigo-400 font-medium">BERT Text Model</p>
+                  <p className="text-xs text-indigo-400 font-mono-code">BERT Text Classifier</p>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Trained the NLP dataset and pushed weights. Finished on schedule.
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Trained text intent classifier & generated S3 authentication tokens. Completed without delay.
                 </p>
+                <div className="pt-2 text-[11px] font-mono-code text-emerald-400">
+                  Status: 100% Ready
+                </div>
               </div>
 
-              {/* Person 2: Sumit */}
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-emerald-500/30 space-y-3 relative">
+              {/* STAGE 2: Sumit */}
+              <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3 glass-card relative">
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
-                    2
+                  <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">
+                    02
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">DONE</span>
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    DONE ✓
+                  </span>
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-white">Sumit</h4>
-                  <p className="text-xs text-indigo-400 font-medium">ResNet Vision Model</p>
+                  <p className="text-xs text-indigo-400 font-mono-code">ResNet-50 Vision Model</p>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Exported vision feature embeddings and completed testing.
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Fine-tuned visual feature extractors and exported TensorRT engine. Completed on schedule.
                 </p>
+                <div className="pt-2 text-[11px] font-mono-code text-emerald-400">
+                  Status: 100% Ready
+                </div>
               </div>
 
-              {/* Person 3: Kabir */}
-              <div className={`p-4 rounded-2xl border space-y-3 relative ${
+              {/* STAGE 3: Kabir */}
+              <div className={`p-5 rounded-3xl border space-y-3 glass-card relative transition-all ${
                 isKabirBlocked 
-                  ? "bg-red-950/30 border-red-500/60 shadow-lg shadow-red-950/40" 
-                  : "bg-slate-900/60 border-emerald-500/30"
+                  ? "bg-red-950/30 border-red-500/80 glow-red animate-pulse-red" 
+                  : "bg-slate-900/60 border-emerald-500/40"
               }`}>
                 <div className="flex items-center justify-between">
-                  <span className={`w-8 h-8 rounded-full text-white font-bold flex items-center justify-center text-xs ${
-                    isKabirBlocked ? "bg-red-600" : "bg-emerald-600"
+                  <span className={`w-8 h-8 rounded-2xl font-black flex items-center justify-center text-xs text-white ${
+                    isKabirBlocked ? "bg-red-600" : "bg-emerald-500 text-slate-950"
                   }`}>
-                    3
+                    03
                   </span>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                    isKabirBlocked ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"
+                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                    isKabirBlocked ? "bg-red-500/20 text-red-300 border border-red-500/40" : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
                   }`}>
-                    {isKabirBlocked ? "BLOCKED" : "DONE"}
+                    {isKabirBlocked ? "BLOCKED 🚨" : "DONE ✓"}
                   </span>
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-white">Kabir</h4>
-                  <p className="text-xs text-indigo-400 font-medium">Llama-3 Fine-Tuning</p>
+                  <p className="text-xs text-indigo-400 font-mono-code">Llama-3 LLM Tuning</p>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-300 leading-relaxed">
                   {isKabirBlocked 
-                    ? "ATKA HUA HAI: Needs GPU cluster credentials from Meera to start!"
-                    : "Received credentials and finished LoRA fine-tuning!"}
+                    ? "ATKA HUA HAI: Cannot start training without GPU credentials from Meera!"
+                    : "Received credentials from Meera and finished LoRA fine-tuning!"}
                 </p>
+                <div className={`pt-2 text-[11px] font-mono-code ${isKabirBlocked ? "text-red-400 font-bold" : "text-emerald-400"}`}>
+                  {isKabirBlocked ? "Status: Frozen at 35%" : "Status: 100% Ready"}
+                </div>
               </div>
 
-              {/* Person 4: Jaswant */}
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 relative">
+              {/* STAGE 4: Jaswant */}
+              <div className="p-5 rounded-3xl bg-slate-900/60 border border-cyan-500/30 space-y-3 glass-card relative">
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-xs">
-                    4
+                  <span className="w-8 h-8 rounded-2xl bg-cyan-600 text-white font-black flex items-center justify-center text-xs">
+                    04
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">WORKING</span>
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    WORKING ⚡
+                  </span>
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-white">Jaswant</h4>
-                  <p className="text-xs text-indigo-400 font-medium">Whisper Audio AI</p>
+                  <p className="text-xs text-indigo-400 font-mono-code">Whisper Audio AI</p>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Preprocessing audio samples. Next in line after Kabir finishes.
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Currently preprocessing audio spectrograms. Waiting to fuse model weights once Kabir finishes.
                 </p>
+                <div className="pt-2 text-[11px] font-mono-code text-cyan-400">
+                  Status: 70% In Progress
+                </div>
+              </div>
+
+            </div>
+
+            {/* Easy English Explanation Card */}
+            <div className="p-6 rounded-3xl bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-slate-950 border border-indigo-500/30 space-y-3 shadow-xl">
+              <h4 className="text-sm font-bold text-indigo-300 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-cyan-400" />
+                The Core Bottleneck In Plain, Easy English:
+              </h4>
+              <p className="text-sm text-slate-200 leading-relaxed">
+                3 members (Meera, Sumit, Jaswant) are either ready or working smoothly. However, the entire delivery pipeline is 
+                <strong className="text-red-400"> completely frozen</strong> because Kabir cannot launch Model #3 without the GPU cluster credentials from Meera. 
+              </p>
+              <div className="p-3.5 rounded-2xl bg-black/50 border border-white/5 text-xs text-cyan-300 font-mono-code">
+                💡 <strong>The Old Way:</strong> Kabir waits 8+ hours silently for tomorrow&apos;s standup meeting.<br/>
+                🚀 <strong>SyncPulse AI:</strong> Intercepts Kabir&apos;s status, recognizes the Meera blocker, and unblocks him autonomously in <strong>45 seconds!</strong>
               </div>
             </div>
 
-            {/* Simple English Explanation Box */}
-            <div className="p-5 rounded-2xl bg-indigo-950/25 border border-indigo-500/30 space-y-2">
-              <h4 className="text-sm font-bold text-indigo-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-indigo-400" />
-                The Core Problem In Easy English:
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                3 members (Meera, Sumit, Jaswant) are ready or working. But the entire project pipeline is 
-                <strong> frozen</strong> because Kabir cannot train Model #3 without credentials from Meera. 
-                Instead of waiting 8 hours for a standup meeting, <strong>SyncPulse AI unblocks him automatically in 45 seconds!</strong>
-              </p>
-            </div>
-
-            {/* Navigation Row */}
-            <div className="flex justify-between items-center pt-4">
+            {/* Navigation Bottom */}
+            <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(2)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-800 flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>Back to Blocker Radar</span>
+                <span>Back to Radar</span>
               </button>
 
               <button
@@ -605,7 +807,7 @@ export default function SyncPulseApp() {
                   setAnimStep(1);
                   setIsSimulating(true);
                 }}
-                className="px-5 py-2 rounded-lg bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-500 flex items-center gap-1.5 shadow-lg shadow-cyan-900/30"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-950/40 glow-cyan"
               >
                 <span>4. Watch Animated AI Flow</span>
                 <Play className="w-3.5 h-3.5" />
@@ -615,19 +817,21 @@ export default function SyncPulseApp() {
         )}
 
         {/* ======================================================== */}
-        {/* PAGE 4: ANIMATED AUTONOMOUS AI FLOW (Step-by-step Visual) */}
+        {/* PAGE 4: ANIMATED AUTONOMOUS AI FLOW */}
         {/* ======================================================== */}
         {currentPage === 4 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Page Header */}
-            <div className="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            {/* Header */}
+            <div className="glass-panel p-6 rounded-3xl border border-cyan-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
               <div>
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Page 4 · Visual Simulation</span>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                <span className="text-xs font-bold font-mono-code text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+                  PAGE 4 · VISUAL TELEMETRY SIMULATOR
+                </span>
+                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
                   How SyncPulse AI Works (Animated Flow)
                 </h2>
-                <p className="text-sm text-slate-400 mt-1">
-                  Step-by-step visual animation demonstrating proactive inquiry, natural NLP, and autonomous nudge.
+                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+                  Watch the agent autonomously execute proactive check-ins, semantic NLP reasoning, and targeted peer escalation.
                 </p>
               </div>
 
@@ -636,7 +840,7 @@ export default function SyncPulseApp() {
                   setAnimStep(1);
                   setIsSimulating(true);
                 }}
-                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1.5 self-start"
+                className="px-4 py-2.5 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-900/40 self-start"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Replay Animation</span>
@@ -644,20 +848,23 @@ export default function SyncPulseApp() {
             </div>
 
             {/* Stepper Tabs */}
-            <div className="grid grid-cols-4 gap-2 text-center text-xs">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-xs">
               {[
-                { s: 1, title: "1. Autonomous Follow-up" },
-                { s: 2, title: "2. Participant Reply" },
-                { s: 3, title: "3. Agent Reasoning" },
+                { s: 1, title: "1. Autonomous Inquiry" },
+                { s: 2, title: "2. Human Response" },
+                { s: 3, title: "3. Mistral AI Brain" },
                 { s: 4, title: "4. Autonomous Escalation" },
               ].map((step) => (
                 <div
                   key={step.s}
-                  onClick={() => setAnimStep(step.s as any)}
-                  className={`p-2.5 rounded-xl border cursor-pointer transition ${
+                  onClick={() => {
+                    setAnimStep(step.s as any);
+                    setIsSimulating(false);
+                  }}
+                  className={`p-3 rounded-2xl border cursor-pointer transition font-bold font-mono-code ${
                     animStep === step.s
-                      ? "bg-cyan-950/50 border-cyan-500 text-cyan-300 font-bold"
-                      : "bg-slate-900/50 border-slate-800 text-slate-500"
+                      ? "bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-lg shadow-cyan-900/30 glow-cyan"
+                      : "bg-[#090e1f]/60 border-slate-800 text-slate-400 hover:text-white"
                   }`}
                 >
                   {step.title}
@@ -665,83 +872,95 @@ export default function SyncPulseApp() {
               ))}
             </div>
 
-            {/* Animated Canvas Box */}
-            <div className="min-h-[320px] rounded-3xl bg-slate-950/80 border border-slate-800 p-6 flex flex-col justify-center items-center text-center relative overflow-hidden">
+            {/* Futuristic Animated Visual Canvas */}
+            <div className="min-h-[340px] rounded-3xl bg-gradient-to-b from-[#090e1f] to-[#04060d] border border-cyan-500/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl">
               
+              {/* Scanline Effect */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent h-10 w-full animate-scan pointer-events-none"></div>
+
               {/* STEP 1: AI Messages Kabir */}
               {animStep === 1 && (
-                <div className="space-y-4 max-w-lg animate-fadeIn">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center border border-blue-500/40 shadow-lg shadow-blue-900/30">
+                <div className="space-y-4 max-w-xl animate-fadeIn">
+                  <div className="w-16 h-16 rounded-3xl bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center border border-blue-500/40 shadow-xl shadow-blue-900/40">
                     <Bot className="w-8 h-8 animate-pulse" />
                   </div>
                   <div>
-                    <span className="text-xs font-mono text-blue-400 font-bold">STEP 1: PROACTIVE IN-APP CHECK-IN</span>
-                    <h3 className="text-xl font-bold text-white mt-1">AI Coordinator Contacts Kabir</h3>
+                    <span className="text-xs font-mono-code text-blue-400 font-bold bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">
+                      STEP 1: PROACTIVE IN-APP CHECK-IN
+                    </span>
+                    <h3 className="text-2xl font-black text-white mt-2">AI Coordinator Reaches Out to Kabir</h3>
                   </div>
-                  <div className="p-4 rounded-2xl bg-blue-950/40 border border-blue-900/50 text-xs text-blue-200 text-left">
-                    💬 <strong>SyncPulse AI:</strong> &quot;Hey Kabir! Quick check-in on <strong>[AI-103] Llama-3 Fine-Tuning</strong>. How is progress coming along? Any blockers?&quot;
+                  <div className="p-5 rounded-2xl bg-[#0e162e] border border-blue-500/30 text-sm text-blue-200 text-left shadow-lg">
+                    💬 <strong>SyncPulse AI:</strong> &quot;Hey Kabir! Scheduled milestone check-in for <strong>[AI-103] Llama-3 Fine-Tuning</strong>. Are you facing any blockers with GPU compute or datasets?&quot;
                   </div>
                 </div>
               )}
 
-              {/* STEP 2: Kabir Replies */}
+              {/* STEP 2: Kabir Replies in Natural Language */}
               {animStep === 2 && (
-                <div className="space-y-4 max-w-lg animate-fadeIn">
-                  <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center border border-amber-500/40 shadow-lg shadow-amber-900/30">
+                <div className="space-y-4 max-w-xl animate-fadeIn">
+                  <div className="w-16 h-16 rounded-3xl bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center border border-amber-500/40 shadow-xl shadow-amber-900/40">
                     <Users className="w-8 h-8" />
                   </div>
                   <div>
-                    <span className="text-xs font-mono text-amber-400 font-bold">STEP 2: NATURAL HUMAN RESPONSE</span>
-                    <h3 className="text-xl font-bold text-white mt-1">Kabir Reports Status in Plain Words</h3>
+                    <span className="text-xs font-mono-code text-amber-400 font-bold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                      STEP 2: NATURAL HUMAN RESPONSE
+                    </span>
+                    <h3 className="text-2xl font-black text-white mt-2">Kabir Replies in Plain Words</h3>
                   </div>
-                  <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-900/50 text-xs text-amber-200 text-left">
-                    👤 <strong>Kabir:</strong> &quot;I have configured the LoRA scripts, but I am waiting for test credentials from Meera to access the cluster.&quot;
+                  <div className="p-5 rounded-2xl bg-[#1f170c] border border-amber-500/30 text-sm text-amber-200 text-left shadow-lg">
+                    👤 <strong>Kabir:</strong> &quot;I have configured the LoRA training scripts, but I am stuck because I need GPU cluster API keys and model weights from Meera.&quot;
                   </div>
                 </div>
               )}
 
-              {/* STEP 3: Mistral Reasoning */}
+              {/* STEP 3: Mistral Agent Reasoning */}
               {animStep === 3 && (
-                <div className="space-y-4 max-w-lg animate-fadeIn">
-                  <div className="w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 mx-auto flex items-center justify-center border border-indigo-500/40 shadow-lg shadow-indigo-900/30">
-                    <Sparkles className="w-8 h-8 animate-spin" />
+                <div className="space-y-4 max-w-xl animate-fadeIn">
+                  <div className="w-16 h-16 rounded-3xl bg-indigo-500/20 text-indigo-400 mx-auto flex items-center justify-center border border-indigo-500/40 shadow-xl shadow-indigo-900/40">
+                    <Terminal className="w-8 h-8 animate-spin" />
                   </div>
                   <div>
-                    <span className="text-xs font-mono text-indigo-400 font-bold">STEP 3: MISTRAL AI AGENT BRAIN</span>
-                    <h3 className="text-xl font-bold text-white mt-1">Semantic NLP Blocker Extraction</h3>
+                    <span className="text-xs font-mono-code text-indigo-400 font-bold bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20">
+                      STEP 3: MISTRAL AI AGENT REASONING
+                    </span>
+                    <h3 className="text-2xl font-black text-white mt-2">Semantic Dependency Extraction</h3>
                   </div>
-                  <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-900/50 text-xs text-indigo-200 text-left font-mono space-y-1">
+                  <div className="p-5 rounded-2xl bg-[#0f1124] border border-indigo-500/40 text-xs text-indigo-200 text-left font-mono-code space-y-1.5 shadow-xl">
+                    <div className="text-slate-400">// Extracted JSON Telemetry:</div>
                     <div>• <strong>Status Inferred:</strong> <span className="text-red-400 font-bold">BLOCKED</span></div>
-                    <div>• <strong>Blocker Reason:</strong> &quot;Waiting for test credentials&quot;</div>
-                    <div>• <strong>Blocking Dependency:</strong> <span className="text-amber-300 font-bold">Meera</span></div>
-                    <div>• <strong>Dashboard Action:</strong> Mark AI-103 as RED in Supabase</div>
+                    <div>• <strong>Bottleneck Reason:</strong> &quot;Waiting for GPU API keys & weights&quot;</div>
+                    <div>• <strong>Blocking Teammate:</strong> <span className="text-emerald-400 font-bold">Meera</span></div>
+                    <div>• <strong>Action Triggered:</strong> Mark AI-103 RED in Database & Nudge Meera</div>
                   </div>
                 </div>
               )}
 
-              {/* STEP 4: Auto Nudge to Meera */}
+              {/* STEP 4: Autonomous Nudge to Meera */}
               {animStep === 4 && (
-                <div className="space-y-4 max-w-lg animate-fadeIn">
-                  <div className="w-16 h-16 rounded-2xl bg-red-500/20 text-red-400 mx-auto flex items-center justify-center border border-red-500/40 shadow-lg shadow-red-950/40">
-                    <Zap className="w-8 h-8 animate-bounce" />
+                <div className="space-y-4 max-w-xl animate-fadeIn">
+                  <div className="w-16 h-16 rounded-3xl bg-red-500/20 text-red-400 mx-auto flex items-center justify-center border border-red-500/40 shadow-xl shadow-red-950/50 glow-red">
+                    <Zap className="w-8 h-8 animate-bounce text-red-400" />
                   </div>
                   <div>
-                    <span className="text-xs font-mono text-red-400 font-bold">STEP 4: AUTONOMOUS ESCALATION</span>
-                    <h3 className="text-xl font-bold text-white mt-1">AI Directly Nudges Meera to Unblock!</h3>
+                    <span className="text-xs font-mono-code text-red-400 font-bold bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/20">
+                      STEP 4: AUTONOMOUS ESCALATION
+                    </span>
+                    <h3 className="text-2xl font-black text-white mt-2">AI Nudges Meera to Unblock Immediately</h3>
                   </div>
-                  <div className="p-4 rounded-2xl bg-red-950/40 border border-red-900/50 text-xs text-red-200 text-left">
-                    ⚡ <strong>Autonomous Alert to Meera:</strong> &quot;🚨 Hey Meera! Kabir is waiting on cluster credentials to finish Llama-3 fine-tuning. Could you please share them to keep the project moving?&quot;
+                  <div className="p-5 rounded-2xl bg-[#240c0f] border border-red-500/40 text-sm text-red-200 text-left shadow-lg">
+                    ⚡ <strong>Autonomous Alert to Meera:</strong> &quot;🚨 Hey Meera! Kabir is blocked waiting on GPU cluster API keys for Llama-3 fine-tuning. Please share credentials to keep the project on track!&quot;
                   </div>
                 </div>
               )}
 
             </div>
 
-            {/* Navigation Row */}
-            <div className="flex justify-between items-center pt-4">
+            {/* Bottom Nav */}
+            <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(3)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-800 flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Story</span>
@@ -749,9 +968,9 @@ export default function SyncPulseApp() {
 
               <button
                 onClick={() => setCurrentPage(5)}
-                className="px-5 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 flex items-center gap-1.5 shadow-lg shadow-emerald-900/30"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-950/40 glow-green"
               >
-                <span>5. See Solution & Impact</span>
+                <span>5. View Solution & Impact</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -763,69 +982,77 @@ export default function SyncPulseApp() {
         {/* ======================================================== */}
         {currentPage === 5 && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Page Header */}
-            <div className="border-b border-slate-800 pb-4">
-              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Page 5 · Final Impact</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-1">
-                How Was The Problem Solved?
-              </h2>
-              <p className="text-sm text-slate-400 mt-1">
-                Comparing standard traditional project delays versus SyncPulse AI&apos;s autonomous resolution.
-              </p>
+            {/* Header */}
+            <div className="glass-panel p-6 rounded-3xl border border-emerald-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+              <div>
+                <span className="text-xs font-bold font-mono-code text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
+                  PAGE 5 · COMMERCIAL IMPACT & ROI
+                </span>
+                <h2 className="text-2xl md:text-3xl font-black text-white mt-2">
+                  How Was The Problem Solved?
+                </h2>
+                <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+                  Traditional development delays eliminated by autonomous AI coordination.
+                </p>
+              </div>
+
+              <div className="px-4 py-2 rounded-2xl bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                100% Autonomous Resolution
+              </div>
             </div>
 
-            {/* Comparison Cards: Before vs After */}
+            {/* Side-by-Side Comparison */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
-              {/* Traditional Way */}
-              <div className="p-6 rounded-3xl bg-slate-900/40 border border-red-900/40 space-y-4">
-                <div className="flex items-center gap-2 text-red-400 font-bold text-sm">
-                  <span className="w-6 h-6 rounded-full bg-red-950 flex items-center justify-center text-xs">✕</span>
-                  <span>Without SyncPulse (Traditional Way)</span>
+              {/* Old Traditional Way */}
+              <div className="p-6 md:p-8 rounded-3xl bg-slate-950/60 border border-red-900/50 space-y-5 glass-card">
+                <div className="flex items-center gap-3 text-red-400 font-black text-base">
+                  <div className="w-8 h-8 rounded-xl bg-red-950 flex items-center justify-center text-xs border border-red-800">✕</div>
+                  <span>Without SyncPulse AI (Traditional Standup)</span>
                 </div>
 
-                <ul className="space-y-3 text-xs text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400">•</span>
+                <ul className="space-y-3.5 text-xs text-slate-400">
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-red-400 font-bold">•</span>
                     <span>Kabir stays blocked for <strong>8+ hours</strong> without anyone noticing.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400">•</span>
-                    <span>Meera assumes Kabir is already building and doesn&apos;t check.</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-red-400 font-bold">•</span>
+                    <span>Meera assumes Kabir is actively training and doesn&apos;t share keys.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400">•</span>
-                    <span>The blocker is only discovered at the next day&apos;s standup meeting.</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-red-400 font-bold">•</span>
+                    <span>Bottlenecks are only reported the next morning during standup meetings.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400">•</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-red-400 font-bold">•</span>
                     <span><strong>Project misses deadline</strong> and fails submission.</span>
                   </li>
                 </ul>
               </div>
 
               {/* SyncPulse Autonomous Way */}
-              <div className="p-6 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 space-y-4 shadow-xl shadow-emerald-950/20">
-                <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-                  <span className="w-6 h-6 rounded-full bg-emerald-900 flex items-center justify-center text-xs">✓</span>
+              <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-emerald-950/30 via-slate-900/60 to-slate-950 border border-emerald-500/50 space-y-5 glass-card glow-green">
+                <div className="flex items-center gap-3 text-emerald-400 font-black text-base">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-900 flex items-center justify-center text-xs border border-emerald-700">✓</div>
                   <span>With SyncPulse AI (Our Solution)</span>
                 </div>
 
-                <ul className="space-y-3 text-xs text-slate-300">
-                  <li className="flex items-start gap-2">
-                    <span className="text-emerald-400">•</span>
-                    <span>AI proactively checks in on Kabir within scheduled sprint cycle.</span>
+                <ul className="space-y-3.5 text-xs text-slate-200">
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span>AI proactively checks in on Kabir within sprint milestone cycle.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-emerald-400">•</span>
-                    <span>Blocker and Meera dependency extracted in <strong>under 1 second</strong>.</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span>Blocker and Meera dependency extracted in <strong>under 1 second</strong> via LLM.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-emerald-400">•</span>
-                    <span>Meera is autonomously nudged via Web App and Telegram immediately.</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span>Meera is autonomously nudged via Web App and Telegram instantly.</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-emerald-400">•</span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-400 font-bold">•</span>
                     <span>Blocker resolved in <strong>45 seconds</strong>. Project ships on time!</span>
                   </li>
                 </ul>
@@ -834,28 +1061,31 @@ export default function SyncPulseApp() {
             </div>
 
             {/* Impact Metric Strip */}
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <div className="text-2xl font-black text-indigo-400">95%</div>
-                <div className="text-xs text-slate-400 mt-1">Faster Blocker Resolution</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div className="p-6 rounded-3xl glass-card border border-indigo-500/20">
+                <div className="text-4xl font-black text-indigo-400 font-mono-code">95%</div>
+                <div className="text-xs text-slate-300 font-semibold mt-1">Faster Blocker Resolution</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">From 8+ hours down to 45 seconds</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <div className="text-2xl font-black text-cyan-400">0</div>
-                <div className="text-xs text-slate-400 mt-1">Wasted Standup Hours</div>
+              <div className="p-6 rounded-3xl glass-card border border-cyan-500/20">
+                <div className="text-4xl font-black text-cyan-400 font-mono-code">0 hrs</div>
+                <div className="text-xs text-slate-300 font-semibold mt-1">Wasted Standup Meetings</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Asynchronous continuous alignment</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <div className="text-2xl font-black text-emerald-400">100%</div>
-                <div className="text-xs text-slate-400 mt-1">On-Time Project Delivery</div>
+              <div className="p-6 rounded-3xl glass-card border border-emerald-500/20">
+                <div className="text-4xl font-black text-emerald-400 font-mono-code">100%</div>
+                <div className="text-xs text-slate-300 font-semibold mt-1">On-Time Milestone Delivery</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Guaranteed deadline protection</p>
               </div>
             </div>
 
-            {/* Return to Start */}
-            <div className="flex justify-between items-center pt-4">
+            {/* Bottom Nav */}
+            <div className="flex justify-between items-center pt-2">
               <button
                 onClick={() => setCurrentPage(4)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-800 flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Animation</span>
@@ -863,10 +1093,10 @@ export default function SyncPulseApp() {
 
               <button
                 onClick={() => setCurrentPage(1)}
-                className="px-5 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-950/40"
               >
-                <span>Restart Presentation (Page 1)</span>
                 <RotateCcw className="w-3.5 h-3.5" />
+                <span>Restart Presentation (Page 1)</span>
               </button>
             </div>
           </div>
@@ -875,16 +1105,17 @@ export default function SyncPulseApp() {
       </main>
 
       {/* ======================================================== */}
-      {/* PERSISTENT FOOTER */}
+      {/* FOOTER */}
       {/* ======================================================== */}
-      <footer className="border-t border-slate-800/80 bg-[#080b12] px-6 py-3 text-center text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2">
-        <div>
-          SyncPulse AI · Autonomous Group Project Coordinator · Track W-PS-1
+      <footer className="border-t border-indigo-500/20 glass-panel px-6 py-4 text-center text-xs text-slate-400 flex flex-col md:flex-row items-center justify-between gap-3 mt-6 z-10">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <span>SyncPulse AI · Autonomous AI Project Coordinator · Track W-PS-1</span>
         </div>
         <div className="flex items-center gap-3">
           <span>Dr. D.Y. Patil Institute, Pune</span>
           <span>•</span>
-          <span className="text-indigo-400">Sponsored by Worcflow.ai</span>
+          <span className="text-indigo-400 font-semibold">Sponsored by Worcflow.ai</span>
         </div>
       </footer>
 
