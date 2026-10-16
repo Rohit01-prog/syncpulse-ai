@@ -661,23 +661,23 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 1. TOP NAVBAR (WITH ADMIN LOGIN BUTTON IN PLACE OF CONTACT) */}
       {/* ========================================================================= */}
-      <header className="sticky top-0 z-50 glass-panel border-b border-amber-200/50 px-4 md:px-8 py-3.5 backdrop-blur-xl bg-white/85 shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-amber-200/60 px-4 md:px-8 py-4 backdrop-blur-xl bg-[#FAF7F2]/95 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           
           {/* Logo & Identity */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 via-rose-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-red-600/30 ring-2 ring-red-500/30">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#C89D5C] via-[#D4A362] to-[#B88746] flex items-center justify-center shadow-md shadow-amber-900/15 ring-2 ring-amber-300/60">
               <Bot className="w-6 h-6 text-white animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-black tracking-tight text-white">
-                  SyncPulse <span className="text-red-500">AI</span>
+                <span className="text-xl font-black tracking-tight text-stone-900 font-cinzel">
+                  SyncPulse <span className="text-[#C89D5C]">AI</span>
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60 font-mono-code">
                   TRACK W-PS-1
                 </span>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                   AUTONOMOUS AGENT ACTIVE
                 </span>
@@ -689,20 +689,20 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Nav Links */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-stone-700">
-            <a href="#sandbox" className="hover:text-[#B48530] transition flex items-center gap-1.5 text-[#B48530] font-bold">
+          <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-stone-800 font-cinzel">
+            <a href="#sandbox" className="hover:text-[#C89D5C] transition flex items-center gap-1.5 text-[#C89D5C] font-bold cinzel-link tracking-wide">
               <Sparkles className="w-3.5 h-3.5 animate-pulse text-[#C89D5C]" />
               <span>AI Sandbox</span>
             </a>
-            <a href="#blocker-radar" className="hover:text-[#B48530] transition flex items-center gap-1">
+            <a href="#blocker-radar" className="hover:text-[#C89D5C] transition flex items-center gap-1 text-stone-800 cinzel-link tracking-wide">
               <span>Blocker Radar</span>
               {isKabirBlocked && <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>}
             </a>
-            <a href="#pipeline-story" className="hover:text-[#B48530] transition">AI Team</a>
-            <a href="#flow-simulator" className="hover:text-[#B48530] transition">Flow Simulator</a>
-            <a href="#omnichannel" className="hover:text-[#B48530] transition">Omnichannel</a>
-            <a href="#roi-calculator" className="hover:text-[#B48530] transition">ROI Calculator</a>
-            <a href="#faq" className="hover:text-[#B48530] transition">FAQ</a>
+            <a href="#pipeline-story" className="hover:text-[#C89D5C] transition text-stone-800 cinzel-link tracking-wide">AI Team</a>
+            <a href="#flow-simulator" className="hover:text-[#C89D5C] transition text-stone-800 cinzel-link tracking-wide">Flow Simulator</a>
+            <a href="#omnichannel" className="hover:text-[#C89D5C] transition text-stone-800 cinzel-link tracking-wide">Omnichannel</a>
+            <a href="#roi-calculator" className="hover:text-[#C89D5C] transition text-stone-800 cinzel-link tracking-wide">ROI Calculator</a>
+            <a href="#faq" className="hover:text-[#C89D5C] transition text-stone-800 cinzel-link tracking-wide">FAQ</a>
           </nav>
 
           {/* Action CTAs (Admin Login in place of Contact) */}
@@ -738,7 +738,7 @@ export default function SyncPulseLandingAndApp() {
               href="https://t.me/syncpulse_solver_bot"
               target="_blank"
               rel="noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-100/70 hover:bg-amber-200/70 text-amber-900 border border-amber-300/60 text-xs font-bold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-[#C89D5C] text-[#8C6228] hover:text-white border border-[#C89D5C] text-xs font-bold transition shadow-sm font-cinzel"
             >
               <Send className="w-3.5 h-3.5" />
               <span>@syncpulse_solver_bot</span>
@@ -812,18 +812,18 @@ export default function SyncPulseLandingAndApp() {
           <div className="lg:col-span-5 relative">
             
             {/* Floating Live Badge 1 */}
-            <div className="absolute -top-3 -right-2 z-20 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md animate-float flex items-center gap-2 shadow-xl shadow-black/60">
+            <div className="absolute -top-3 -right-2 z-20 px-3.5 py-1.5 rounded-full bg-white text-emerald-900 border-2 border-emerald-400 text-[10px] font-bold backdrop-blur-md animate-float flex items-center gap-2 shadow-lg shadow-emerald-950/10 font-cinzel">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
               <span>45s UNBLOCK SLA ACTIVE</span>
             </div>
 
             {/* Floating Live Badge 2 */}
-            <div className="hidden sm:flex absolute -bottom-3 -left-3 z-20 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md animate-float-delayed items-center gap-1.5 shadow-xl shadow-black/60">
+            <div className="hidden sm:flex absolute -bottom-3 -left-3 z-20 px-3 py-1 rounded-full bg-white text-[#8C6228] border-2 border-amber-400 text-[10px] font-bold backdrop-blur-md animate-float-delayed items-center gap-1.5 shadow-lg shadow-amber-950/10 font-cinzel">
               <Bot className="w-3.5 h-3.5 text-indigo-400" />
               <span>MISTRAL-7B STREAMING</span>
             </div>
 
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-200/70 shadow-xl bg-white/95 relative overflow-hidden space-y-5">
+            <div className="p-6 md:p-8 rounded-3xl border-2 border-amber-200/80 shadow-2xl bg-white relative overflow-hidden space-y-5">
               
               {/* Animated Laser Scanning Line */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl opacity-25">
@@ -841,54 +841,54 @@ export default function SyncPulseLandingAndApp() {
               
               <div className="flex items-center justify-between border-b border-stone-100 pb-4 relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 animate-pulse">
-                    <Flame className="w-5 h-5 text-red-400" />
+                  <div className="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-[#C89D5C] animate-pulse">
+                    <Flame className="w-5 h-5 text-[#C89D5C]" />
                   </div>
                   <div>
-                    <div className="text-xs text-red-400 font-mono-code font-bold">SPRINT TELEMETRY ACTIVE</div>
-                    <div className="text-base font-bold text-stone-900">4 AI Models Training</div>
+                    <div className="text-xs text-[#C89D5C] font-mono-code font-bold">SPRINT TELEMETRY ACTIVE</div>
+                    <div className="text-base font-bold text-stone-900 font-cinzel">4 AI Models Training</div>
                   </div>
                 </div>
 
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-500/20 text-red-300 border border-red-500/40">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-300 shadow-sm">
                   {isKabirBlocked ? "1 CRITICAL BLOCKER" : "ALL RESOLVED ✓"}
                 </span>
               </div>
 
               {/* Live Card Mini-List */}
               <div className="space-y-3 font-mono-code text-xs relative z-10">
-                <div className="p-3 rounded-xl bg-stone-50 border border-emerald-400/40 flex items-center justify-between hover:border-emerald-500 transition">
-                  <span className="text-stone-800 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span>AI-101 · Meera (BERT)</span>
+                <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-emerald-500 transition shadow-sm">
+                  <span className="text-stone-900 font-medium flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span className="font-semibold">AI-101 · Meera (BERT)</span>
                   </span>
-                  <span className="text-emerald-400 font-bold">100% DONE ✓</span>
+                  <span className="text-emerald-700 font-bold">100% DONE ✓</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-stone-50 border border-emerald-400/40 flex items-center justify-between hover:border-emerald-500 transition">
-                  <span className="text-stone-800 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span>AI-102 · Sumit (ResNet)</span>
+                <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-emerald-500 transition shadow-sm">
+                  <span className="text-stone-900 font-medium flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span className="font-semibold">AI-102 · Sumit (ResNet)</span>
                   </span>
-                  <span className="text-emerald-400 font-bold">100% DONE ✓</span>
+                  <span className="text-emerald-700 font-bold">100% DONE ✓</span>
                 </div>
 
                 <div className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
-                  isKabirBlocked ? "bg-red-50 border-red-300 text-red-800 animate-pulse-red" : "bg-stone-50 border-emerald-400/40 text-emerald-800"
+                  isKabirBlocked ? "bg-red-50 border-2 border-red-400 text-red-900 animate-pulse-red shadow-sm" : "bg-[#FAF7F2] border border-stone-200 text-stone-900 shadow-sm"
                 }`}>
-                  <span className="text-slate-300 flex items-center gap-2">
-                    <span className={`w-2 h-2 rounded-full ${isKabirBlocked ? "bg-red-500 animate-ping" : "bg-emerald-400"}`}></span>
-                    <span>AI-103 · Kabir (Llama-3)</span>
+                  <span className="text-stone-900 font-medium flex items-center gap-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${isKabirBlocked ? "bg-red-600 animate-ping" : "bg-emerald-500"}`}></span>
+                    <span className="font-semibold">AI-103 · Kabir (Llama-3)</span>
                   </span>
                   <span className="font-bold">{isKabirBlocked ? "🚨 BLOCKED (35%)" : "100% DONE ✓"}</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-between hover:border-amber-300 transition">
-                  <span className="text-stone-800 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <span>AI-104 · Jaswant (Whisper)</span>
+                <div className="p-3.5 rounded-xl bg-[#FAF7F2] border border-stone-200 flex items-center justify-between hover:border-amber-400 transition shadow-sm">
+                  <span className="text-stone-900 font-medium flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    <span className="font-semibold">AI-104 · Jaswant (Whisper)</span>
                   </span>
-                  <span className="text-cyan-400 font-bold">70% ACTIVE ⚡</span>
+                  <span className="text-amber-800 font-bold">70% ACTIVE ⚡</span>
                 </div>
               </div>
 
@@ -897,7 +897,7 @@ export default function SyncPulseLandingAndApp() {
                 {isKabirBlocked ? (
                   <button
                     onClick={resolveBlocker}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95"
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider transition shadow-md shadow-emerald-950/15 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 font-cinzel"
                   >
                     <Check className="w-4 h-4 stroke-[3]" />
                     <span>Meera Shares Keys (Click to Unblock Kabir)</span>
@@ -1183,7 +1183,7 @@ export default function SyncPulseLandingAndApp() {
             }`}
           >
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-bold font-mono-code px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="text-[10px] font-bold font-mono-code px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-sm">
                 SCENARIO C · HEALTHY
               </span>
               <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
@@ -1538,7 +1538,7 @@ export default function SyncPulseLandingAndApp() {
             <div className="p-5 rounded-3xl bg-[#FAF7F2]/60 border border-stone-200 space-y-3.5 glass-card hover:border-emerald-500 hover:bg-white transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">01</span>
-                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-sm">DONE ✓</span>
               </div>
               
               <div className="flex items-center gap-3 pt-1">
@@ -1568,7 +1568,7 @@ export default function SyncPulseLandingAndApp() {
             <div className="p-5 rounded-3xl bg-[#FAF7F2]/60 border border-stone-200 space-y-3.5 glass-card hover:border-emerald-500 hover:bg-white transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">02</span>
-                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-sm">DONE ✓</span>
               </div>
 
               <div className="flex items-center gap-3 pt-1">
@@ -1603,7 +1603,7 @@ export default function SyncPulseLandingAndApp() {
                   isKabirBlocked ? "bg-red-600 animate-pulse" : "bg-emerald-500 text-slate-950"
                 }`}>03</span>
                 <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                  isKabirBlocked ? "bg-red-500/20 text-red-300 border border-red-500/40" : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                  isKabirBlocked ? "bg-red-500/20 text-red-300 border border-red-500/40" : "bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-sm"
                 }`}>
                   {isKabirBlocked ? "BLOCKED 🚨" : "DONE ✓"}
                 </span>
@@ -2765,11 +2765,11 @@ export default function SyncPulseLandingAndApp() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 13. FULL ADMIN SPRINT DASHBOARD (SHOWN WHEN LOGGED IN AS ADMIN) */}
+      {/* 13. SPRINT COMMAND CENTER & CONFIDENTIAL VAULT (PROTECTED DATA GATE) */}
       {/* ========================================================================= */}
-      {isAdminAuthenticated && (
-        <section id="admin-console" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full border-t border-red-500/30">
-          <div className="glass-panel p-8 rounded-3xl border border-amber-200/60 space-y-6 shadow-xl bg-white">
+      {isAdminAuthenticated ? (
+        <section id="admin-console" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full border-t border-amber-200/60 animate-fadeIn">
+          <div className="glass-panel p-8 rounded-3xl border-2 border-amber-300 space-y-6 shadow-2xl bg-white">
             
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -2907,6 +2907,95 @@ export default function SyncPulseLandingAndApp() {
 
           </div>
         </section>
+      ) : (
+        <section id="admin-console" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full border-t border-amber-200/60 animate-fadeIn">
+          <div className="p-8 md:p-12 rounded-3xl border-2 border-amber-300/80 bg-gradient-to-br from-white via-[#FAF7F2] to-amber-50/50 shadow-2xl text-center space-y-6 relative overflow-hidden">
+            
+            {/* Shimmer Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-48 h-48 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="w-16 h-16 rounded-3xl bg-amber-100 text-[#C89D5C] mx-auto flex items-center justify-center border-2 border-amber-300 shadow-md">
+              <Shield className="w-8 h-8 text-[#C89D5C]" />
+            </div>
+
+            <div className="space-y-2">
+              <div className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300/80 font-cinzel tracking-widest uppercase">
+                ENTERPRISE DPDP SECURITY PROTOCOL · SPRINT DATA ENCRYPTED
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-stone-900 font-cinzel">
+                Live Sprint & Personal Engineer Data Locked
+              </h2>
+              <p className="text-xs md:text-sm text-stone-600 max-w-2xl mx-auto leading-relaxed">
+                In compliance with Academic & Project Privacy Guidelines, active engineer contact profiles, raw repository commits, internal student IDs, and live sprint task modification controls are <strong>strictly masked for public visitors</strong>. Only the authorized Admin ({adminEmail.substring(0, 5)}••••••@cimage.in) can view and modify live sprint records.
+              </p>
+            </div>
+
+            {/* Masked Confidential Preview Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto text-left pt-2 opacity-85">
+              <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-2">
+                <div className="flex justify-between items-center text-xs font-mono-code">
+                  <span className="bg-stone-100 px-2 py-0.5 rounded text-stone-600 font-bold">TASK-AI-101</span>
+                  <span className="text-emerald-700 font-bold text-[10px]">100% DONE</span>
+                </div>
+                <div className="text-sm font-bold text-stone-900 font-cinzel">BERT Model Intent Classifier</div>
+                <div className="text-xs text-stone-500 font-mono-code">
+                  Assignee: <span className="blur-xs font-bold text-stone-800">Meera [Masked]</span>
+                </div>
+                <div className="text-[10px] text-amber-800 bg-amber-50 p-2 rounded-lg border border-amber-200">
+                  🔒 Model Checkpoint: [CONFIDENTIAL · ADMIN LOCK]
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-2">
+                <div className="flex justify-between items-center text-xs font-mono-code">
+                  <span className="bg-stone-100 px-2 py-0.5 rounded text-stone-600 font-bold">TASK-AI-103</span>
+                  <span className="text-red-600 font-bold text-[10px]">🚨 BLOCKED</span>
+                </div>
+                <div className="text-sm font-bold text-stone-900 font-cinzel">Llama-3 LoRA Checkpoints</div>
+                <div className="text-xs text-stone-500 font-mono-code">
+                  Assignee: <span className="blur-xs font-bold text-stone-800">Kabir [Masked]</span>
+                </div>
+                <div className="text-[10px] text-red-800 bg-red-50 p-2 rounded-lg border border-red-200">
+                  🔒 Blocker Log: [CONFIDENTIAL · ADMIN LOCK]
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-2">
+                <div className="flex justify-between items-center text-xs font-mono-code">
+                  <span className="bg-stone-100 px-2 py-0.5 rounded text-stone-600 font-bold">TASK-AI-104</span>
+                  <span className="text-cyan-700 font-bold text-[10px]">ACTIVE ⚡</span>
+                </div>
+                <div className="text-sm font-bold text-stone-900 font-cinzel">Whisper Inference Gateway</div>
+                <div className="text-xs text-stone-500 font-mono-code">
+                  Assignee: <span className="blur-xs font-bold text-stone-800">Jaswant [Masked]</span>
+                </div>
+                <div className="text-[10px] text-amber-800 bg-amber-50 p-2 rounded-lg border border-amber-200">
+                  🔒 Telemetry Token: [CONFIDENTIAL · ADMIN LOCK]
+                </div>
+              </div>
+            </div>
+
+            {/* Unlocking CTA */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => setIsAdminModalOpen(true)}
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#C89D5C] via-[#D4A362] to-[#B88746] hover:from-[#B88746] hover:to-[#A37435] text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-amber-900/15 flex items-center gap-2 hover:scale-105 active:scale-95 font-cinzel"
+              >
+                <Key className="w-4 h-4" />
+                <span>Verify Admin OTP to Unlock Real Sprint Data</span>
+              </button>
+
+              <button
+                onClick={handleQuickDemoLogin}
+                className="px-6 py-4 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 font-bold text-xs uppercase tracking-wider transition border border-stone-300 flex items-center gap-2 hover:scale-105 active:scale-95 font-cinzel"
+              >
+                <Zap className="w-4 h-4 text-[#C89D5C]" />
+                <span>Judge / Presentation Fast Unlock</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
       )}
 
       {/* ========================================================================= */}
@@ -2927,7 +3016,7 @@ export default function SyncPulseLandingAndApp() {
               Autonomous AI Group Project Coordinator for Hackathon Kurukshetra. Eliminates standup delays through proactive inquiries, NLP reasoning, and autonomous escalation.
             </p>
             <div className="text-[11px] text-slate-500 font-mono-code">
-              Official Admin: rohit.bcastudent25.30916@cimage.in
+              {isAdminAuthenticated ? "Official Admin: rohit.bcastudent25.30916@cimage.in (Authenticated ✓)" : "Official Admin: r•••••@cimage.in [Security Whitelist Protected]"}
             </div>
           </div>
 
@@ -3271,7 +3360,7 @@ export default function SyncPulseLandingAndApp() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
               <span className="text-[10px] font-bold font-mono-code text-stone-900 tracking-wider uppercase">
-                COORDINATOR LIVE STREAM
+                COORDINATOR LIVE STREAM {isAdminAuthenticated ? "• VERIFIED" : "• PREVIEW"}
               </span>
             </div>
             
@@ -3308,7 +3397,7 @@ export default function SyncPulseLandingAndApp() {
                 </div>
               ))}
               <div className="pt-1 flex justify-between items-center text-[10px] text-slate-400">
-                <span>Autonomous Heartbeat: 100% OK</span>
+                <span>{isAdminAuthenticated ? "Autonomous Heartbeat: 100% OK (Full Telemetry)" : "🔒 Sensitive Records Masked"}</span>
                 <a href="#sandbox" className="text-red-400 hover:underline font-bold">Open Sandbox →</a>
               </div>
             </div>
