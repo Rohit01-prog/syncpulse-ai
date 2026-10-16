@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cinzel+Decorative:wght@700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,19 +18,31 @@ body {
   color: rgb(var(--foreground-rgb));
   background: radial-gradient(circle at 50% 0%, #FAF7F2 0%, #F5EFE6 55%, #ECE4D8 100%);
   min-height: 100vh;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Cinzel', serif;
   overflow-x: hidden;
+  letter-spacing: 0.015em;
 }
 
-/* Futuristic Code Font */
+/* Cinzel Typographic Defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.025em;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}
+
+button, nav, .font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Monospace for Code/JSON/Terminal */
 .font-mono-code {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Custom Scrollbar - Warm Gold Champagne */
+/* Custom Scrollbar - Warm Champagne Gold */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
   background: #F4EFE6;
@@ -50,7 +62,7 @@ body {
   left: 15%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(200, 157, 92, 0.16) 0%, rgba(250, 247, 242, 0) 70%);
+  background: radial-gradient(circle, rgba(200, 157, 92, 0.15) 0%, rgba(250, 247, 242, 0) 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -63,7 +75,7 @@ body {
   right: 5%;
   width: 450px;
   height: 450px;
-  background: radial-gradient(circle, rgba(217, 119, 6, 0.12) 0%, rgba(250, 247, 242, 0) 70%);
+  background: radial-gradient(circle, rgba(217, 119, 6, 0.10) 0%, rgba(250, 247, 242, 0) 70%);
   filter: blur(85px);
   pointer-events: none;
   z-index: 0;
@@ -76,36 +88,36 @@ body {
   left: 25%;
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, rgba(250, 247, 242, 0) 70%);
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, rgba(250, 247, 242, 0) 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Glassmorphism Classes - Warm Luxury Ivory & Crisp White */
+/* Glassmorphism Classes - Warm Luxury Crisp White */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.90);
+  background: #FFFFFF;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(200, 157, 92, 0.28);
-  box-shadow: 0 10px 30px -10px rgba(180, 140, 75, 0.08);
+  border: 1px solid rgba(200, 157, 92, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(180, 140, 75, 0.10);
 }
 
 .glass-card {
   background: #FFFFFF;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(200, 157, 92, 0.22);
-  box-shadow: 0 8px 24px -6px rgba(180, 140, 75, 0.07);
+  border: 1px solid rgba(200, 157, 92, 0.28);
+  box-shadow: 0 8px 24px -6px rgba(180, 140, 75, 0.08);
 }
 
 .glass-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-card-hover:hover {
-  transform: translateY(-3px);
-  border-color: rgba(200, 157, 92, 0.6);
-  box-shadow: 0 15px 35px -10px rgba(180, 140, 75, 0.18);
+  transform: translateY(-4px);
+  border-color: rgba(200, 157, 92, 0.7);
+  box-shadow: 0 16px 36px -10px rgba(180, 140, 75, 0.20);
 }
 
 /* Glow Utilities */
@@ -129,7 +141,7 @@ body {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.99);
+    transform: translateY(14px) scale(0.99);
   }
   to {
     opacity: 1;
@@ -138,7 +150,7 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes floatSlow {
@@ -146,17 +158,17 @@ body {
     transform: translateY(0px) translateX(0px);
   }
   100% {
-    transform: translateY(30px) translateX(20px);
+    transform: translateY(28px) translateX(18px);
   }
 }
 
 @keyframes pulseBorder {
   0%, 100% {
-    border-color: rgba(239, 68, 68, 0.8);
+    border-color: rgba(239, 68, 68, 0.85);
     box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
   }
   50% {
-    border-color: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.35);
     box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
   }
 }
@@ -225,7 +237,7 @@ body {
 
 @keyframes pulseGlowSlow {
   0%, 100% {
-    opacity: 0.6;
+    opacity: 0.65;
     transform: scale(1);
   }
   50% {
@@ -243,14 +255,14 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 1.25rem;
-  border: 1px solid rgba(200, 157, 92, 0.25);
+  border: 1px solid rgba(200, 157, 92, 0.3);
   box-shadow: 0 12px 30px -10px rgba(180, 140, 75, 0.12);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .img-cyber-frame:hover {
-  border-color: rgba(200, 157, 92, 0.6);
-  box-shadow: 0 20px 40px -10px rgba(180, 140, 75, 0.2);
+  border-color: rgba(200, 157, 92, 0.7);
+  box-shadow: 0 20px 40px -10px rgba(180, 140, 75, 0.22);
   transform: translateY(-4px);
 }
 
@@ -260,4 +272,23 @@ body {
 
 .img-cyber-frame:hover img {
   transform: scale(1.05);
+}
+
+/* Cinzel Animated Underline for Links */
+.cinzel-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.cinzel-link::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #C89D5C;
+  transition: width 0.3s ease;
+}
+.cinzel-link:hover::after {
+  width: 100%;
 }
