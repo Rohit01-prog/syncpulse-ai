@@ -763,7 +763,7 @@ export default function SyncPulseLandingAndApp() {
 
             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-[1.1]">
               Autonomous Team Coordination. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-amber-400">
+              <span className="gradient-text-shimmer">
                 Zero Blocker Delays.
               </span>
             </h1>
@@ -776,7 +776,7 @@ export default function SyncPulseLandingAndApp() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#pipeline-story"
-                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2 hover:scale-105"
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2 hover:scale-105 active:scale-95"
               >
                 <span>Watch 4-Engineer Demo</span>
                 <ArrowRight className="w-4 h-4" />
@@ -784,7 +784,7 @@ export default function SyncPulseLandingAndApp() {
 
               <button
                 onClick={() => setIsAdminModalOpen(true)}
-                className="px-6 py-3.5 rounded-2xl glass-card hover:bg-white/10 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 border border-white/10"
+                className="px-6 py-3.5 rounded-2xl glass-card hover:bg-white/10 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 border border-white/10 hover:border-red-500/40"
               >
                 <Lock className="w-4 h-4 text-red-400" />
                 <span>Admin Security Access</span>
@@ -793,29 +793,56 @@ export default function SyncPulseLandingAndApp() {
 
             {/* Quick Metrics Strip */}
             <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg">
-              <div>
+              <div className="transition hover:scale-105">
                 <div className="text-2xl md:text-3xl font-black text-red-500 font-mono-code">95%</div>
                 <div className="text-xs text-slate-400 mt-0.5">Faster Resolution</div>
               </div>
-              <div>
+              <div className="transition hover:scale-105">
                 <div className="text-2xl md:text-3xl font-black text-cyan-400 font-mono-code">45s</div>
                 <div className="text-xs text-slate-400 mt-0.5">Average Unblock</div>
               </div>
-              <div>
+              <div className="transition hover:scale-105">
                 <div className="text-2xl md:text-3xl font-black text-emerald-400 font-mono-code">100%</div>
                 <div className="text-xs text-slate-400 mt-0.5">Web-Native & Live</div>
               </div>
             </div>
           </div>
 
-          {/* Right Hero Visual Card */}
+          {/* Right Hero Visual Card with Animations & Cyber Imagery */}
           <div className="lg:col-span-5 relative">
+            
+            {/* Floating Live Badge 1 */}
+            <div className="absolute -top-3 -right-2 z-20 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md animate-float flex items-center gap-2 shadow-xl shadow-black/60">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>45s UNBLOCK SLA ACTIVE</span>
+            </div>
+
+            {/* Floating Live Badge 2 */}
+            <div className="hidden sm:flex absolute -bottom-3 -left-3 z-20 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md animate-float-delayed items-center gap-1.5 shadow-xl shadow-black/60">
+              <Bot className="w-3.5 h-3.5 text-indigo-400" />
+              <span>MISTRAL-7B STREAMING</span>
+            </div>
+
             <div className="glass-panel p-6 md:p-8 rounded-3xl border border-red-500/30 shadow-2xl relative overflow-hidden space-y-5 glow-red">
               
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              {/* Animated Laser Scanning Line */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl opacity-25">
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-scan"></div>
+              </div>
+
+              {/* Subtle Cyber Background Texture */}
+              <div className="absolute inset-0 pointer-events-none opacity-10 mix-blend-overlay">
+                <img 
+                  src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
+                  alt="Cyber Mesh" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400">
-                    <Flame className="w-5 h-5 animate-bounce" />
+                  <div className="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 animate-pulse">
+                    <Flame className="w-5 h-5 text-red-400" />
                   </div>
                   <div>
                     <div className="text-xs text-red-400 font-mono-code font-bold">SPRINT TELEMETRY ACTIVE</div>
@@ -829,36 +856,48 @@ export default function SyncPulseLandingAndApp() {
               </div>
 
               {/* Live Card Mini-List */}
-              <div className="space-y-3 font-mono-code text-xs">
-                <div className="p-3 rounded-xl bg-slate-950/60 border border-emerald-500/30 flex items-center justify-between">
-                  <span className="text-slate-300">AI-101 · Meera (BERT)</span>
+              <div className="space-y-3 font-mono-code text-xs relative z-10">
+                <div className="p-3 rounded-xl bg-slate-950/70 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition">
+                  <span className="text-slate-300 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>AI-101 · Meera (BERT)</span>
+                  </span>
                   <span className="text-emerald-400 font-bold">100% DONE ✓</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950/60 border border-emerald-500/30 flex items-center justify-between">
-                  <span className="text-slate-300">AI-102 · Sumit (ResNet)</span>
+                <div className="p-3 rounded-xl bg-slate-950/70 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition">
+                  <span className="text-slate-300 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>AI-102 · Sumit (ResNet)</span>
+                  </span>
                   <span className="text-emerald-400 font-bold">100% DONE ✓</span>
                 </div>
 
                 <div className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
-                  isKabirBlocked ? "bg-red-950/60 border-red-500/60 text-red-300" : "bg-slate-950/60 border-emerald-500/30 text-emerald-400"
+                  isKabirBlocked ? "bg-red-950/70 border-red-500/80 text-red-300 animate-pulse-red" : "bg-slate-950/70 border-emerald-500/30 text-emerald-400"
                 }`}>
-                  <span className="text-slate-300">AI-103 · Kabir (Llama-3)</span>
+                  <span className="text-slate-300 flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${isKabirBlocked ? "bg-red-500 animate-ping" : "bg-emerald-400"}`}></span>
+                    <span>AI-103 · Kabir (Llama-3)</span>
+                  </span>
                   <span className="font-bold">{isKabirBlocked ? "🚨 BLOCKED (35%)" : "100% DONE ✓"}</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950/60 border border-cyan-500/30 flex items-center justify-between">
-                  <span className="text-slate-300">AI-104 · Jaswant (Whisper)</span>
+                <div className="p-3 rounded-xl bg-slate-950/70 border border-cyan-500/30 flex items-center justify-between hover:border-cyan-500/60 transition">
+                  <span className="text-slate-300 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>AI-104 · Jaswant (Whisper)</span>
+                  </span>
                   <span className="text-cyan-400 font-bold">70% ACTIVE ⚡</span>
                 </div>
               </div>
 
               {/* Action Trigger Inside Card */}
-              <div className="pt-2">
+              <div className="pt-2 relative z-10">
                 {isKabirBlocked ? (
                   <button
                     onClick={resolveBlocker}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95"
                   >
                     <Check className="w-4 h-4 stroke-[3]" />
                     <span>Meera Shares Keys (Click to Unblock Kabir)</span>
@@ -866,7 +905,7 @@ export default function SyncPulseLandingAndApp() {
                 ) : (
                   <button
                     onClick={resetBlocker}
-                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition hover:scale-[1.02] active:scale-95"
                   >
                     Reset Kabir Blocker (For Re-Testing)
                   </button>
@@ -955,33 +994,69 @@ export default function SyncPulseLandingAndApp() {
       <section id="architecture" className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          {/* Left Visual: AI Coordinator Brain Graphic */}
+          {/* Left Visual: AI Coordinator Brain Graphic with Cyber Frame */}
           <div className="lg:col-span-5 relative">
-            <div className="glass-panel p-8 rounded-3xl border border-indigo-500/30 shadow-2xl relative overflow-hidden space-y-6">
-              <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-500 flex items-center justify-center shadow-2xl shadow-indigo-500/40 mx-auto">
-                <Cpu className="w-10 h-10 text-white animate-pulse" />
+            
+            {/* Ambient Floating Glow Ring */}
+            <div className="absolute -top-4 -left-4 w-28 h-28 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none animate-pulse-glow"></div>
+
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-indigo-500/30 shadow-2xl relative overflow-hidden space-y-6 glow-indigo">
+              
+              {/* Featured Architecture Visual Image */}
+              <div className="img-cyber-frame h-44 w-full relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80" 
+                  alt="Mistral AI Neural Architecture"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                
+                {/* Floating Centered Brain Badge */}
+                <div className="absolute bottom-3 left-4 flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/50 border border-white/20 animate-pulse">
+                    <Cpu className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-black text-white">Mistral AI Agent Brain</h4>
+                    <p className="text-[10px] text-cyan-300 font-mono-code">Semantic NLP Reasoning Engine</p>
+                  </div>
+                </div>
+
+                {/* Radar Sweep Ring Badge */}
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-950/80 border border-cyan-500/40 text-[9px] font-mono-code text-cyan-400 flex items-center gap-1.5 backdrop-blur-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                  <span>7B PARAMS ACTIVE</span>
+                </div>
               </div>
 
-              <div className="text-center space-y-1">
-                <h4 className="text-xl font-black text-white">Mistral AI Agent Brain</h4>
-                <p className="text-xs text-indigo-300 font-mono-code">Semantic NLP Reasoning Engine</p>
-              </div>
-
-              <div className="space-y-3 font-mono-code text-xs">
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between">
-                  <span className="text-slate-400">LLM Reasoning Model:</span>
+              {/* Dynamic Telemetry Specs */}
+              <div className="space-y-2.5 font-mono-code text-xs">
+                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-indigo-500/40 transition">
+                  <span className="text-slate-400 flex items-center gap-2">
+                    <Binary className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>LLM Reasoning Model:</span>
+                  </span>
                   <span className="text-white font-bold">Mistral 7B / Small</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between">
-                  <span className="text-slate-400">Database Engine:</span>
-                  <span className="text-white font-bold">Supabase Realtime</span>
+                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-cyan-500/40 transition">
+                  <span className="text-slate-400 flex items-center gap-2">
+                    <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Database Engine:</span>
+                  </span>
+                  <span className="text-white font-bold">Supabase Realtime (WSS)</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between">
-                  <span className="text-slate-400">Cadence Frequency:</span>
-                  <span className="text-white font-bold">Automated Sprints</span>
+                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-emerald-500/40 transition">
+                  <span className="text-slate-400 flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Cadence Frequency:</span>
+                  </span>
+                  <span className="text-emerald-400 font-bold">Autonomous Sprints (24/7)</span>
                 </div>
-                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between">
-                  <span className="text-slate-400">Telegram Bot:</span>
+                <div className="p-3 rounded-xl bg-black/50 border border-white/5 flex justify-between hover:border-cyan-500/40 transition">
+                  <span className="text-slate-400 flex items-center gap-2">
+                    <Send className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Telegram Bridge:</span>
+                  </span>
                   <span className="text-cyan-400 font-bold">@syncpulse_solver_bot</span>
                 </div>
               </div>
@@ -1318,66 +1393,114 @@ export default function SyncPulseLandingAndApp() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-red-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
-              <Bot className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-red-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" 
+                alt="Proactive Follow-ups" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 backdrop-blur-md">
+                <Bot className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Proactive Milestone Follow-ups</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition">Proactive Milestone Follow-ups</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               AI doesn&apos;t wait for humans to report. It automatically pings teammates at scheduled intervals with contextual milestone questions.
             </p>
           </div>
 
           {/* Card 2 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-cyan-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-              <AlertTriangle className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-cyan-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80" 
+                alt="Blocker Radar Diagnostic" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 backdrop-blur-md">
+                <AlertTriangle className="w-5 h-5 animate-pulse" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Blocker Radar Diagnostic</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition">Blocker Radar Diagnostic</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Detects who is stuck, where they are stuck, and on whom they are waiting. Flags critical bottlenecks in real-time.
             </p>
           </div>
 
           {/* Card 3 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-purple-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-              <Terminal className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-purple-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" 
+                alt="Mistral Semantic Reasoning" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 backdrop-blur-md">
+                <Terminal className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Mistral Semantic Reasoning</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition">Mistral Semantic Reasoning</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Parses informal chat messages (&quot;waiting for GPU keys from Meera&quot;) and extracts structured dependency records instantly.
             </p>
           </div>
 
           {/* Card 4 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-              <Zap className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" 
+                alt="Autonomous Peer Escalation" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 backdrop-blur-md">
+                <Zap className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Autonomous Peer Escalation</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition">Autonomous Peer Escalation</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Automatically routes targeted nudges to the blocking engineer across Web & Telegram, resolving blockers in 45 seconds.
             </p>
           </div>
 
           {/* Card 5 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-blue-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-blue-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" 
+                alt="Enterprise Role-Based Access" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 backdrop-blur-md">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Enterprise Role-Based Access</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition">Enterprise Role-Based Access</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Secure admin lock with official OTP email verification. Faculty and Managers oversee sprints with dedicated team controls.
             </p>
           </div>
 
           {/* Card 6 */}
-          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-amber-500/40 transition-all space-y-3 glass-card-hover">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-              <Users className="w-6 h-6" />
+          <div className="glass-card p-6 rounded-3xl border border-white/5 hover:border-amber-500/50 transition-all space-y-4 glass-card-hover group relative overflow-hidden">
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
+                alt="Scalable to 50+ Engineers" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 backdrop-blur-md">
+                <Users className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-white">Scalable to 50+ Engineers</h3>
+            <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition">Scalable to 50+ Engineers</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
               Dynamically add up to 50 team members with instant search and status filters. Built for large multi-modal cohorts.
             </p>
@@ -1412,38 +1535,72 @@ export default function SyncPulseLandingAndApp() {
           {/* 4 Pipeline Stages */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             {/* 1. Meera */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3 glass-card">
+            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3.5 glass-card hover:border-emerald-500 transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">01</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
               </div>
-              <h4 className="text-base font-bold text-white">Meera</h4>
-              <p className="text-xs text-indigo-400 font-mono-code">BERT Text Classifier</p>
+              
+              <div className="flex items-center gap-3 pt-1">
+                <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-emerald-500/40 shrink-0 shadow-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80" 
+                    alt="Meera" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white group-hover:text-emerald-400 transition">Meera</h4>
+                  <p className="text-[11px] text-emerald-400 font-mono-code">BERT Classifier</p>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-400 leading-relaxed">
                 Trained intent tokenizer & generated cluster security keys. Finished without delays.
               </p>
+              
+              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div className="bg-emerald-500 h-full w-full"></div>
+              </div>
             </div>
 
             {/* 2. Sumit */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3 glass-card">
+            <div className="p-5 rounded-3xl bg-slate-900/60 border border-emerald-500/40 space-y-3.5 glass-card hover:border-emerald-500 transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs">02</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DONE ✓</span>
               </div>
-              <h4 className="text-base font-bold text-white">Sumit</h4>
-              <p className="text-xs text-indigo-400 font-mono-code">ResNet-50 Vision Model</p>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-emerald-500/40 shrink-0 shadow-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80" 
+                    alt="Sumit" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white group-hover:text-emerald-400 transition">Sumit</h4>
+                  <p className="text-[11px] text-emerald-400 font-mono-code">ResNet-50 Vision</p>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-400 leading-relaxed">
                 Extracted visual feature embeddings and completed testing. Completed on schedule.
               </p>
+
+              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div className="bg-emerald-500 h-full w-full"></div>
+              </div>
             </div>
 
             {/* 3. Kabir */}
-            <div className={`p-5 rounded-3xl border space-y-3 glass-card transition-all ${
+            <div className={`p-5 rounded-3xl border space-y-3.5 glass-card transition-all group ${
               isKabirBlocked ? "bg-red-950/40 border-red-500/80 glow-red animate-pulse-red" : "bg-slate-900/60 border-emerald-500/40"
             }`}>
               <div className="flex items-center justify-between">
                 <span className={`w-8 h-8 rounded-2xl font-black flex items-center justify-center text-xs text-white ${
-                  isKabirBlocked ? "bg-red-600" : "bg-emerald-500 text-slate-950"
+                  isKabirBlocked ? "bg-red-600 animate-pulse" : "bg-emerald-500 text-slate-950"
                 }`}>03</span>
                 <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                   isKabirBlocked ? "bg-red-500/20 text-red-300 border border-red-500/40" : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
@@ -1451,26 +1608,59 @@ export default function SyncPulseLandingAndApp() {
                   {isKabirBlocked ? "BLOCKED 🚨" : "DONE ✓"}
                 </span>
               </div>
-              <h4 className="text-base font-bold text-white">Kabir</h4>
-              <p className="text-xs text-indigo-400 font-mono-code">Llama-3 LLM Fine-Tuning</p>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className={`w-12 h-12 rounded-2xl overflow-hidden border-2 shrink-0 shadow-md ${
+                  isKabirBlocked ? "border-red-500" : "border-emerald-500/40"
+                }`}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80" 
+                    alt="Kabir" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition">Kabir</h4>
+                  <p className="text-[11px] text-indigo-400 font-mono-code">Llama-3 Fine-Tuning</p>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-300 leading-relaxed">
                 {isKabirBlocked 
                   ? "ATKA HUA HAI: Needs GPU cluster credentials from Meera to launch!" 
                   : "Received credentials from Meera and completed LoRA training!"}
               </p>
+
+              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div className={`h-full transition-all duration-500 ${isKabirBlocked ? "bg-red-500 w-[35%]" : "bg-emerald-500 w-full"}`}></div>
+              </div>
             </div>
 
             {/* 4. Jaswant */}
-            <div className="p-5 rounded-3xl bg-slate-900/60 border border-cyan-500/30 space-y-3 glass-card">
+            <div className="p-5 rounded-3xl bg-slate-900/60 border border-cyan-500/30 space-y-3.5 glass-card hover:border-cyan-500 transition-all group">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-2xl bg-cyan-600 text-white font-black flex items-center justify-center text-xs">04</span>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">WORKING ⚡</span>
               </div>
-              <h4 className="text-base font-bold text-white">Jaswant</h4>
-              <p className="text-xs text-indigo-400 font-mono-code">Whisper Audio AI</p>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-cyan-500/40 shrink-0 shadow-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80" 
+                    alt="Jaswant" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white group-hover:text-cyan-400 transition">Jaswant</h4>
+                  <p className="text-[11px] text-cyan-400 font-mono-code">Whisper Audio AI</p>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-400 leading-relaxed">
                 Preprocessing audio spectrograms. Waiting to fuse model weights once Kabir finishes.
               </p>
+
               {/* Animated Waveform Visualizer */}
               <div className="pt-1.5 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-cyan-500/20">
                 <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse shrink-0" />
@@ -1482,6 +1672,10 @@ export default function SyncPulseLandingAndApp() {
                   <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-2 delay-200"></span>
                 </div>
                 <span className="text-[9px] font-mono-code text-cyan-300">VOICE ACTIVE</span>
+              </div>
+
+              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div className="bg-cyan-500 h-full w-[70%] animate-pulse"></div>
               </div>
             </div>
           </div>
@@ -1515,22 +1709,25 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 7. SECTION 6: HIGH IMPACT RED RIBBON STRIP (NUMBERS / METRICS) */}
       {/* ========================================================================= */}
-      <section className="py-12 bg-gradient-to-r from-red-700 via-rose-600 to-red-800 text-white shadow-2xl border-y border-red-500/30">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono-code">
-          <div>
-            <div className="text-4xl md:text-5xl font-black tracking-tight">95%</div>
+      <section className="py-12 bg-gradient-to-r from-red-800 via-rose-600 to-red-900 text-white shadow-2xl border-y border-red-500/40 relative overflow-hidden">
+        {/* Ambient Shimmer Beam */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent animate-pulse-glow"></div>
+
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono-code relative z-10">
+          <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
+            <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg">95%</div>
             <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Faster Blocker Resolution</div>
           </div>
-          <div>
-            <div className="text-4xl md:text-5xl font-black tracking-tight">10,000+</div>
+          <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
+            <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg">10,000+</div>
             <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Standup Minutes Saved</div>
           </div>
-          <div>
-            <div className="text-4xl md:text-5xl font-black tracking-tight">45s</div>
+          <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
+            <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg text-amber-300">45s</div>
             <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Autonomous Unblock Time</div>
           </div>
-          <div>
-            <div className="text-4xl md:text-5xl font-black tracking-tight">24/7</div>
+          <div className="p-4 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 hover:scale-105 hover:bg-black/20 transition-all duration-300">
+            <div className="text-4xl md:text-5xl font-black tracking-tight drop-shadow-lg text-emerald-300">24/7</div>
             <div className="text-xs md:text-sm text-red-100 font-sans mt-1">Continuous Sprint Monitoring</div>
           </div>
         </div>
@@ -1593,7 +1790,21 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* Visual Canvas Box */}
-          <div className="min-h-[300px] rounded-3xl bg-gradient-to-b from-[#090e1f] to-[#04060d] border border-cyan-500/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl">
+          <div className="min-h-[320px] rounded-3xl bg-gradient-to-b from-[#090e1f] to-[#04060d] border border-cyan-500/30 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl">
+            {/* Cyber Circuit Texture Overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-15 mix-blend-screen">
+              <img 
+                src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80" 
+                alt="Circuit Board" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Scanning beam */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl opacity-20">
+              <div className="w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-scan"></div>
+            </div>
+
             {animStep === 1 && (
               <div className="space-y-4 max-w-xl animate-fadeIn">
                 <div className="w-16 h-16 rounded-3xl bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center border border-blue-500/40 shadow-xl shadow-blue-900/40">
@@ -1843,6 +2054,20 @@ export default function SyncPulseLandingAndApp() {
                 </div>
 
                 <div className="p-6 rounded-2xl bg-slate-950/80 border border-red-500/30 space-y-4">
+                  {/* Cyber Network Visual Banner */}
+                  <div className="img-cyber-frame h-36 w-full relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" 
+                      alt="Global Web Network" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2 text-xs font-mono-code font-bold text-red-300">
+                      <Globe className="w-4 h-4 text-red-400 animate-spin" />
+                      <span>PORT 443 SECURE WSS BACKBONE</span>
+                    </div>
+                  </div>
+
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
                       ✓
@@ -2050,7 +2275,20 @@ export default function SyncPulseLandingAndApp() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Traditional Broken Way */}
-          <div className="glass-card p-8 rounded-3xl border border-red-900/50 space-y-5 bg-gradient-to-br from-red-950/20 to-slate-950">
+          <div className="glass-card p-6 md:p-8 rounded-3xl border border-red-900/50 space-y-5 bg-gradient-to-br from-red-950/20 to-slate-950 hover:border-red-500/40 transition group">
+            {/* Visual Image Banner */}
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" 
+                alt="Traditional Bottlenecks" 
+                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 px-3 py-1 rounded-xl bg-red-950/90 text-red-300 border border-red-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md">
+                8+ HOURS SPRINT DELAY
+              </div>
+            </div>
+
             <div className="flex items-center gap-3 text-red-400 font-black text-lg">
               <div className="w-8 h-8 rounded-xl bg-red-950 flex items-center justify-center text-xs border border-red-800">✕</div>
               <span>Without SyncPulse (Traditional Standup)</span>
@@ -2077,7 +2315,21 @@ export default function SyncPulseLandingAndApp() {
           </div>
 
           {/* SyncPulse AI Autonomous Way */}
-          <div className="glass-card p-8 rounded-3xl border border-emerald-500/50 space-y-5 bg-gradient-to-br from-emerald-950/30 to-slate-950 glow-green">
+          <div className="glass-card p-6 md:p-8 rounded-3xl border border-emerald-500/50 space-y-5 bg-gradient-to-br from-emerald-950/30 to-slate-950 glow-green hover:border-emerald-400 transition group">
+            {/* Visual Image Banner */}
+            <div className="img-cyber-frame h-36 w-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" 
+                alt="SyncPulse AI Autonomous Flow" 
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+              <div className="absolute bottom-3 left-3 px-3 py-1 rounded-xl bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono-code font-bold backdrop-blur-md flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>45-SECOND AUTONOMOUS UNBLOCK</span>
+              </div>
+            </div>
+
             <div className="flex items-center gap-3 text-emerald-400 font-black text-lg">
               <div className="w-8 h-8 rounded-xl bg-emerald-950 flex items-center justify-center text-xs border border-emerald-800">✓</div>
               <span>With SyncPulse AI (Our Solution)</span>
@@ -2334,36 +2586,72 @@ export default function SyncPulseLandingAndApp() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
+          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-red-500/40 transition group">
+            <div className="flex items-center justify-between">
+              <div className="text-amber-400 text-sm">★★★★★</div>
+              <span className="text-[10px] font-mono-code text-slate-500">VERIFIED MENTOR</span>
+            </div>
             <p className="text-xs text-slate-300 leading-relaxed italic">
               &quot;The Web-Native architecture directly solves the enterprise dilemma where colleges and banks cannot permit Telegram. Pure brilliance.&quot;
             </p>
-            <div className="pt-2 border-t border-white/10 text-xs">
-              <strong className="text-white">College Mentors & Faculty</strong>
-              <div className="text-[10px] text-slate-400">Dr. D.Y. Patil Institute, Pune</div>
+            <div className="pt-3 border-t border-white/10 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" 
+                  alt="Faculty Mentor" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div>
+                <strong className="text-white text-xs block">College Mentors & Faculty</strong>
+                <div className="text-[10px] text-slate-400">Dr. D.Y. Patil Institute, Pune</div>
+              </div>
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
+          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-cyan-500/40 transition group">
+            <div className="flex items-center justify-between">
+              <div className="text-amber-400 text-sm">★★★★★</div>
+              <span className="text-[10px] font-mono-code text-slate-500">OFFICIAL JURY</span>
+            </div>
             <p className="text-xs text-slate-300 leading-relaxed italic">
               &quot;Natural language parsing from human replies into structured task blockers represents real-world agentic workflow engineering.&quot;
             </p>
-            <div className="pt-2 border-t border-white/10 text-xs">
-              <strong className="text-white">Track W-PS-1 Judges</strong>
-              <div className="text-[10px] text-slate-400">Hackathon Kurukshetra</div>
+            <div className="pt-3 border-t border-white/10 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" 
+                  alt="Jury Member" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div>
+                <strong className="text-white text-xs block">Track W-PS-1 Judges</strong>
+                <div className="text-[10px] text-slate-400">Hackathon Kurukshetra</div>
+              </div>
             </div>
           </div>
 
-          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
+          <div className="glass-card p-6 rounded-3xl border border-white/5 space-y-4 hover:border-emerald-500/40 transition group">
+            <div className="flex items-center justify-between">
+              <div className="text-amber-400 text-sm">★★★★★</div>
+              <span className="text-[10px] font-mono-code text-slate-500">SPONSOR REVIEW</span>
+            </div>
             <p className="text-xs text-slate-300 leading-relaxed italic">
               &quot;Autonomous escalation that actually nudges the blocking engineer without human manager intervention is a 1st prize caliber solution.&quot;
             </p>
-            <div className="pt-2 border-t border-white/10 text-xs">
-              <strong className="text-white">AI Project Sponsors</strong>
-              <div className="text-[10px] text-slate-400">Powered by Worcflow.ai</div>
+            <div className="pt-3 border-t border-white/10 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80" 
+                  alt="Sponsor Lead" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div>
+                <strong className="text-white text-xs block">AI Project Sponsors</strong>
+                <div className="text-[10px] text-slate-400">Powered by Worcflow.ai</div>
+              </div>
             </div>
           </div>
         </div>
@@ -2424,36 +2712,54 @@ export default function SyncPulseLandingAndApp() {
       {/* ========================================================================= */}
       {/* 12. SECTION 11: CALL TO ACTION BANNER */}
       {/* ========================================================================= */}
-      <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
-        <div className="glass-panel p-8 md:p-14 rounded-3xl border border-red-500/40 text-center space-y-6 bg-gradient-to-tr from-red-950/40 via-slate-900 to-indigo-950/40 shadow-2xl glow-red">
-          <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
-            HACKATHON KURUKSHETRA READY
-          </span>
-          <h2 className="text-3xl md:text-5xl font-black text-white max-w-2xl mx-auto tracking-tight">
-            Put Your Group Projects On Autonomous Autopilot
-          </h2>
-          <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-            Eliminate wasted standups, discover hidden bottlenecks in real time, and deliver every project milestone on schedule.
-          </p>
+      {/* ========================================================================= */}
+      {/* 12. SECTION 11: CALL TO ACTION BANNER */}
+      {/* ========================================================================= */}
+      <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto w-full relative">
+        <div className="glass-panel p-8 md:p-14 rounded-3xl border border-red-500/40 text-center space-y-6 bg-gradient-to-tr from-red-950/60 via-slate-900 to-indigo-950/60 shadow-2xl glow-red relative overflow-hidden">
+          
+          {/* Panoramic Cyber Background Image */}
+          <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen">
+            <img 
+              src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80" 
+              alt="Cyber Launchpad" 
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
-            <button
-              onClick={() => setIsAdminModalOpen(true)}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2"
-            >
-              <Lock className="w-4 h-4" />
-              <span>Access Admin Gateway</span>
-            </button>
+          {/* Shimmer Ambient Glow */}
+          <div className="absolute top-0 right-1/4 w-72 h-72 bg-red-600/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
 
-            <a
-              href="https://t.me/syncpulse_solver_bot"
-              target="_blank"
-              rel="noreferrer"
-              className="px-8 py-4 rounded-2xl glass-card hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition border border-white/10 flex items-center gap-2"
-            >
-              <Send className="w-4 h-4 text-cyan-400" />
-              <span>Open Telegram Bot</span>
-            </a>
+          <div className="relative z-10 space-y-6">
+            <span className="text-xs font-bold font-mono-code text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+              HACKATHON KURUKSHETRA READY · TRACK W-PS-1
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black text-white max-w-2xl mx-auto tracking-tight">
+              Put Your Group Projects On <span className="gradient-text-shimmer">Autonomous Autopilot</span>
+            </h2>
+            <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+              Eliminate wasted standups, discover hidden bottlenecks in real time, and deliver every project milestone on schedule with zero friction.
+            </p>
+
+            <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
+              <button
+                onClick={() => setIsAdminModalOpen(true)}
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-red-900/50 glow-red flex items-center gap-2 hover:scale-105 active:scale-95"
+              >
+                <Lock className="w-4 h-4" />
+                <span>Access Admin Gateway</span>
+              </button>
+
+              <a
+                href="https://t.me/syncpulse_solver_bot"
+                target="_blank"
+                rel="noreferrer"
+                className="px-8 py-4 rounded-2xl glass-card hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition border border-white/10 flex items-center gap-2 hover:scale-105 active:scale-95"
+              >
+                <Send className="w-4 h-4 text-cyan-400" />
+                <span>Open Telegram Bot (@syncpulse_solver_bot)</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
